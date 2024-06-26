@@ -1,0 +1,30 @@
+body {
+    background-color: lightblue;
+    margin: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+main {
+    width: 60vw;
+    height: 60vh;
+    background-color: lightsalmon;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tile {
+    width: 5vw;
+    height: 10vh;
+    background: radial-gradient(circle, #D91040 0%, #D91040 50%, #3D3D3D 100%)
+    /* background-color: firebrick; */
+    /* border: 20px inset #000000;; */
+}
+
+.catImg {
+    width: 5vw;
+    height: 10vh;
+    z-index: 2;
+}
