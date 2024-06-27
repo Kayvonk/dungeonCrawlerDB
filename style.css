@@ -30,6 +30,7 @@ header {
   position: absolute;
   top: 0;
   line-height: 1px;
+  z-index: 5;
 }
 
 header > p:first-child {
