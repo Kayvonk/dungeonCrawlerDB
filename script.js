@@ -11,9 +11,9 @@ let possibleEnemyPositions = [];
 let seconds = 0;
 
 function calculateScore() {
-  let baseScore = round * 200;
+  let baseScore = round * 1000 ;
 
-  let timeScore = Math.round((1 / seconds) * 1000);
+  let timeScore = Math.round((1 / seconds) * 10000);
 
   let scoreDiv = document.getElementById("results");
   scoreDiv.style.display = "flex";
@@ -75,10 +75,10 @@ function endRound() {
 }
 
 function createTiles() {
-  let exitGroup = ["r1", "r6", "c1", "c12"];
+  let exitGroup = ["r1", "c1", "c12"];
   let selectedExit;
   let exitClass;
-  let exitGroupSelection = exitGroup[Math.floor(Math.random() * 4)];
+  let exitGroupSelection = exitGroup[Math.floor(Math.random() * 3)];
   if (exitGroupSelection === "r1") {
     let possiblePositions = [
       "r1-c1",
@@ -97,30 +97,9 @@ function createTiles() {
     selectedExit =
       possiblePositions[Math.floor(Math.random() * possiblePositions.length)];
     exitClass = "exitTop";
-  }
-  if (exitGroupSelection === "r6") {
-    let possiblePositions = [
-      "r6-c1",
-      "r6-c2",
-      "r6-c3",
-      "r6-c4",
-      "r6-c5",
-      "r6-c6",
-      "r6-c7",
-      "r6-c8",
-      "r6-c9",
-      "r6-c10",
-      "r6-c11",
-      "r6-c12",
-    ];
-    selectedExit =
-      possiblePositions[Math.floor(Math.random() * possiblePositions.length)];
-    exitClass = "exitBottom";
-  }
+  } 
   if (exitGroupSelection === "c1") {
-    let possiblePositions = [
-      "r6-c1",
-      "r5-c1",
+    let possiblePositions = [     
       "r4-c1",
       "r3-c1",
       "r2-c1",
@@ -131,9 +110,7 @@ function createTiles() {
     exitClass = "exitLeft";
   }
   if (exitGroupSelection === "c12") {
-    let possiblePositions = [
-      "r6-c12",
-      "r5-c12",
+    let possiblePositions = [     
       "r4-c12",
       "r3-c12",
       "r2-c12",
