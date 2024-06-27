@@ -1,45 +1,146 @@
+@font-face {
+  font-family: "DungeonCrawler";
+  src: url("./fonts/DungeonCrawler.ttf") format("truetype");
+}
+
 body {
-    background-color: lightblue;
-    margin: 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+  background-color: lightblue;
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  min-height: 100vh;
+  position: relative;
 }
 
 main {
-    width: 60vw;
-    height: 60vh;
-    background-color: lightsalmon;
-    display: flex;
-    flex-wrap: wrap;
+  width: 60vw;
+  height: 60vh;
+  background-color: lightsalmon;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 12px;
+}
+
+header {
+  font-size: 48px;
+  font-family: "DungeonCrawler";
+  position: absolute;
+  top: 0;
+  line-height: 1px;
+}
+
+header > p:first-child {
+    position: absolute;
+    top: -10px;
+    left: -40px
+    
+}
+header > p:last-child {
+    position: relative;
+    bottom: -20px;
+    right: -40px
+
+}
+
+footer {
+  font-family: "DungeonCrawler";
+  position: absolute;
+  bottom: 0;
+}
+
+#roundCounter {
+  font-size: 40px;
+}
+
+#results {
+width: 50vw;
+height: 40vh;
+background-color: rgba(173, 216, 230, 0.75);
+position: absolute;
+border: 20px solid transparent;
+border-image: linear-gradient(to bottom right, #00ebdbb2, #004258b2) 1;
+display: none;
+justify-content: center;
+align-items: center;
+font-size: 32px;
+z-index: 4;
+/* text-align: center; */
+}
+
+.exitDoor {
+  width: 5vw;
+  height: 10vh;
+  background: radial-gradient(circle, #faecef 0%, #cca2ab 50%, #3d3d3d 100%);
 }
 
 .tile {
-    width: 5vw;
-    height: 10vh;
-    background: radial-gradient(circle, #D91040 0%, #D91040 50%, #3D3D3D 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* background-color: firebrick; */
-    /* border: 20px inset #000000;; */
+  width: 5vw;
+  height: 10vh;
+  /* background: radial-gradient(circle, #919090 0%, #919090 50%, #27367b 100%); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+  background-color: #008b8a;
+  border: 2px inset transparent;
+  border-image: linear-gradient(to bottom right, #0ce6d8, #000907) 1;
+}
+
+.wall {
+  width: 5vw;
+  height: 10vh;
+  /* background: radial-gradient(circle, #1075d9 0%, #4910d9 50%, #3d3d3d 100%); */
+  background-color: #008b8a;
+  box-sizing: border-box;
+  border: 20px inset transparent;
+  border-image: linear-gradient(to bottom right, #00ebdc, #004258) 1;
+}
+
+.wallTop,
+.exitTop {
+  position: absolute;
+  top: -10vh;
+}
+
+.wallBottom,
+.exitBottom {
+  position: absolute;
+  bottom: -10vh;
+}
+
+.wallLeft,
+.exitLeft {
+  position: absolute;
+  left: -5vw;
+}
+
+.wallRight,
+.exitRight {
+  position: absolute;
+  right: -5vw;
 }
 
 .catImg {
-    width: 5vw;
-    height: 10vh;
-    z-index: 3;
+  width: 5vw;
+  height: 10vh;
+  z-index: 3;
 }
 
-.dogImg {
-    width: 4vw;
-    height: 8vh;
-    z-index: 2;
-}
-
-.dogImg2 {
-    width: 4vw;
-    height: 8vh;
-    z-index: 2;
+.dogImg0,
+.dogImg1,
+.dogImg2,
+.dogImg3,
+.dogImg4,
+.dogImg5,
+.dogImg6,
+.dogImg7,
+.dogImg8,
+.dogImg9 {
+  width: 4vw;
+  height: 8vh;
+  z-index: 2;
 }
