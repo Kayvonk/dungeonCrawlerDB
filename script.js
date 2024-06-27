@@ -40,6 +40,7 @@ function startGame() {
 }
 
 function restartGame() {
+  playerPosition = startingPosition;
   gameStarted = true;
   seconds = 0;
   let secondsTimer = setInterval(() => {
