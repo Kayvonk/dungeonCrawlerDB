@@ -1,4 +1,5 @@
 let mainEl = document.getElementsByTagName("main")[0];
+let startBtn = document.getElementById("start");
 let startingPosition = "r6-c6";
 let playerPosition = startingPosition;
 let enemyPositions = [];
@@ -9,24 +10,74 @@ let exitDirection;
 let round = 0;
 let possibleEnemyPositions = [];
 let seconds = 0;
+let gameStarted = false;
+
+startBtn.addEventListener("click", startGame);
+
+function startGame() {
+  gameStarted = true;
+  startBtn.style.display = "none";
+  let secondsTimer = setInterval(() => {
+    if (gameOver) {
+      clearInterval(secondsTimer);
+      return calculateScore();
+    }
+    seconds++;
+  }, 1000);
+  displayRound();
+  let newEnemyPosition =
+    possibleEnemyPositions[
+      Math.floor(Math.random() * possibleEnemyPositions.length)
+    ];
+  enemyPositions.push(newEnemyPosition);
+  possibleEnemyPositions = possibleEnemyPositions.filter(
+    (position) => position !== newEnemyPosition
+  );
+  placeEnemy(0);
+
+  let exitTile = document.getElementById("exitTile");
+  exitTile.classList.add("exitDoor");
+}
+
+function restartGame() {
+  gameStarted = true;
+  seconds = 0;
+  let secondsTimer = setInterval(() => {
+    if (gameOver) {
+      clearInterval(secondsTimer);
+      return calculateScore();
+    }
+    seconds++;
+  }, 1000);
+  let scoreDiv = document.getElementById("results");
+  scoreDiv.style.display = "none";
+  attackingEnemyIndex = null;
+  round = -1;
+  gameOver = false;
+  endRound();
+  let exitTile = document.getElementById("exitTile");
+  exitTile.classList.add("exitDoor");
+}
 
 function calculateScore() {
-  let baseScore = round * 1000 ;
+  let baseScore = round * 1000;
 
   let timeScore = Math.round((1 / seconds) * 10000);
 
   let scoreDiv = document.getElementById("results");
   scoreDiv.style.display = "flex";
-  scoreDiv.textContent = "Score:" + (baseScore + timeScore);
-}
+  scoreDiv.style.fontFamily = "Arial";
+  scoreDiv.innerHTML = `
+  <p>Score: ${baseScore + timeScore}</p>
+  <p>Time: ${seconds} seconds</p>
+`;
 
-let secondsTimer = setInterval(() => {
-  if (gameOver) {
-    clearInterval(secondsTimer);
-    return calculateScore();
-  }
-  seconds++;
-}, 1000);
+  let restartBtn = document.createElement("button");
+  restartBtn.setAttribute("id", "restart");
+  restartBtn.textContent = "Try Again";
+  scoreDiv.append(restartBtn);
+  restartBtn.addEventListener("click", restartGame);
+}
 
 function loseGame(enemyIndex) {
   attackingEnemyIndex = enemyIndex;
@@ -46,10 +97,10 @@ function displayRound() {
     let roundDiv = document.createElement("p");
     roundDiv.setAttribute("id", "roundCounter");
     roundDiv.textContent = "Round : " + (round + 1);
+    roundDiv.style.display = "flex";
     headerEl.append(roundDiv);
   }
 }
-displayRound();
 
 function endRound() {
   if (round + 1 === 10) {
@@ -78,6 +129,7 @@ function createTiles() {
   let exitGroup = ["r1", "c1", "c12"];
   let selectedExit;
   let exitClass;
+  possibleEnemyPositions = [];
   let exitGroupSelection = exitGroup[Math.floor(Math.random() * 3)];
   if (exitGroupSelection === "r1") {
     let possiblePositions = [
@@ -97,25 +149,15 @@ function createTiles() {
     selectedExit =
       possiblePositions[Math.floor(Math.random() * possiblePositions.length)];
     exitClass = "exitTop";
-  } 
+  }
   if (exitGroupSelection === "c1") {
-    let possiblePositions = [     
-      "r4-c1",
-      "r3-c1",
-      "r2-c1",
-      "r1-c1",
-    ];
+    let possiblePositions = ["r4-c1", "r3-c1", "r2-c1", "r1-c1"];
     selectedExit =
       possiblePositions[Math.floor(Math.random() * possiblePositions.length)];
     exitClass = "exitLeft";
   }
   if (exitGroupSelection === "c12") {
-    let possiblePositions = [     
-      "r4-c12",
-      "r3-c12",
-      "r2-c12",
-      "r1-c12",
-    ];
+    let possiblePositions = ["r4-c12", "r3-c12", "r2-c12", "r1-c12"];
     selectedExit =
       possiblePositions[Math.floor(Math.random() * possiblePositions.length)];
     exitClass = "exitRight";
@@ -167,7 +209,8 @@ function createTiles() {
       exitTilePosition = tilePosition;
       exitDirection = exitClass;
       let exitTile = document.createElement("div");
-      exitTile.className = "exitDoor " + exitClass;
+      exitTile.className = round === 0 ? exitClass : "exitDoor " + exitClass;
+      exitTile.setAttribute("id", "exitTile");
       tile.append(exitTile);
       tile.setAttribute("id", "exit");
     }
@@ -196,16 +239,6 @@ function placeEnemy(index) {
   startingTile.append(dogImg);
   startEnemyMovement(".dogImg" + index, "./image/doge.png", index);
 }
-
-let newEnemyPosition =
-  possibleEnemyPositions[
-    Math.floor(Math.random() * possibleEnemyPositions.length)
-  ];
-enemyPositions.push(newEnemyPosition);
-possibleEnemyPositions = possibleEnemyPositions.filter(
-  (position) => position !== newEnemyPosition
-);
-placeEnemy(0);
 
 function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
   const currentRound = round;
@@ -238,6 +271,11 @@ function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
 window.addEventListener("keydown", checkKeyPressed);
 
 function checkKeyPressed(evt) {
+  if (!gameStarted && evt.keyCode === 32) {
+    startGame();
+  } else if (gameStarted && gameOver && evt.keyCode === 32) {
+    restartGame();
+  }
   if (gameOver) {
     return;
   }

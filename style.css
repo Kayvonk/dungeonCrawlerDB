@@ -51,7 +51,44 @@ footer {
   bottom: 0;
 }
 
+#start {
+padding: 20px 60px;
+border-radius: 12px;
+border: none;
+box-shadow: 2px 2px 5px 2px rgb(49, 49, 49);
+font-family: "DungeonCrawler";
+color: white;
+font-size: 34px;
+background-color: #004258d0;
+position: relative;
+bottom: 10px;
+cursor: pointer;
+}
+
+#start:hover {
+  box-shadow: 2px 2px 8px 3px rgb(49, 49, 49);
+  background-color: #045d7ad0;
+
+}
+
+#restart {
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 2px 2px 5px 2px rgb(49, 49, 49);
+  font-family: "DungeonCrawler";
+  color: black;
+  font-size: 28px;
+  background-color: #84c5dbd0;
+  cursor: pointer;
+}
+
+#restart:hover {
+background-color: #a3cbd8d0;
+}
+
 #roundCounter {
+  display: none;
   font-size: 40px;
 }
 
@@ -63,11 +100,11 @@ position: absolute;
 border: 20px solid transparent;
 border-image: linear-gradient(to bottom right, #00ebdbb2, #004258b2) 1;
 display: none;
+flex-direction: column;
 justify-content: center;
 align-items: center;
 font-size: 32px;
 z-index: 4;
-/* text-align: center; */
 }
 
 .exitDoor {
@@ -79,7 +116,6 @@ z-index: 4;
 .tile {
   width: 5vw;
   height: 10vh;
-  /* background: radial-gradient(circle, #919090 0%, #919090 50%, #27367b 100%); */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -93,7 +129,6 @@ z-index: 4;
 .wall {
   width: 5vw;
   height: 10vh;
-  /* background: radial-gradient(circle, #1075d9 0%, #4910d9 50%, #3d3d3d 100%); */
   background-color: #008b8a;
   box-sizing: border-box;
   border: 20px inset transparent;
