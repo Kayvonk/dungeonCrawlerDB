@@ -6,7 +6,7 @@
 * [Questions](#questions)
 
 ## Description
-Dungeon Crawler is a top-down game where you play as Nyan and attempt to complete 10 rounds while under attack by the infamous doge.
+Dungeon Crawler is a top-down game where you play as Nyan and attempt to complete 10 rounds while under attack by the infamous doge army.
 ![MainThumbnail](./image/dungeonCrawlerThumbnail.PNG)
 
 
