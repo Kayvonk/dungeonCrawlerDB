@@ -16,7 +16,7 @@ let canMove = true;
 startBtn.addEventListener("click", startGame);
 let highScore = parseFloat(localStorage.getItem("highscore")) || 0;
 let boulderTimer;
-
+let secondsTimer;
 function limitMovement() {
   canMove = false;
   setTimeout(() => {
@@ -61,7 +61,7 @@ function startGame() {
     }
   }, 3000);
 
-  let secondsTimer = setInterval(() => {
+  secondsTimer = setInterval(() => {
     if (gameOver) {
       clearInterval(secondsTimer);
       return calculateScore();
@@ -88,7 +88,8 @@ function restartGame() {
   gameStarted = true;
 
   clearInterval(boulderTimer);
-
+  clearInterval(secondsTimer);
+  
   boulderTimer = setInterval(() => {
     if (gameOver) {
       clearInterval(boulderTimer);
@@ -100,7 +101,7 @@ function restartGame() {
   }, 3000);
 
   seconds = 0;
-  let secondsTimer = setInterval(() => {
+  secondsTimer = setInterval(() => {
     if (gameOver) {
       clearInterval(secondsTimer);
       return calculateScore();
