@@ -15,6 +15,7 @@ let gameStarted = false;
 let canMove = true;
 startBtn.addEventListener("click", startGame);
 let highScore = localStorage.getItem("highscore") || 0;
+let boulderTimer;
 
 function limitMovement() {
   canMove = false;
@@ -49,7 +50,7 @@ function startGame() {
 
   gameStarted = true;
   startBtn.style.display = "none";
-  let boulderTimer = setInterval(() => {
+  boulderTimer = setInterval(() => {
     // if (gameOver || (currentRound !== round)) {
     if (gameOver) {
       clearInterval(boulderTimer);
@@ -86,7 +87,9 @@ function restartGame() {
   playerPosition = startingPosition;
   gameStarted = true;
 
-  let boulderTimer = setInterval(() => {
+  clearInterval(boulderTimer);
+  
+  boulderTimer = setInterval(() => {
     if (gameOver) {
       clearInterval(boulderTimer);
       return;
