@@ -181,6 +181,52 @@ footer {
   animation: moveUp 0.1s forwards;
 }
 
+
+.boulderShadow {
+  position: absolute;
+  width: 1vw;
+  height: 1vh;
+  border-radius: 50%;
+  background-color: #2b2b2bb2;
+animation: growShadow 1s forwards
+}
+
+.boulder {
+  width: 5vw;
+  height: 10vh;
+  position: absolute;
+  animation: dropBoulder 1s forwards
+
+
+}
+
+
+@keyframes dropBoulder {
+  0% {
+    transform: translateY(-60vh);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes growShadow {
+  0% {
+    width: 1vw;
+    height: 2vh;
+    background-color: #2b2b2bb2;
+
+  }
+  100% {
+    width: 3vw;
+    height: 7vh;
+    background-color: #2b2b2b;
+
+  }
+}
+
+
+
 @keyframes moveUp {
   0% {
     transform: translateY(0);
