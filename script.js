@@ -340,7 +340,7 @@ function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
       clearTimeout(enemyTimer);
       return;
     }
-    let isAttacking = Math.random() < 0.8;
+    let isAttacking = Math.random() < 0.2;
     let enemyImg = document.querySelector(enemyClass);
     if (isAttacking) {
       enemyImg.src = "./image/dogeRedEyes.png";
