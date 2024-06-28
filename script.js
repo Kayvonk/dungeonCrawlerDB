@@ -249,7 +249,9 @@ function placeEnemy(index) {
 }
 
 function fireEnemyBeam(enemyImg, enemyIndex) {
-  setTimeout(() => {
+  const currentRound = round;
+ let enemyBeamTimer = setTimeout(() => {
+
     let possibleDirections = [];
     let enemyPosition = enemyImg.classList[1];
 
@@ -311,6 +313,10 @@ function fireEnemyBeam(enemyImg, enemyIndex) {
     }
     for (let j = 0; j < affectedTiles.length; j++) {
       setTimeout(() => {
+        if (currentRound !== round) {
+          clearTimeout(enemyBeamTimer);
+          return;
+        }
         let damageTile = document.querySelector("." + affectedTiles[j]);
         let originalColor = window.getComputedStyle(damageTile).backgroundColor; // Get original background color
 
