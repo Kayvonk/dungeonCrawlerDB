@@ -83,6 +83,7 @@ function calculateScore() {
   scoreDiv.style.display = "flex";
   scoreDiv.style.fontFamily = "Arial";
   scoreDiv.innerHTML = `
+  <h2>${typeof attackingEnemyIndex === "number" ? "You lose": "You win"} </h2>
   <p>High Score: ${highScore}</p>
   <p>Score: ${finalScore}</p>
   <p>Time: ${seconds} seconds</p>
