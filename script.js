@@ -253,10 +253,16 @@ function fireEnemyBeam(enemyImg, enemyIndex) {
     let possibleDirections = [];
     let enemyPosition = enemyImg.classList[1];
 
-    let fireDown = parseInt(enemyPosition.charAt(1)) < parseInt(playerPosition.charAt(1));
-    let fireUp = parseInt(enemyPosition.charAt(1)) > parseInt(playerPosition.charAt(1));
-    let fireRight = parseInt(enemyPosition.substring(4)) < parseInt(playerPosition.substring(4))
-    let fireLeft = parseInt(enemyPosition.substring(4)) > parseInt(playerPosition.substring(4));
+    let fireDown =
+      parseInt(enemyPosition.charAt(1)) < parseInt(playerPosition.charAt(1));
+    let fireUp =
+      parseInt(enemyPosition.charAt(1)) > parseInt(playerPosition.charAt(1));
+    let fireRight =
+      parseInt(enemyPosition.substring(4)) <
+      parseInt(playerPosition.substring(4));
+    let fireLeft =
+      parseInt(enemyPosition.substring(4)) >
+      parseInt(playerPosition.substring(4));
 
     if (fireDown) {
       possibleDirections.push("fireDown");
@@ -277,7 +283,7 @@ function fireEnemyBeam(enemyImg, enemyIndex) {
       let startRow = parseInt(enemyPosition.charAt(1));
       let endRow = parseInt(playerPosition.charAt(1));
       let column = parseInt(enemyPosition.substring(4));
-    
+
       for (let i = startRow; i <= endRow; i++) {
         affectedTiles.push("r" + i + "-c" + column);
       }
@@ -290,7 +296,7 @@ function fireEnemyBeam(enemyImg, enemyIndex) {
       }
     } else if (directionSelected === "fireLeft") {
       let row = parseInt(enemyPosition.charAt(1));
-      let startColumn = parseInt(enemyPosition.substring(4))
+      let startColumn = parseInt(enemyPosition.substring(4));
       let endColumn = parseInt(playerPosition.substring(4));
       for (let i = startColumn; i >= endColumn; i--) {
         affectedTiles.push("r" + row + "-c" + i);
@@ -302,22 +308,25 @@ function fireEnemyBeam(enemyImg, enemyIndex) {
       for (let i = startColumn; i <= endColumn; i++) {
         affectedTiles.push("r" + row + "-c" + i);
       }
-    }  
+    }
     for (let j = 0; j < affectedTiles.length; j++) {
       setTimeout(() => {
         let damageTile = document.querySelector("." + affectedTiles[j]);
+        let originalColor = window.getComputedStyle(damageTile).backgroundColor; // Get original background color
+
         damageTile.style.backgroundColor = "lightsalmon";
 
         setTimeout(() => {
+          damageTile.style.backgroundColor = originalColor; // Revert back to original color
+          
           if (affectedTiles[j] === playerPosition) {
             loseGame(enemyIndex);
           }
-        }, 500); // Delay for 500ms after setting backgroundColor
+        }, 500); // Revert back to original color after 500ms
       }, j * 500); // Delay each iteration by 500ms
     }
-  }, 1000);
+  }, 1000); // Initial delay of 1000ms before executing the code
 }
-
 function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
   const currentRound = round;
   let enemyTimer = setTimeout(() => {
