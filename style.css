@@ -18,7 +18,6 @@ body {
 main {
   width: 60vw;
   height: 60vh;
-  background-color: lightsalmon;
   display: flex;
   flex-wrap: wrap;
   border-radius: 12px;
@@ -179,4 +178,56 @@ z-index: 4;
   width: 4vw;
   height: 8vh;
   z-index: 2;
+}
+
+.moveUp {
+  animation: moveUp 0.1s forwards;
+}
+
+@keyframes moveUp {
+  0% {
+    transform: translateY(0); 
+  }
+  100% {
+    transform: translateY(-10vh); 
+  }
+}
+
+.moveDown {
+  animation: moveDown 0.1s forwards;
+}
+
+@keyframes moveDown {
+  0% {
+    transform: translateY(0); 
+  }
+  100% {
+    transform: translateY(10vh); 
+  }
+}
+
+.moveLeft {
+  animation: moveLeft 0.1s forwards;
+}
+
+@keyframes moveLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-5vw);
+  }
+}
+
+.moveRight {
+  animation: moveRight 0.1s forwards;
+}
+
+@keyframes moveRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(5vw);
+  }
 }
