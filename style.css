@@ -33,16 +33,14 @@ header {
 }
 
 header > p:first-child {
-    position: absolute;
-    top: -10px;
-    left: -40px
-    
+  position: absolute;
+  top: -10px;
+  left: -40px;
 }
 header > p:last-child {
-    position: relative;
-    bottom: -20px;
-    right: -40px
-
+  position: relative;
+  bottom: -20px;
+  right: -40px;
 }
 
 footer {
@@ -52,23 +50,22 @@ footer {
 }
 
 #start {
-padding: 20px 60px;
-border-radius: 12px;
-border: none;
-box-shadow: 2px 2px 5px 2px rgb(49, 49, 49);
-font-family: "DungeonCrawler";
-color: white;
-font-size: 34px;
-background-color: #004258d0;
-position: relative;
-bottom: 10px;
-cursor: pointer;
+  padding: 20px 60px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 2px 2px 5px 2px rgb(49, 49, 49);
+  font-family: "DungeonCrawler";
+  color: white;
+  font-size: 34px;
+  background-color: #004258d0;
+  position: relative;
+  bottom: 10px;
+  cursor: pointer;
 }
 
 #start:hover {
   box-shadow: 2px 2px 8px 3px rgb(49, 49, 49);
   background-color: #045d7ad0;
-
 }
 
 #restart {
@@ -84,7 +81,7 @@ cursor: pointer;
 }
 
 #restart:hover {
-background-color: #a3cbd8d0;
+  background-color: #a3cbd8d0;
 }
 
 #roundCounter {
@@ -93,18 +90,18 @@ background-color: #a3cbd8d0;
 }
 
 #results {
-width: 50vw;
-height: 40vh;
-background-color: rgba(173, 216, 230, 0.75);
-position: absolute;
-border: 20px solid transparent;
-border-image: linear-gradient(to bottom right, #00ebdbb2, #004258b2) 1;
-display: none;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-font-size: 32px;
-z-index: 4;
+  width: 50vw;
+  height: 40vh;
+  background-color: rgba(173, 216, 230, 0.75);
+  position: absolute;
+  border: 20px solid transparent;
+  border-image: linear-gradient(to bottom right, #00ebdbb2, #004258b2) 1;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  z-index: 4;
 }
 
 .exitDoor {
@@ -186,10 +183,10 @@ z-index: 4;
 
 @keyframes moveUp {
   0% {
-    transform: translateY(0); 
+    transform: translateY(0);
   }
   100% {
-    transform: translateY(-10vh); 
+    transform: translateY(-10vh);
   }
 }
 
@@ -199,10 +196,10 @@ z-index: 4;
 
 @keyframes moveDown {
   0% {
-    transform: translateY(0); 
+    transform: translateY(0);
   }
   100% {
-    transform: translateY(10vh); 
+    transform: translateY(10vh);
   }
 }
 

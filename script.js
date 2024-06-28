@@ -13,6 +13,7 @@ let seconds = 0;
 let gameStarted = false;
 let canMove = true;
 startBtn.addEventListener("click", startGame);
+let highScore = localStorage.getItem("highscore") || 0
 
 function limitMovement() {
   canMove = false;
@@ -72,11 +73,18 @@ function calculateScore() {
 
   let timeScore = Math.round((1 / seconds) * 10000);
 
+  let finalScore = baseScore + timeScore
+
+  if(finalScore > highScore) {
+    highScore = finalScore
+    localStorage.setItem("highscore", finalScore)
+  }
   let scoreDiv = document.getElementById("results");
   scoreDiv.style.display = "flex";
   scoreDiv.style.fontFamily = "Arial";
   scoreDiv.innerHTML = `
-  <p>Score: ${baseScore + timeScore}</p>
+  <p>High Score: ${highScore}</p>
+  <p>Score: ${finalScore}</p>
   <p>Time: ${seconds} seconds</p>
 `;
 
