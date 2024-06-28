@@ -119,16 +119,17 @@ function restartGame() {
 }
 
 function calculateScore() {
-  let baseScore = round * 1000;
+  let baseScore = (round + 1) * 1000;
 
   let timeScore = Math.round((1 / seconds) * 10000);
 
   let finalScore = baseScore + timeScore;
-
-  if (finalScore > highScore) {
+  if (isFinite(finalScore) && finalScore > highScore) {
     highScore = finalScore;
     localStorage.setItem("highscore", finalScore);
   }
+
+
   let scoreDiv = document.getElementById("results");
   scoreDiv.style.display = "flex";
   scoreDiv.style.fontFamily = "Arial";
