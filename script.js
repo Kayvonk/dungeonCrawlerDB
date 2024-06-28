@@ -14,7 +14,7 @@ let seconds = 0;
 let gameStarted = false;
 let canMove = true;
 startBtn.addEventListener("click", startGame);
-let highScore = localStorage.getItem("highscore") || 0;
+let highScore = parseFloat(localStorage.getItem("highscore")) || 0;
 let boulderTimer;
 
 function limitMovement() {
