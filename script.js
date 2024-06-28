@@ -14,7 +14,7 @@ let seconds = 0;
 let gameStarted = false;
 let canMove = true;
 startBtn.addEventListener("click", startGame);
-let highScore = localStorage.getItem("highscore") || 0
+let highScore = localStorage.getItem("highscore") || 0;
 
 function limitMovement() {
   canMove = false;
@@ -23,47 +23,43 @@ function limitMovement() {
   }, 100);
 }
 
-let boulderTimer = setInterval(() => {
-  if (gameOver){
-    clearInterval(boulderTimer)
-  }
-  if(gameStarted && !gameOver) {
-    dropBoulder(-1)
-  }
-}, 3000);
+function dropBoulder(enemyIndex) {
+  let selectedPosition = playerPosition;
+  boulderPositions.push(selectedPosition);
+  let selectedTile = document.querySelector("." + selectedPosition);
 
+  let boulderShadow = document.createElement("div");
+  boulderShadow.className = "boulderShadow boulderShadow-" + playerPosition;
 
-function dropBoulder (enemyIndex) {
+  let boulder = document.createElement("img");
+  boulder.className = "boulder boulder-" + playerPosition;
+  boulder.src = "./image/boulder.png";
 
-let selectedPosition = playerPosition
-boulderPositions.push(selectedPosition)
-let selectedTile = document.querySelector("." + selectedPosition)
-
-let boulderShadow = document.createElement("div")
-boulderShadow.className = "boulderShadow boulderShadow-" + playerPosition
-
-let boulder = document.createElement("img")
-boulder.className= "boulder boulder-" + playerPosition
-boulder.src="./image/boulder.png"
-
-selectedTile.append(boulderShadow)
-selectedTile.append(boulder)
-setTimeout(() => {
-  if(selectedPosition === playerPosition) {
-return loseGame(enemyIndex)
-  }
-  // document.querySelector(".boulder-" + playerPosition ).remove()
-}, 1000);
+  selectedTile.append(boulderShadow);
+  selectedTile.append(boulder);
+  setTimeout(() => {
+    if (selectedPosition === playerPosition) {
+      return loseGame(enemyIndex);
+    }
+  }, 1000);
 }
 
-
-
 function startGame() {
+  const currentRound = round;
+
   gameStarted = true;
   startBtn.style.display = "none";
+  let boulderTimer = setInterval(() => {
+    // if (gameOver || (currentRound !== round)) {
+    if (gameOver) {
+      clearInterval(boulderTimer);
+      return;
+    }
+    if (gameStarted && !gameOver) {
+      dropBoulder(-1);
+    }
+  }, 3000);
 
-
-  
   let secondsTimer = setInterval(() => {
     if (gameOver) {
       clearInterval(secondsTimer);
@@ -84,26 +80,21 @@ function startGame() {
 
   let exitTile = document.getElementById("exitTile");
   exitTile.classList.add("exitDoor");
-
-
-
-
-
 }
 
 function restartGame() {
   playerPosition = startingPosition;
   gameStarted = true;
 
-  boulderTimer = setInterval(() => {
-    if (gameOver){
-      clearInterval(boulderTimer)
+  let boulderTimer = setInterval(() => {
+    if (gameOver) {
+      clearInterval(boulderTimer);
+      return;
     }
-    if(gameStarted && !gameOver) {
-      dropBoulder(-1)
+    if (gameStarted && !gameOver) {
+      dropBoulder(-1);
     }
   }, 3000);
-
 
   seconds = 0;
   let secondsTimer = setInterval(() => {
@@ -113,7 +104,7 @@ function restartGame() {
     }
     seconds++;
   }, 1000);
-  
+
   let scoreDiv = document.getElementById("results");
   scoreDiv.style.display = "none";
   attackingEnemyIndex = null;
@@ -129,17 +120,17 @@ function calculateScore() {
 
   let timeScore = Math.round((1 / seconds) * 10000);
 
-  let finalScore = baseScore + timeScore
+  let finalScore = baseScore + timeScore;
 
-  if(finalScore > highScore) {
-    highScore = finalScore
-    localStorage.setItem("highscore", finalScore)
+  if (finalScore > highScore) {
+    highScore = finalScore;
+    localStorage.setItem("highscore", finalScore);
   }
   let scoreDiv = document.getElementById("results");
   scoreDiv.style.display = "flex";
   scoreDiv.style.fontFamily = "Arial";
   scoreDiv.innerHTML = `
-  <h2>${typeof attackingEnemyIndex === "number" ? "You lose": "You win"} </h2>
+  <h2>${typeof attackingEnemyIndex === "number" ? "You lose" : "You win"} </h2>
   <p>High Score: ${highScore}</p>
   <p>Score: ${finalScore}</p>
   <p>Time: ${seconds} seconds</p>
@@ -181,7 +172,7 @@ function endRound() {
   }
   mainEl.innerHTML = "";
   enemyPositions = [];
-  boulderPositions = []
+  boulderPositions = [];
   round++;
   createTiles();
   placePlayer1();
@@ -316,8 +307,7 @@ function placeEnemy(index) {
 
 function fireEnemyBeam(enemyImg, enemyIndex) {
   const currentRound = round;
- let enemyBeamTimer = setTimeout(() => {
-
+  let enemyBeamTimer = setTimeout(() => {
     let possibleDirections = [];
     let enemyPosition = enemyImg.classList[1];
 
@@ -390,7 +380,7 @@ function fireEnemyBeam(enemyImg, enemyIndex) {
 
         setTimeout(() => {
           damageTile.style.backgroundColor = originalColor; // Revert back to original color
-          
+
           if (affectedTiles[j] === playerPosition) {
             loseGame(enemyIndex);
           }
@@ -400,7 +390,6 @@ function fireEnemyBeam(enemyImg, enemyIndex) {
   }, 1000); // Initial delay of 1000ms before executing the code
 }
 function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
-
   const currentRound = round;
   let enemyTimer = setTimeout(() => {
     if (currentRound !== round) {
@@ -587,7 +576,10 @@ function moveUp() {
   let column = catPosition.split("-")[1].substring(1);
   if (row > 1) {
     let newPosition = "r" + (parseInt(row) - 1) + "-c" + column;
-    if (enemyPositions.includes(newPosition) || boulderPositions.includes(newPosition)) {
+    if (
+      enemyPositions.includes(newPosition) ||
+      boulderPositions.includes(newPosition)
+    ) {
       return;
     }
     catImg.classList.add("moveUp");
@@ -610,7 +602,10 @@ function moveDown() {
   let column = catPosition.split("-")[1].substring(1);
   if (row < 6) {
     let newPosition = "r" + (parseInt(row) + 1) + "-c" + column;
-    if (enemyPositions.includes(newPosition)|| boulderPositions.includes(newPosition)) {
+    if (
+      enemyPositions.includes(newPosition) ||
+      boulderPositions.includes(newPosition)
+    ) {
       return;
     }
     catImg.classList.add("moveDown");
@@ -632,7 +627,10 @@ function moveLeft() {
   let column = catPosition.split("-")[1].substring(1);
   if (column > 1) {
     let newPosition = "r" + row + "-c" + (parseInt(column) - 1);
-    if (enemyPositions.includes(newPosition) || boulderPositions.includes(newPosition)) {
+    if (
+      enemyPositions.includes(newPosition) ||
+      boulderPositions.includes(newPosition)
+    ) {
       return;
     }
     catImg.classList.add("moveLeft");
@@ -655,7 +653,10 @@ function moveRight() {
   let column = catPosition.split("-")[1].substring(1);
   if (column < 12) {
     let newPosition = "r" + row + "-c" + (parseInt(column) + 1);
-    if (enemyPositions.includes(newPosition) || boulderPositions.includes(newPosition)) {
+    if (
+      enemyPositions.includes(newPosition) ||
+      boulderPositions.includes(newPosition)
+    ) {
       return;
     }
     catImg.classList.add("moveRight");
