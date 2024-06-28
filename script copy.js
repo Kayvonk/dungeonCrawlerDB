@@ -285,7 +285,7 @@ function fireEnemyBeam(enemyImg, enemyIndex) {
       let startRow = parseInt(enemyPosition.charAt(1));
       let endRow = parseInt(playerPosition.charAt(1));
       let column = parseInt(enemyPosition.substring(4));
-      for (let i = startRow; i >= endRow; i--) {
+      for (let i = startRow; i <= endRow; i++) {
         affectedTiles.push("r" + i + "-c" + column);
       }
     } else if (directionSelected === "fireLeft") {
