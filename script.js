@@ -88,7 +88,7 @@ function restartGame() {
   gameStarted = true;
 
   clearInterval(boulderTimer);
-  
+
   boulderTimer = setInterval(() => {
     if (gameOver) {
       clearInterval(boulderTimer);
@@ -121,14 +121,13 @@ function restartGame() {
 function calculateScore() {
   let baseScore = (round + 1) * 1000;
 
-  let timeScore = Math.round((1 / seconds) * 10000);
+  let timeScore = Math.round((1 / seconds) * 10000) + 100;
 
   let finalScore = baseScore + timeScore;
   if (isFinite(finalScore) && finalScore > highScore) {
     highScore = finalScore;
     localStorage.setItem("highscore", finalScore);
   }
-
 
   let scoreDiv = document.getElementById("results");
   scoreDiv.style.display = "flex";
