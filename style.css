@@ -272,13 +272,13 @@ footer {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  background-color: red;
 }
 
 .laserBeamVertical {
   width: 3vw;
   height: 10vh;
   animation: growAndShrinkVertical 2s forwards;
+  background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
 .laserBeamVerticalRounded {
@@ -286,6 +286,7 @@ footer {
   height: 10vh;
   border-radius: 50%;
   animation: growAndShrinkVertical 2s forwards;
+  background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
 .laserBeamVerticalStartFireUp {
@@ -293,8 +294,8 @@ footer {
   height: 10vh;
   border-bottom-left-radius: 50%;
   border-bottom-right-radius: 50%;
-
   animation: growAndShrinkVertical 2s forwards;
+  background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
 .laserBeamVerticalEndFireUp {
@@ -303,6 +304,7 @@ footer {
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
   animation: growAndShrinkVertical 2s forwards;
+  background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
 .laserBeamVerticalStartFireDown {
@@ -311,6 +313,7 @@ footer {
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
   animation: growAndShrinkVertical 2s forwards;
+  background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
 .laserBeamVerticalEndFireDown {
@@ -319,12 +322,14 @@ footer {
   border-bottom-left-radius: 50%;
   border-bottom-right-radius: 50%;
   animation: growAndShrinkVertical 2s forwards;
+  background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
 .laserBeamHorizontal {
   width: 5vw;
   height: 3vh;
   animation: growAndShrinkHorizontal 2s forwards;
+  background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
 .laserBeamHorizontalRounded {
@@ -332,6 +337,7 @@ footer {
   height: 3vh;
   border-radius: 50%;
   animation: growAndShrinkHorizontal 2s forwards;
+  background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
 .laserBeamHorizontalStartFireLeft {
@@ -340,6 +346,7 @@ footer {
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
   animation: growAndShrinkHorizontal 2s forwards;
+  background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
 .laserBeamHorizontalEndFireLeft {
@@ -348,6 +355,7 @@ footer {
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%;
   animation: growAndShrinkHorizontal 2s forwards;
+  background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
 .laserBeamHorizontalStartFireRight {
@@ -356,6 +364,7 @@ footer {
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%;
   animation: growAndShrinkHorizontal 2s forwards;
+  background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
 .laserBeamHorizontalEndFireRight {
@@ -364,6 +373,7 @@ footer {
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
   animation: growAndShrinkHorizontal 2s forwards;
+  background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
 @keyframes growAndShrinkVertical {

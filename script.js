@@ -454,7 +454,6 @@ function fireEnemyBeam(enemyImg, enemyIndex) {
 function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
   const currentRound = round;
   let isAttacking = Math.random() < 0.2;
-  let additionalTime = isAttacking ? 2000 : 0;
   let enemyTimer = setTimeout(() => {
     if (currentRound !== round) {
       clearTimeout(enemyTimer);
@@ -483,10 +482,8 @@ function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
     if (gameOver) {
       return;
     }
-    setTimeout(() => {
       startEnemyMovement(enemyClass, enemyImgPath, enemyIndex);
-    }, additionalTime);
-  }, 1000 / ((round + 1) * 0.5));
+    }, 1000 / ((round + 1) * 0.2));
 }
 
 window.addEventListener("keydown", checkKeyPressed);
