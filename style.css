@@ -277,7 +277,7 @@ footer {
 .laserBeamVertical {
   width: 3vw;
   height: 10vh;
-  animation: growAndShrinkVertical 2s forwards;
+  animation: growAndShrinkVertical 1s forwards;
   background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
@@ -285,7 +285,7 @@ footer {
   width: 3vw;
   height: 10vh;
   border-radius: 50%;
-  animation: growAndShrinkVertical 2s forwards;
+  animation: growAndShrinkVertical 1s forwards;
   background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
@@ -294,7 +294,7 @@ footer {
   height: 10vh;
   border-bottom-left-radius: 50%;
   border-bottom-right-radius: 50%;
-  animation: growAndShrinkVertical 2s forwards;
+  animation: growAndShrinkVertical 1s forwards;
   background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
@@ -303,7 +303,7 @@ footer {
   height: 10vh;
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
-  animation: growAndShrinkVertical 2s forwards;
+  animation: growAndShrinkVertical 1s forwards;
   background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
@@ -312,7 +312,7 @@ footer {
   height: 10vh;
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
-  animation: growAndShrinkVertical 2s forwards;
+  animation: growAndShrinkVertical 1s forwards;
   background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
@@ -321,14 +321,14 @@ footer {
   height: 10vh;
   border-bottom-left-radius: 50%;
   border-bottom-right-radius: 50%;
-  animation: growAndShrinkVertical 2s forwards;
+  animation: growAndShrinkVertical 1s forwards;
   background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
 .laserBeamHorizontal {
   width: 5vw;
   height: 3vh;
-  animation: growAndShrinkHorizontal 2s forwards;
+  animation: growAndShrinkHorizontal 1s forwards;
   background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
@@ -336,7 +336,7 @@ footer {
   width: 5vw;
   height: 3vh;
   border-radius: 50%;
-  animation: growAndShrinkHorizontal 2s forwards;
+  animation: growAndShrinkHorizontal 1s forwards;
   background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
@@ -345,7 +345,7 @@ footer {
   height: 3vh;
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
-  animation: growAndShrinkHorizontal 2s forwards;
+  animation: growAndShrinkHorizontal 1s forwards;
   background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
@@ -354,7 +354,7 @@ footer {
   height: 3vh;
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%;
-  animation: growAndShrinkHorizontal 2s forwards;
+  animation: growAndShrinkHorizontal 1s forwards;
   background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
@@ -363,7 +363,7 @@ footer {
   height: 3vh;
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%;
-  animation: growAndShrinkHorizontal 2s forwards;
+  animation: growAndShrinkHorizontal 1s forwards;
   background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 
@@ -372,7 +372,7 @@ footer {
   height: 3vh;
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
-  animation: growAndShrinkHorizontal 2s forwards;
+  animation: growAndShrinkHorizontal 1s forwards;
   background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
 }
 

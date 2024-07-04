@@ -454,42 +454,83 @@ function fireEnemyBeam(enemyImg, enemyIndex) {
 function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
   const currentRound = round;
   let isAttacking = Math.random() < 0.2;
-  let enemyImg = document.querySelector(enemyClass);
-
-  if (isAttacking) {
-    enemyImg.src = "./image/dogeRedEyes.png";
-    fireEnemyBeam(enemyImg, enemyIndex);
-
-    setTimeout(() => {
-      if (currentRound === round && !gameOver) {
-        startEnemyMovement(enemyClass, enemyImgPath, enemyIndex);
+  let enemyTimer = setTimeout(() => {
+    if (currentRound !== round) {
+      clearTimeout(enemyTimer);
+      return;
+    }
+    let enemyImg = document.querySelector(enemyClass);
+    if (isAttacking) {
+      enemyImg.src = "./image/dogeRedEyes.png";
+      fireEnemyBeam(enemyImg, enemyIndex);
+    } else {
+      let directions = ["up", "down", "left", "right"];
+      let directionSelected = directions[Math.floor(Math.random() * 4)];
+      if (gameOver) {
+        return;
       }
-    }, 3000); // Pause for 3000ms (3 seconds) after the attack
-  } else {
-    let directions = ["up", "down", "left", "right"];
-    let directionSelected = directions[Math.floor(Math.random() * 4)];
-
+      if (directionSelected === "up") {
+        enemyMoveUp(enemyClass, enemyImgPath, enemyIndex);
+      } else if (directionSelected === "down") {
+        enemyMoveDown(enemyClass, enemyImgPath, enemyIndex);
+      } else if (directionSelected === "left") {
+        enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex);
+      } else if (directionSelected === "right") {
+        enemyMoveRight(enemyClass, enemyImgPath, enemyIndex);
+      }
+    }
     if (gameOver) {
       return;
     }
-
-    if (directionSelected === "up") {
-      enemyMoveUp(enemyClass, enemyImgPath, enemyIndex);
-    } else if (directionSelected === "down") {
-      enemyMoveDown(enemyClass, enemyImgPath, enemyIndex);
-    } else if (directionSelected === "left") {
-      enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex);
-    } else if (directionSelected === "right") {
-      enemyMoveRight(enemyClass, enemyImgPath, enemyIndex);
-    }
-
-    setTimeout(() => {
-      if (currentRound === round && !gameOver) {
-        startEnemyMovement(enemyClass, enemyImgPath, enemyIndex);
-      }
-    }, 1000 / ((round + 1) * 0.2));
-  }
+    startEnemyMovement(enemyClass, enemyImgPath, enemyIndex);
+  }, 1000 / ((round + 1) * 0.25));
 }
+
+// function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
+//   const currentRound = round;
+//   let isAttacking = Math.random() < 0.2;
+//   let enemyImg = document.querySelector(enemyClass);
+
+//   if (isAttacking) {
+//     enemyImg.src = "./image/dogeRedEyes.png";
+//     fireEnemyBeam(enemyImg, enemyIndex);
+
+//     let enemyAttackTimer = setTimeout(() => {
+//       if (currentRound === round) {
+//         startEnemyMovement(enemyClass, enemyImgPath, enemyIndex);
+//       }
+//       else {
+//         clearTimeout(enemyAttackTimer);
+//       }
+//     }, 3000); // Pause for 3000ms (3 seconds) after the attack
+//   } else {
+//     let directions = ["up", "down", "left", "right"];
+//     let directionSelected = directions[Math.floor(Math.random() * 4)];
+
+//     if (gameOver) {
+//       return;
+//     }
+
+//     if (directionSelected === "up") {
+//       enemyMoveUp(enemyClass, enemyImgPath, enemyIndex);
+//     } else if (directionSelected === "down") {
+//       enemyMoveDown(enemyClass, enemyImgPath, enemyIndex);
+//     } else if (directionSelected === "left") {
+//       enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex);
+//     } else if (directionSelected === "right") {
+//       enemyMoveRight(enemyClass, enemyImgPath, enemyIndex);
+//     }
+
+//     let enemyMovementTimer = setTimeout(() => {
+//       if (currentRound === round) {
+//         startEnemyMovement(enemyClass, enemyImgPath, enemyIndex);
+//       }
+//       else {
+//         clearTimeout(enemyMovementTimer);
+//       }
+//     }, 1000 / ((round + 1) * 0.2));
+//   }
+// }
 
 window.addEventListener("keydown", checkKeyPressed);
 
