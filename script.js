@@ -22,7 +22,7 @@ console.log(highScore);
 let boulderTimer;
 let secondsTimer;
 
-let buffDogeIndexes = [4, 8]
+let buffDogeIndexes = [4, 8];
 
 function limitMovement() {
   canMove = false;
@@ -57,16 +57,6 @@ function startGame() {
 
   gameStarted = true;
   startBtn.style.display = "none";
-  // boulderTimer = setInterval(() => {
-  //   if (gameOver) {
-  //     clearInterval(boulderTimer);
-  //     return;
-  //   }
-  //   if (gameStarted && !gameOver) {
-  //     dropBoulder(-1);
-  //   }
-  // }, 3000);
-
   secondsTimer = setInterval(() => {
     if (gameOver) {
       clearInterval(secondsTimer);
@@ -95,16 +85,6 @@ function restartGame() {
 
   clearInterval(boulderTimer);
   clearInterval(secondsTimer);
-
-  // boulderTimer = setInterval(() => {
-  //   if (gameOver) {
-  //     clearInterval(boulderTimer);
-  //     return;
-  //   }
-  //   if (gameStarted && !gameOver) {
-  //     dropBoulder(-1);
-  //   }
-  // }, 3000);
 
   seconds = 0;
   secondsTimer = setInterval(() => {
@@ -312,16 +292,14 @@ function placeEnemy(index) {
   let dogImg = document.createElement("img");
   dogImg.className = "dogImg" + index + " " + enemyPositions[index];
 
-
-  if(buffDogeIndexes.includes(index)){
+  if (buffDogeIndexes.includes(index)) {
     dogImg.src = "./image/buffdoge.png";
     startingTile.append(dogImg);
     startEnemyMovement(".dogImg" + index, "./image/buffdoge.png", index);
-  }else {
+  } else {
     dogImg.src = "./image/doge.png";
     startingTile.append(dogImg);
     startEnemyMovement(".dogImg" + index, "./image/doge.png", index);
-
   }
 }
 
@@ -464,8 +442,14 @@ function fireEnemyBeam(enemyImg, enemyIndex) {
 }
 
 function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
+  let enemyDelay =
+    1000 / ((round + 1) * 0.25) > 1000
+      ? 1000
+      : 1000 / ((round + 1) * 0.25) < 750
+      ? 750
+      : 1000 / ((round + 1) * 0.25);
   const currentRound = round;
-  let isBuffDoge = buffDogeIndexes.includes(enemyIndex)
+  let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
   let isAttacking = Math.random() < 0.2;
   let enemyTimer = setTimeout(() => {
     if (currentRound !== round) {
@@ -474,8 +458,12 @@ function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
     }
     let enemyImg = document.querySelector(enemyClass);
     if (isAttacking) {
-      enemyImg.src = isBuffDoge? "./image/buffdogeAura.png" :"./image/dogeRedEyes.png";
-      isBuffDoge? dropBoulder(enemyIndex): fireEnemyBeam(enemyImg, enemyIndex);
+      enemyImg.src = isBuffDoge
+        ? "./image/buffdogeAura.png"
+        : "./image/dogeRedEyes.png";
+      isBuffDoge
+        ? dropBoulder(enemyIndex)
+        : fireEnemyBeam(enemyImg, enemyIndex);
     } else {
       let directions = ["up", "down", "left", "right"];
       let directionSelected = directions[Math.floor(Math.random() * 4)];
@@ -496,7 +484,7 @@ function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
       return;
     }
     startEnemyMovement(enemyClass, enemyImgPath, enemyIndex);
-  }, 1000 / ((round + 1) * 0.25));
+  }, enemyDelay);
 }
 
 // function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
@@ -584,7 +572,7 @@ function checkKeyPressed(evt) {
 }
 
 function enemyMoveUp(enemyClass, enemyImgPath, enemyIndex) {
-  let isBuffDoge = buffDogeIndexes.includes(enemyIndex)
+  let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
   let enemyImg = document.querySelector(enemyClass);
   let enemyPosition = enemyImg.classList[1];
   let row = enemyPosition.split("-")[0].substring(1);
@@ -600,10 +588,10 @@ function enemyMoveUp(enemyClass, enemyImgPath, enemyIndex) {
     newEnemyImg.className = enemyClass.substring(1) + " " + newPosition;
     newEnemyImg.src =
       attackingEnemyIndex === enemyIndex && isBuffDoge
-        ? "./image/buffdogeAttack.png" : 
-        attackingEnemyIndex === enemyIndex && !isBuffDoge
-        ? "./image/dogeAttack.png" : 
-        enemyImgPath;
+        ? "./image/buffdogeAttack.png"
+        : attackingEnemyIndex === enemyIndex && !isBuffDoge
+        ? "./image/dogeAttack.png"
+        : enemyImgPath;
     let nextTile = document.querySelector("." + newPosition);
     setTimeout(() => {
       enemyImg.remove();
@@ -613,7 +601,7 @@ function enemyMoveUp(enemyClass, enemyImgPath, enemyIndex) {
 }
 
 function enemyMoveDown(enemyClass, enemyImgPath, enemyIndex) {
-  let isBuffDoge = buffDogeIndexes.includes(enemyIndex)
+  let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
   let enemyImg = document.querySelector(enemyClass);
   let enemyPosition = enemyImg.classList[1];
   let row = enemyPosition.split("-")[0].substring(1);
@@ -630,10 +618,10 @@ function enemyMoveDown(enemyClass, enemyImgPath, enemyIndex) {
     newEnemyImg.className = enemyClass.substring(1) + " " + newPosition;
     newEnemyImg.src =
       attackingEnemyIndex === enemyIndex && isBuffDoge
-        ? "./image/buffdogeAttack.png" : 
-        attackingEnemyIndex === enemyIndex && !isBuffDoge
-        ? "./image/dogeAttack.png" : 
-        enemyImgPath;
+        ? "./image/buffdogeAttack.png"
+        : attackingEnemyIndex === enemyIndex && !isBuffDoge
+        ? "./image/dogeAttack.png"
+        : enemyImgPath;
     let nextTile = document.querySelector("." + newPosition);
     setTimeout(() => {
       enemyImg.remove();
@@ -643,7 +631,7 @@ function enemyMoveDown(enemyClass, enemyImgPath, enemyIndex) {
 }
 
 function enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex) {
-  let isBuffDoge = buffDogeIndexes.includes(enemyIndex)
+  let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
   let enemyImg = document.querySelector(enemyClass);
   let enemyPosition = enemyImg.classList[1];
   let row = enemyPosition.split("-")[0].substring(1);
@@ -659,11 +647,11 @@ function enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex) {
     let newEnemyImg = document.createElement("img");
     newEnemyImg.className = enemyClass.substring(1) + " " + newPosition;
     newEnemyImg.src =
-    attackingEnemyIndex === enemyIndex && isBuffDoge
-      ? "./image/buffdogeAttack.png" : 
-      attackingEnemyIndex === enemyIndex && !isBuffDoge
-      ? "./image/dogeAttack.png" : 
-      enemyImgPath;
+      attackingEnemyIndex === enemyIndex && isBuffDoge
+        ? "./image/buffdogeAttack.png"
+        : attackingEnemyIndex === enemyIndex && !isBuffDoge
+        ? "./image/dogeAttack.png"
+        : enemyImgPath;
     let nextTile = document.querySelector("." + newPosition);
     setTimeout(() => {
       enemyImg.remove();
@@ -673,7 +661,7 @@ function enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex) {
 }
 
 function enemyMoveRight(enemyClass, enemyImgPath, enemyIndex) {
-  let isBuffDoge = buffDogeIndexes.includes(enemyIndex)
+  let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
   let enemyImg = document.querySelector(enemyClass);
   let enemyPosition = enemyImg.classList[1];
   let row = enemyPosition.split("-")[0].substring(1);
@@ -689,11 +677,11 @@ function enemyMoveRight(enemyClass, enemyImgPath, enemyIndex) {
     let newEnemyImg = document.createElement("img");
     newEnemyImg.className = enemyClass.substring(1) + " " + newPosition;
     newEnemyImg.src =
-    attackingEnemyIndex === enemyIndex && isBuffDoge
-      ? "./image/buffdogeAttack.png" : 
-      attackingEnemyIndex === enemyIndex && !isBuffDoge
-      ? "./image/dogeAttack.png" : 
-      enemyImgPath;
+      attackingEnemyIndex === enemyIndex && isBuffDoge
+        ? "./image/buffdogeAttack.png"
+        : attackingEnemyIndex === enemyIndex && !isBuffDoge
+        ? "./image/dogeAttack.png"
+        : enemyImgPath;
     let nextTile = document.querySelector("." + newPosition);
     setTimeout(() => {
       enemyImg.remove();
