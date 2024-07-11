@@ -27,7 +27,7 @@ let isOutdoor2 = false;
 let swordPosition = "r3-c6";
 let swordAcquired = false;
 let boulderDestroyed = false;
-let lives = 1;
+let lives = 9;
 let slayedEnemies = []
 startBtn.addEventListener("click", startPrologue);
 
@@ -894,13 +894,11 @@ function swingSword() {
       let enemyClass = element.classList[0]
       let enemyIndex = enemyClass.split("-")[1]
       slayedEnemies.push(enemyClass)
-      enemyPositions.splice(enemyIndex, 1)
-
-      // element.classList.add("animateDeath")
+      enemyPositions = enemyPositions.filter(position => position !== affectedTile)
         element.remove()
         let dogImg = document.createElement("img");
         dogImg.className =
-        enemyClass + " animateDeath";
+        enemyClass.split("-")[0] + " animateDeath";
       console.log(buffDogeIndexes);
       console.log("enemyIndex", enemyIndex);
         if (buffDogeIndexes.includes(parseInt(enemyIndex))) {
@@ -915,6 +913,153 @@ function swingSword() {
         });
         
     })
+  }
+}
+
+function moveUp() {
+  let catImg = document.querySelector(".catImg");
+  let catPosition = catImg.classList[1];
+  let row = catPosition.split("-")[0].substring(1);
+  let column = catPosition.split("-")[1].substring(1);
+  if (row > 1) {
+    let newPosition = "r" + (parseInt(row) - 1) + "-c" + column;
+    if (
+      enemyPositions.includes(newPosition) ||
+      boulderPositions.includes(newPosition) ||
+      treePositions.includes(newPosition)
+    ) {
+      return;
+    }
+    catImg.classList.add("moveUp");
+    playerPosition = newPosition;
+    let newCatImg = document.createElement("img");
+    newCatImg.className = "catImg " + newPosition;
+    if (isCave && playerPosition === swordPosition) {
+      // picks up sword
+      swordAcquired = true;
+      let swordTop = document.querySelector(".swordTop");
+      swordTop.style.display = "none";
+      newCatImg.src = "./image/swordCat.png";
+    } else if (swordAcquired) {
+      newCatImg.src = "./image/swordCat.png";
+    } else {
+      newCatImg.src = "./image/cat.png";
+    }
+    let nextTile = document.querySelector("." + newPosition);
+    setTimeout(() => {
+      catImg.remove();
+      nextTile.append(newCatImg);
+    }, 100);
+  }
+}
+
+function moveDown() {
+  let catImg = document.querySelector(".catImg");
+  let catPosition = catImg.classList[1];
+  let row = catPosition.split("-")[0].substring(1);
+  let column = catPosition.split("-")[1].substring(1);
+  if (row < 6) {
+    let newPosition = "r" + (parseInt(row) + 1) + "-c" + column;
+    if (
+      enemyPositions.includes(newPosition) ||
+      boulderPositions.includes(newPosition) ||
+      treePositions.includes(newPosition)
+    ) {
+      return;
+    }
+    catImg.classList.add("moveDown");
+    playerPosition = newPosition;
+    let newCatImg = document.createElement("img");
+    newCatImg.className = "catImg " + newPosition;
+    if (isCave && playerPosition === swordPosition) {
+      // picks up sword
+      swordAcquired = true;
+      let swordTop = document.querySelector(".swordTop");
+      swordTop.style.display = "none";
+      newCatImg.src = "./image/swordCat.png";
+    } else if (swordAcquired) {
+      newCatImg.src = "./image/swordCat.png";
+    } else {
+      newCatImg.src = "./image/cat.png";
+    }
+    let nextTile = document.querySelector("." + newPosition);
+    setTimeout(() => {
+      catImg.remove();
+      nextTile.append(newCatImg);
+    }, 100);
+  }
+}
+function moveLeft() {
+  let catImg = document.querySelector(".catImg");
+  let catPosition = catImg.classList[1];
+  let row = catPosition.split("-")[0].substring(1);
+  let column = catPosition.split("-")[1].substring(1);
+  if (column > 1) {
+    let newPosition = "r" + row + "-c" + (parseInt(column) - 1);
+    if (
+      enemyPositions.includes(newPosition) ||
+      boulderPositions.includes(newPosition) ||
+      treePositions.includes(newPosition)
+    ) {
+      return;
+    }
+    catImg.classList.add("moveLeft");
+    playerPosition = newPosition;
+    let newCatImg = document.createElement("img");
+    newCatImg.className = "catImg " + newPosition;
+    if (isCave && playerPosition === swordPosition) {
+      // picks up sword
+      swordAcquired = true;
+      let swordTop = document.querySelector(".swordTop");
+      swordTop.style.display = "none";
+      newCatImg.src = "./image/swordCat.png";
+    } else if (swordAcquired) {
+      newCatImg.src = "./image/swordCat.png";
+    } else {
+      newCatImg.src = "./image/cat.png";
+    }
+    let nextTile = document.querySelector("." + newPosition);
+    setTimeout(() => {
+      catImg.remove();
+      nextTile.append(newCatImg);
+    }, 100);
+  }
+}
+
+function moveRight() {
+  let catImg = document.querySelector(".catImg");
+  let catPosition = catImg.classList[1];
+  let row = catPosition.split("-")[0].substring(1);
+  let column = catPosition.split("-")[1].substring(1);
+  if (column < 12) {
+    let newPosition = "r" + row + "-c" + (parseInt(column) + 1);
+    if (
+      enemyPositions.includes(newPosition) ||
+      boulderPositions.includes(newPosition) ||
+      treePositions.includes(newPosition)
+    ) {
+      return;
+    }
+    catImg.classList.add("moveRight");
+    playerPosition = newPosition;
+    let newCatImg = document.createElement("img");
+    newCatImg.className = "catImg " + newPosition;
+    if (isCave && playerPosition === swordPosition) {
+      // picks up sword
+      swordAcquired = true;
+      let swordTop = document.querySelector(".swordTop");
+      swordTop.style.display = "none";
+      newCatImg.src = "./image/swordCat.png";
+    } else if (swordAcquired) {
+      newCatImg.src = "./image/swordCat.png";
+    } else {
+      newCatImg.src = "./image/cat.png";
+    }
+    let nextTile = document.querySelector("." + newPosition);
+    setTimeout(() => {
+      catImg.remove();
+      nextTile.append(newCatImg);
+    }, 100);
   }
 }
 
@@ -1128,6 +1273,165 @@ function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex, enemyType) {
   }, enemyDelay);
 }
 
+function enemyMoveUp(enemyClass, enemyImgPath, enemyIndex, enemyType) {
+  if(slayedEnemies.includes(enemyClass)){
+    return
+  }
+  let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
+  let enemyImg = document.querySelector(enemyClass);
+  let enemyPosition;
+  if(enemyImg){
+   enemyPosition = enemyImg.classList[1];
+  }
+  else {
+    return
+  }
+  let row = enemyPosition?.split("-")[0]?.substring(1);
+  let column = enemyPosition?.split("-")[1]?.substring(1);
+  if (row > 1) {
+    let newPosition = "r" + (parseInt(row) - 1) + "-c" + column;
+    enemyPositions[enemyIndex] = newPosition;
+    if (playerPosition === newPosition) {
+      loseGame(enemyIndex);
+    }
+    enemyImg.classList.add("moveUp");
+    let newEnemyImg = document.createElement("img");
+    newEnemyImg.className =
+      enemyClass.substring(1) + " " + newPosition + " " + enemyType;
+    newEnemyImg.src =
+      attackingEnemyIndex === enemyIndex && isBuffDoge
+        ? "./image/buffdogeAttack.png"
+        : attackingEnemyIndex === enemyIndex && !isBuffDoge
+        ? "./image/dogeAttack.png"
+        : enemyImgPath;
+    let nextTile = document.querySelector("." + newPosition);
+    setTimeout(() => {
+      enemyImg.remove();
+      nextTile.append(newEnemyImg);
+    }, 100);
+  }
+}
+
+function enemyMoveDown(enemyClass, enemyImgPath, enemyIndex, enemyType) {
+  if(slayedEnemies.includes(enemyClass)){
+    return
+  }
+  let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
+  let enemyImg = document.querySelector(enemyClass);
+  let enemyPosition;
+  if(enemyImg){
+   enemyPosition = enemyImg.classList[1];
+  }
+  else {
+    return
+  }
+  let row = enemyPosition?.split("-")[0]?.substring(1);
+  let column = enemyPosition?.split("-")[1]?.substring(1);
+  if (row < 6) {
+    let newPosition = "r" + (parseInt(row) + 1) + "-c" + column;
+    enemyPositions[enemyIndex] = newPosition;
+    if (playerPosition === newPosition) {
+      loseGame(enemyIndex);
+    }
+    enemyImg.classList.add("moveDown");
+
+    let newEnemyImg = document.createElement("img");
+    newEnemyImg.className =
+      enemyClass.substring(1) + " " + newPosition + " " + enemyType;
+    newEnemyImg.src =
+      attackingEnemyIndex === enemyIndex && isBuffDoge
+        ? "./image/buffdogeAttack.png"
+        : attackingEnemyIndex === enemyIndex && !isBuffDoge
+        ? "./image/dogeAttack.png"
+        : enemyImgPath;
+    let nextTile = document.querySelector("." + newPosition);
+    setTimeout(() => {
+      enemyImg.remove();
+      nextTile.append(newEnemyImg);
+    }, 100);
+  }
+}
+
+function enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex, enemyType) {
+  if(slayedEnemies.includes(enemyClass)){
+    return
+  }
+  let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
+  let enemyImg = document.querySelector(enemyClass);
+  let enemyPosition;
+  if(enemyImg){
+   enemyPosition = enemyImg.classList[1];
+  }
+  else {
+    return
+  }
+  let row = enemyPosition?.split("-")[0]?.substring(1);
+  let column = enemyPosition?.split("-")[1]?.substring(1);
+  if (column > 1) {
+    let newPosition = "r" + row + "-c" + (parseInt(column) - 1);
+    enemyPositions[enemyIndex] = newPosition;
+    if (playerPosition === newPosition) {
+      loseGame(enemyIndex);
+    }
+    enemyImg.classList.add("moveLeft");
+
+    let newEnemyImg = document.createElement("img");
+    newEnemyImg.className =
+      enemyClass.substring(1) + " " + newPosition + " " + enemyType;
+    newEnemyImg.src =
+      attackingEnemyIndex === enemyIndex && isBuffDoge
+        ? "./image/buffdogeAttack.png"
+        : attackingEnemyIndex === enemyIndex && !isBuffDoge
+        ? "./image/dogeAttack.png"
+        : enemyImgPath;
+    let nextTile = document.querySelector("." + newPosition);
+    setTimeout(() => {
+      enemyImg.remove();
+      nextTile.append(newEnemyImg);
+    }, 100);
+  }
+}
+
+function enemyMoveRight(enemyClass, enemyImgPath, enemyIndex, enemyType) {
+  if(slayedEnemies.includes(enemyClass)){
+    return
+  }
+  let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
+  let enemyImg = document.querySelector(enemyClass);
+  let enemyPosition;
+  if(enemyImg){
+   enemyPosition = enemyImg.classList[1];
+  }
+  else {
+    return
+  }
+  let row = enemyPosition?.split("-")[0]?.substring(1);
+  let column = enemyPosition?.split("-")[1]?.substring(1);
+  if (column < 12) {
+    let newPosition = "r" + row + "-c" + (parseInt(column) + 1);
+    enemyPositions[enemyIndex] = newPosition;
+    if (playerPosition === newPosition) {
+      loseGame(enemyIndex);
+    }
+    enemyImg.classList.add("moveRight");
+
+    let newEnemyImg = document.createElement("img");
+    newEnemyImg.className =
+      enemyClass.substring(1) + " " + newPosition + " " + enemyType;
+    newEnemyImg.src =
+      attackingEnemyIndex === enemyIndex && isBuffDoge
+        ? "./image/buffdogeAttack.png"
+        : attackingEnemyIndex === enemyIndex && !isBuffDoge
+        ? "./image/dogeAttack.png"
+        : enemyImgPath;
+    let nextTile = document.querySelector("." + newPosition);
+    setTimeout(() => {
+      enemyImg.remove();
+      nextTile.append(newEnemyImg);
+    }, 100);
+  }
+}
+
 // ----------------end enemy logic----------------
 
 // function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
@@ -1236,325 +1540,19 @@ function checkKeyPressed(evt) {
   }
 }
 
-function enemyMoveUp(enemyClass, enemyImgPath, enemyIndex, enemyType) {
-  if(slayedEnemies.includes(enemyClass)){
-    return
-  }
-  let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
-  let enemyImg = document.querySelector(enemyClass);
-  let enemyPosition;
-  if(enemyImg){
-   enemyPosition = enemyImg.classList[1];
-  }
-  else {
-    return
-  }
-  let row = enemyPosition.split("-")[0].substring(1);
-  let column = enemyPosition.split("-")[1].substring(1);
-  if (row > 1) {
-    let newPosition = "r" + (parseInt(row) - 1) + "-c" + column;
-    enemyPositions[enemyIndex] = newPosition;
-    if (playerPosition === newPosition) {
-      loseGame(enemyIndex);
-    }
-    enemyImg.classList.add("moveUp");
-    let newEnemyImg = document.createElement("img");
-    newEnemyImg.className =
-      enemyClass.substring(1) + " " + newPosition + " " + enemyType;
-    newEnemyImg.src =
-      attackingEnemyIndex === enemyIndex && isBuffDoge
-        ? "./image/buffdogeAttack.png"
-        : attackingEnemyIndex === enemyIndex && !isBuffDoge
-        ? "./image/dogeAttack.png"
-        : enemyImgPath;
-    let nextTile = document.querySelector("." + newPosition);
-    setTimeout(() => {
-      enemyImg.remove();
-      nextTile.append(newEnemyImg);
-    }, 100);
-  }
-}
+// ----------end key press logic-------------
 
-function enemyMoveDown(enemyClass, enemyImgPath, enemyIndex, enemyType) {
-  if(slayedEnemies.includes(enemyClass)){
-    return
-  }
-  let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
-  let enemyImg = document.querySelector(enemyClass);
-  let enemyPosition;
-  if(enemyImg){
-   enemyPosition = enemyImg.classList[1];
-  }
-  else {
-    return
-  }
-  let row = enemyPosition.split("-")[0].substring(1);
-  let column = enemyPosition.split("-")[1].substring(1);
-  if (row < 6) {
-    let newPosition = "r" + (parseInt(row) + 1) + "-c" + column;
-    enemyPositions[enemyIndex] = newPosition;
-    if (playerPosition === newPosition) {
-      loseGame(enemyIndex);
-    }
-    enemyImg.classList.add("moveDown");
 
-    let newEnemyImg = document.createElement("img");
-    newEnemyImg.className =
-      enemyClass.substring(1) + " " + newPosition + " " + enemyType;
-    newEnemyImg.src =
-      attackingEnemyIndex === enemyIndex && isBuffDoge
-        ? "./image/buffdogeAttack.png"
-        : attackingEnemyIndex === enemyIndex && !isBuffDoge
-        ? "./image/dogeAttack.png"
-        : enemyImgPath;
-    let nextTile = document.querySelector("." + newPosition);
-    setTimeout(() => {
-      enemyImg.remove();
-      nextTile.append(newEnemyImg);
-    }, 100);
-  }
-}
-
-function enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex, enemyType) {
-  if(slayedEnemies.includes(enemyClass)){
-    return
-  }
-  let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
-  let enemyImg = document.querySelector(enemyClass);
-  let enemyPosition;
-  if(enemyImg){
-   enemyPosition = enemyImg.classList[1];
-  }
-  else {
-    return
-  }
-  let row = enemyPosition.split("-")[0].substring(1);
-  let column = enemyPosition.split("-")[1].substring(1);
-  if (column > 1) {
-    let newPosition = "r" + row + "-c" + (parseInt(column) - 1);
-    enemyPositions[enemyIndex] = newPosition;
-    if (playerPosition === newPosition) {
-      loseGame(enemyIndex);
-    }
-    enemyImg.classList.add("moveLeft");
-
-    let newEnemyImg = document.createElement("img");
-    newEnemyImg.className =
-      enemyClass.substring(1) + " " + newPosition + " " + enemyType;
-    newEnemyImg.src =
-      attackingEnemyIndex === enemyIndex && isBuffDoge
-        ? "./image/buffdogeAttack.png"
-        : attackingEnemyIndex === enemyIndex && !isBuffDoge
-        ? "./image/dogeAttack.png"
-        : enemyImgPath;
-    let nextTile = document.querySelector("." + newPosition);
-    setTimeout(() => {
-      enemyImg.remove();
-      nextTile.append(newEnemyImg);
-    }, 100);
-  }
-}
-
-function enemyMoveRight(enemyClass, enemyImgPath, enemyIndex, enemyType) {
-  if(slayedEnemies.includes(enemyClass)){
-    return
-  }
-  let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
-  let enemyImg = document.querySelector(enemyClass);
-  let enemyPosition;
-  if(enemyImg){
-   enemyPosition = enemyImg.classList[1];
-  }
-  else {
-    return
-  }
-  let row = enemyPosition.split("-")[0].substring(1);
-  let column = enemyPosition.split("-")[1].substring(1);
-  if (column < 12) {
-    let newPosition = "r" + row + "-c" + (parseInt(column) + 1);
-    enemyPositions[enemyIndex] = newPosition;
-    if (playerPosition === newPosition) {
-      loseGame(enemyIndex);
-    }
-    enemyImg.classList.add("moveRight");
-
-    let newEnemyImg = document.createElement("img");
-    newEnemyImg.className =
-      enemyClass.substring(1) + " " + newPosition + " " + enemyType;
-    newEnemyImg.src =
-      attackingEnemyIndex === enemyIndex && isBuffDoge
-        ? "./image/buffdogeAttack.png"
-        : attackingEnemyIndex === enemyIndex && !isBuffDoge
-        ? "./image/dogeAttack.png"
-        : enemyImgPath;
-    let nextTile = document.querySelector("." + newPosition);
-    setTimeout(() => {
-      enemyImg.remove();
-      nextTile.append(newEnemyImg);
-    }, 100);
-  }
-}
-
-function moveUp() {
-  let catImg = document.querySelector(".catImg");
-  let catPosition = catImg.classList[1];
-  let row = catPosition.split("-")[0].substring(1);
-  let column = catPosition.split("-")[1].substring(1);
-  if (row > 1) {
-    let newPosition = "r" + (parseInt(row) - 1) + "-c" + column;
-    if (
-      enemyPositions.includes(newPosition) ||
-      boulderPositions.includes(newPosition) ||
-      treePositions.includes(newPosition)
-    ) {
-      return;
-    }
-    catImg.classList.add("moveUp");
-    playerPosition = newPosition;
-    let newCatImg = document.createElement("img");
-    newCatImg.className = "catImg " + newPosition;
-    if (isCave && playerPosition === swordPosition) {
-      // picks up sword
-      swordAcquired = true;
-      let swordTop = document.querySelector(".swordTop");
-      swordTop.style.display = "none";
-      newCatImg.src = "./image/swordCat.png";
-    } else if (swordAcquired) {
-      newCatImg.src = "./image/swordCat.png";
-    } else {
-      newCatImg.src = "./image/cat.png";
-    }
-    let nextTile = document.querySelector("." + newPosition);
-    setTimeout(() => {
-      catImg.remove();
-      nextTile.append(newCatImg);
-    }, 100);
-  }
-  // if (isCave && playerPosition === swordPosition) {
-  // }
-}
-
-function moveDown() {
-  let catImg = document.querySelector(".catImg");
-  let catPosition = catImg.classList[1];
-  let row = catPosition.split("-")[0].substring(1);
-  let column = catPosition.split("-")[1].substring(1);
-  if (row < 6) {
-    let newPosition = "r" + (parseInt(row) + 1) + "-c" + column;
-    if (
-      enemyPositions.includes(newPosition) ||
-      boulderPositions.includes(newPosition) ||
-      treePositions.includes(newPosition)
-    ) {
-      return;
-    }
-    catImg.classList.add("moveDown");
-    playerPosition = newPosition;
-    let newCatImg = document.createElement("img");
-    newCatImg.className = "catImg " + newPosition;
-    if (isCave && playerPosition === swordPosition) {
-      // picks up sword
-      swordAcquired = true;
-      let swordTop = document.querySelector(".swordTop");
-      swordTop.style.display = "none";
-      newCatImg.src = "./image/swordCat.png";
-    } else if (swordAcquired) {
-      newCatImg.src = "./image/swordCat.png";
-    } else {
-      newCatImg.src = "./image/cat.png";
-    }
-    let nextTile = document.querySelector("." + newPosition);
-    setTimeout(() => {
-      catImg.remove();
-      nextTile.append(newCatImg);
-    }, 100);
-  }
-  // if (isCave && playerPosition === swordPosition) {
-  // }
-}
-function moveLeft() {
-  let catImg = document.querySelector(".catImg");
-  let catPosition = catImg.classList[1];
-  let row = catPosition.split("-")[0].substring(1);
-  let column = catPosition.split("-")[1].substring(1);
-  if (column > 1) {
-    let newPosition = "r" + row + "-c" + (parseInt(column) - 1);
-    if (
-      enemyPositions.includes(newPosition) ||
-      boulderPositions.includes(newPosition) ||
-      treePositions.includes(newPosition)
-    ) {
-      return;
-    }
-    catImg.classList.add("moveLeft");
-    playerPosition = newPosition;
-    let newCatImg = document.createElement("img");
-    newCatImg.className = "catImg " + newPosition;
-    if (isCave && playerPosition === swordPosition) {
-      // picks up sword
-      swordAcquired = true;
-      let swordTop = document.querySelector(".swordTop");
-      swordTop.style.display = "none";
-      newCatImg.src = "./image/swordCat.png";
-    } else if (swordAcquired) {
-      newCatImg.src = "./image/swordCat.png";
-    } else {
-      newCatImg.src = "./image/cat.png";
-    }
-    let nextTile = document.querySelector("." + newPosition);
-    setTimeout(() => {
-      catImg.remove();
-      nextTile.append(newCatImg);
-    }, 100);
-  }
-}
-
-function moveRight() {
-  let catImg = document.querySelector(".catImg");
-  let catPosition = catImg.classList[1];
-  let row = catPosition.split("-")[0].substring(1);
-  let column = catPosition.split("-")[1].substring(1);
-  if (column < 12) {
-    let newPosition = "r" + row + "-c" + (parseInt(column) + 1);
-    if (
-      enemyPositions.includes(newPosition) ||
-      boulderPositions.includes(newPosition) ||
-      treePositions.includes(newPosition)
-    ) {
-      return;
-    }
-    catImg.classList.add("moveRight");
-    playerPosition = newPosition;
-    let newCatImg = document.createElement("img");
-    newCatImg.className = "catImg " + newPosition;
-    if (isCave && playerPosition === swordPosition) {
-      // picks up sword
-      swordAcquired = true;
-      let swordTop = document.querySelector(".swordTop");
-      swordTop.style.display = "none";
-      newCatImg.src = "./image/swordCat.png";
-    } else if (swordAcquired) {
-      newCatImg.src = "./image/swordCat.png";
-    } else {
-      newCatImg.src = "./image/cat.png";
-    }
-    let nextTile = document.querySelector("." + newPosition);
-    setTimeout(() => {
-      catImg.remove();
-      nextTile.append(newCatImg);
-    }, 100);
-  }
-}
 
 // TODO restart should restart the round and reduce lives by 1 (done)
 // TODO add trees to outdoor scene 2 (done)
-
 // TODO sword attack to dogs should do something? (done)
-// ------ maybe make a death animation
 
 
 // TODO make player position the tile last exited each round and adjust enemy spawns
 // TODO add boss stage after round 10
+
+
 // TODO add ending
 // TODO add dialogue to boss and old man
 // TODO add sound effects
