@@ -315,16 +315,16 @@ z-index: 5;
   z-index: 3;
 }
 
-.dogImg0,
-.dogImg1,
-.dogImg2,
-.dogImg3,
-.dogImg4,
-.dogImg5,
-.dogImg6,
-.dogImg7,
-.dogImg8,
-.dogImg9 {
+.dogImg-0,
+.dogImg-1,
+.dogImg-2,
+.dogImg-3,
+.dogImg-4,
+.dogImg-5,
+.dogImg-6,
+.dogImg-7,
+.dogImg-8,
+.dogImg-9 {
   width: 4vw;
   height: 8vh;
   z-index: 2;
@@ -592,4 +592,17 @@ z-index: 5;
   background-color: #ffffff;
   border-radius: 4px;
   transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.animateDeath{
+  animation: deathAnimation 1s linear ;
+}
+
+@keyframes deathAnimation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(90deg);
+  }
 }

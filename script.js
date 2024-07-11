@@ -28,6 +28,7 @@ let swordPosition = "r3-c6";
 let swordAcquired = false;
 let boulderDestroyed = false;
 let lives = 1;
+let slayedEnemies = []
 startBtn.addEventListener("click", startPrologue);
 
 // ------------------start prologue --------------------------
@@ -704,6 +705,7 @@ function endRound() {
     return winGame();
   }
   mainEl.innerHTML = "";
+  slayedEnemies = []
   enemyPositions = [];
   boulderPositions = [];
   treePositions = [];
@@ -851,7 +853,6 @@ function swingSword() {
     affectedTile = "r" + row + "-c" + (parseInt(column) + 1);
   }
   let swordSwingTile = document.querySelector("." + affectedTile);
-  console.log(swordSwingTile);
 
   swordSwingTile.classList.add("swordSwing");
 
@@ -884,24 +885,56 @@ function swingSword() {
     boulderShadowToRemove.remove();
     boulderDestroyed = true;
   }
+
+  let mobsToRemove = document.querySelectorAll(
+    "div." + affectedTile + " > img.dogeMob"
+  );
+  if (mobsToRemove) {
+    mobsToRemove.forEach((element) =>{ 
+      let enemyClass = element.classList[0]
+      let enemyIndex = enemyClass.split("-")[1]
+      slayedEnemies.push(enemyClass)
+      enemyPositions.splice(enemyIndex, 1)
+
+      // element.classList.add("animateDeath")
+        element.remove()
+        let dogImg = document.createElement("img");
+        dogImg.className =
+        enemyClass + " animateDeath";
+      console.log(buffDogeIndexes);
+      console.log("enemyIndex", enemyIndex);
+        if (buffDogeIndexes.includes(parseInt(enemyIndex))) {
+          dogImg.src = "./image/buffdoge.png";
+        } else {
+          dogImg.src = "./image/doge.png";
+        }
+        swordSwingTile.append(dogImg)
+
+        dogImg.addEventListener("animationend", () => {
+          dogImg.remove();
+        });
+        
+    })
+  }
 }
 
 // ----------end player logic ----------------
 // ------------------enemy logic--------------
 function placeEnemy(index) {
   let startingTile = document.querySelector("." + enemyPositions[index]);
-
+  let enemyType = "dogeMob";
   let dogImg = document.createElement("img");
-  dogImg.className = "dogImg" + index + " " + enemyPositions[index];
+  dogImg.className =
+    "dogImg-" + index + " " + enemyPositions[index] + " " + enemyType;
 
   if (buffDogeIndexes.includes(index)) {
     dogImg.src = "./image/buffdoge.png";
     startingTile.append(dogImg);
-    startEnemyMovement(".dogImg" + index, "./image/buffdoge.png", index);
+    startEnemyMovement(".dogImg-" + index, "./image/buffdoge.png", index, enemyType);
   } else {
     dogImg.src = "./image/doge.png";
     startingTile.append(dogImg);
-    startEnemyMovement(".dogImg" + index, "./image/doge.png", index);
+    startEnemyMovement(".dogImg-" + index, "./image/doge.png", index, enemyType);
   }
 }
 
@@ -1043,7 +1076,10 @@ function fireEnemyBeam(enemyImg, enemyIndex) {
   }, 500); // Initial delay of 500ms before executing the code
 }
 
-function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
+function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex, enemyType) {
+  if(slayedEnemies.includes(enemyClass)){
+    return
+  }
   let enemyDelay =
     1000 / ((round + 1) * 0.25) > 1000
       ? 1000
@@ -1054,11 +1090,14 @@ function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
   let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
   let isAttacking = Math.random() < 0.2;
   let enemyTimer = setTimeout(() => {
-    if (currentRound !== round) {
+    if ((currentRound !== round) || slayedEnemies.includes(enemyClass)) {
       clearTimeout(enemyTimer);
       return;
     }
     let enemyImg = document.querySelector(enemyClass);
+    if(!enemyImg) {
+      return
+    }
     if (isAttacking) {
       enemyImg.src = isBuffDoge
         ? "./image/buffdogeAura.png"
@@ -1069,23 +1108,23 @@ function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
     } else {
       let directions = ["up", "down", "left", "right"];
       let directionSelected = directions[Math.floor(Math.random() * 4)];
-      if (gameOver) {
+      if (gameOver || slayedEnemies.includes(enemyClass)) {
         return;
       }
       if (directionSelected === "up") {
-        enemyMoveUp(enemyClass, enemyImgPath, enemyIndex);
+        enemyMoveUp(enemyClass, enemyImgPath, enemyIndex, enemyType);
       } else if (directionSelected === "down") {
-        enemyMoveDown(enemyClass, enemyImgPath, enemyIndex);
+        enemyMoveDown(enemyClass, enemyImgPath, enemyIndex, enemyType);
       } else if (directionSelected === "left") {
-        enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex);
+        enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex, enemyType);
       } else if (directionSelected === "right") {
-        enemyMoveRight(enemyClass, enemyImgPath, enemyIndex);
+        enemyMoveRight(enemyClass, enemyImgPath, enemyIndex, enemyType);
       }
     }
-    if (gameOver) {
+    if (gameOver || slayedEnemies.includes(enemyClass)) {
       return;
     }
-    startEnemyMovement(enemyClass, enemyImgPath, enemyIndex);
+    startEnemyMovement(enemyClass, enemyImgPath, enemyIndex, enemyType);
   }, enemyDelay);
 }
 
@@ -1197,10 +1236,19 @@ function checkKeyPressed(evt) {
   }
 }
 
-function enemyMoveUp(enemyClass, enemyImgPath, enemyIndex) {
+function enemyMoveUp(enemyClass, enemyImgPath, enemyIndex, enemyType) {
+  if(slayedEnemies.includes(enemyClass)){
+    return
+  }
   let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
   let enemyImg = document.querySelector(enemyClass);
-  let enemyPosition = enemyImg.classList[1];
+  let enemyPosition;
+  if(enemyImg){
+   enemyPosition = enemyImg.classList[1];
+  }
+  else {
+    return
+  }
   let row = enemyPosition.split("-")[0].substring(1);
   let column = enemyPosition.split("-")[1].substring(1);
   if (row > 1) {
@@ -1211,7 +1259,8 @@ function enemyMoveUp(enemyClass, enemyImgPath, enemyIndex) {
     }
     enemyImg.classList.add("moveUp");
     let newEnemyImg = document.createElement("img");
-    newEnemyImg.className = enemyClass.substring(1) + " " + newPosition;
+    newEnemyImg.className =
+      enemyClass.substring(1) + " " + newPosition + " " + enemyType;
     newEnemyImg.src =
       attackingEnemyIndex === enemyIndex && isBuffDoge
         ? "./image/buffdogeAttack.png"
@@ -1226,10 +1275,19 @@ function enemyMoveUp(enemyClass, enemyImgPath, enemyIndex) {
   }
 }
 
-function enemyMoveDown(enemyClass, enemyImgPath, enemyIndex) {
+function enemyMoveDown(enemyClass, enemyImgPath, enemyIndex, enemyType) {
+  if(slayedEnemies.includes(enemyClass)){
+    return
+  }
   let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
   let enemyImg = document.querySelector(enemyClass);
-  let enemyPosition = enemyImg.classList[1];
+  let enemyPosition;
+  if(enemyImg){
+   enemyPosition = enemyImg.classList[1];
+  }
+  else {
+    return
+  }
   let row = enemyPosition.split("-")[0].substring(1);
   let column = enemyPosition.split("-")[1].substring(1);
   if (row < 6) {
@@ -1241,7 +1299,8 @@ function enemyMoveDown(enemyClass, enemyImgPath, enemyIndex) {
     enemyImg.classList.add("moveDown");
 
     let newEnemyImg = document.createElement("img");
-    newEnemyImg.className = enemyClass.substring(1) + " " + newPosition;
+    newEnemyImg.className =
+      enemyClass.substring(1) + " " + newPosition + " " + enemyType;
     newEnemyImg.src =
       attackingEnemyIndex === enemyIndex && isBuffDoge
         ? "./image/buffdogeAttack.png"
@@ -1256,10 +1315,19 @@ function enemyMoveDown(enemyClass, enemyImgPath, enemyIndex) {
   }
 }
 
-function enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex) {
+function enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex, enemyType) {
+  if(slayedEnemies.includes(enemyClass)){
+    return
+  }
   let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
   let enemyImg = document.querySelector(enemyClass);
-  let enemyPosition = enemyImg.classList[1];
+  let enemyPosition;
+  if(enemyImg){
+   enemyPosition = enemyImg.classList[1];
+  }
+  else {
+    return
+  }
   let row = enemyPosition.split("-")[0].substring(1);
   let column = enemyPosition.split("-")[1].substring(1);
   if (column > 1) {
@@ -1271,7 +1339,8 @@ function enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex) {
     enemyImg.classList.add("moveLeft");
 
     let newEnemyImg = document.createElement("img");
-    newEnemyImg.className = enemyClass.substring(1) + " " + newPosition;
+    newEnemyImg.className =
+      enemyClass.substring(1) + " " + newPosition + " " + enemyType;
     newEnemyImg.src =
       attackingEnemyIndex === enemyIndex && isBuffDoge
         ? "./image/buffdogeAttack.png"
@@ -1286,10 +1355,19 @@ function enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex) {
   }
 }
 
-function enemyMoveRight(enemyClass, enemyImgPath, enemyIndex) {
+function enemyMoveRight(enemyClass, enemyImgPath, enemyIndex, enemyType) {
+  if(slayedEnemies.includes(enemyClass)){
+    return
+  }
   let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
   let enemyImg = document.querySelector(enemyClass);
-  let enemyPosition = enemyImg.classList[1];
+  let enemyPosition;
+  if(enemyImg){
+   enemyPosition = enemyImg.classList[1];
+  }
+  else {
+    return
+  }
   let row = enemyPosition.split("-")[0].substring(1);
   let column = enemyPosition.split("-")[1].substring(1);
   if (column < 12) {
@@ -1301,7 +1379,8 @@ function enemyMoveRight(enemyClass, enemyImgPath, enemyIndex) {
     enemyImg.classList.add("moveRight");
 
     let newEnemyImg = document.createElement("img");
-    newEnemyImg.className = enemyClass.substring(1) + " " + newPosition;
+    newEnemyImg.className =
+      enemyClass.substring(1) + " " + newPosition + " " + enemyType;
     newEnemyImg.src =
       attackingEnemyIndex === enemyIndex && isBuffDoge
         ? "./image/buffdogeAttack.png"
@@ -1351,9 +1430,8 @@ function moveUp() {
       nextTile.append(newCatImg);
     }, 100);
   }
-  if (isCave && playerPosition === swordPosition) {
-    console.log("picks up sword");
-  }
+  // if (isCave && playerPosition === swordPosition) {
+  // }
 }
 
 function moveDown() {
@@ -1391,9 +1469,8 @@ function moveDown() {
       nextTile.append(newCatImg);
     }, 100);
   }
-  if (isCave && playerPosition === swordPosition) {
-    console.log("picks up sword");
-  }
+  // if (isCave && playerPosition === swordPosition) {
+  // }
 }
 function moveLeft() {
   let catImg = document.querySelector(".catImg");
@@ -1470,9 +1547,12 @@ function moveRight() {
 }
 
 // TODO restart should restart the round and reduce lives by 1 (done)
+// TODO add trees to outdoor scene 2 (done)
 
-// TODO add trees to outdoor scene 2
-// TODO sword attack to dogs should do something?
+// TODO sword attack to dogs should do something? (done)
+// ------ maybe make a death animation
+
+
 // TODO make player position the tile last exited each round and adjust enemy spawns
 // TODO add boss stage after round 10
 // TODO add ending
