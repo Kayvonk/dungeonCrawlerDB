@@ -23,52 +23,127 @@ main {
   border-radius: 12px;
 }
 
+#gameMenu {
+position: absolute;
+width: 100vw;
+height: 100vh;
+background-color: black;
+z-index: 5;
+}
+
+@keyframes slice-in-bottom {
+  0% {
+    mask-position: 0 0;
+  }
+  100% {
+    mask-position: 0 -200%;
+  }
+}
+
 header {
-  font-size: 48px;
+  font-size: 70px;
   font-family: "DungeonCrawler";
   position: absolute;
-  top: 0;
-  line-height: 1px;
+  left: 50%;
+  top: 20%;
+  transform: translate(-50%, -50%);
+  color: white;
+  line-height: 1;
   z-index: 5;
+  overflow: hidden;
 }
 
 header > p:first-child {
-  position: absolute;
-  top: -10px;
-  left: -40px;
-}
-header > p:last-child {
   position: relative;
-  bottom: -20px;
-  right: -40px;
+  display: inline-block;
+  mask-image: linear-gradient(to top, transparent 0%, black 100%, transparent 50%);
+  mask-size: 100% 200%; 
+  animation: slice-in-bottom 2s forwards;
 }
 
-footer {
-  font-family: "DungeonCrawler";
+
+
+#swordFigure {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
   position: absolute;
-  bottom: 0;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  animation: fadeIn 1s ease-in-out .5s forwards;
+}
+
+.remove {
+  display: none
+}
+
+.fadeOut {
+  animation: fadeOut 1s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+
+#swordTopLogo {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  z-index: 7;
+}
+
+#swordCircle{
+width:125px;
+height:25px;
+background-color: #f3f3f3;
+position: absolute;
+bottom: 0;
+left: 50%;
+transform: translate(-50%, 50%) skewX(200deg);
+border-radius: 50%;
+z-index: 5;
 }
 
 #start {
+  position: absolute;
   padding: 20px 60px;
   border-radius: 12px;
   border: none;
   box-shadow: 2px 2px 5px 2px rgb(49, 49, 49);
-  font-family: "DungeonCrawler";
+  font-family:monospace;
   color: white;
   font-size: 34px;
   background-color: #004258d0;
-  position: relative;
-  bottom: 10px;
   cursor: pointer;
-}
+  left: 50%;
+  top: 75%;
+  transform: translate(-50%, -50%);
+} 
 
 #start:hover {
   box-shadow: 2px 2px 8px 3px rgb(49, 49, 49);
   background-color: #045d7ad0;
 }
 
-#restart {
+#restart, #continue {
   padding: 10px 20px;
   border-radius: 12px;
   border: none;
@@ -123,6 +198,60 @@ footer {
   border-image: linear-gradient(to bottom right, #0ce6d8, #000907) 1;
 }
 
+.grassTile {
+  width: 5vw;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+  background-image: url("./image/grass.png")
+}
+
+.dirtTile {
+  width: 5vw;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+  background-image: url("./image/dirt.jpg")
+}
+
+.stoneTile {
+  width: 5vw;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+  background-image: url("./image/stone.jpg")
+}
+
+.tree {
+  width: 5vw;
+  height: 10vh;
+ }
+
+.fire {
+  width: 5vw;
+  height: 10vh;
+ }
+
+.oldCat {
+  width: 5vw;
+  height: 10vh;
+ }
+
+.swordTop {
+  width: 5vw;
+  height: 10vh;
+ }
+
+
 .wall {
   width: 5vw;
   height: 10vh;
@@ -130,6 +259,30 @@ footer {
   box-sizing: border-box;
   border: 20px inset transparent;
   border-image: linear-gradient(to bottom right, #00ebdc, #004258) 1;
+}
+
+.caveWall {
+  width: 5vw;
+  height: 10vh;
+  background-image: url("./image/caveTile.png");  
+}
+
+.caveExit, .caveEntrance, .towerEntrance {
+  width: 5vw;
+  height: 10vh;
+  background: radial-gradient(circle, #0a0809 0%, #222222 50%, #7b7b7b 100%);
+}
+
+.outdoorWall {
+  width: 5vw;
+  height: 10vh;
+  background-image: url("./image/grass.png");  
+}
+
+.outdoorDirtPath {
+  width: 5vw;
+  height: 10vh;
+  background-image: url("./image/dirt.jpg");  
 }
 
 .wallTop,
@@ -188,6 +341,12 @@ footer {
   border-radius: 50%;
   background-color: #2b2b2bb2;
   animation: growShadow 1s forwards;
+}
+
+.terrianBoulder {
+  width: 5vw;
+  height: 10vh;
+  position: absolute;
 }
 
 .boulder {
@@ -394,4 +553,43 @@ footer {
   50% {
     height: 6vh; /* Middle height */
   }
+}
+
+@keyframes swordSwipe {
+  0% {
+    opacity: 1;
+    transform: translate(50%, -50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 50%);
+  }
+}
+
+.swordSwing {
+  position: relative;
+}
+
+.sword-animation {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10; 
+  pointer-events: none; 
+  opacity: 0; 
+  animation: swordSwipe 0.5s ease-out forwards;
+
+}
+
+.sword-animation-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 2px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  transform: translate(-50%, -50%) rotate(-45deg);
 }

@@ -1,19 +1,415 @@
 let mainEl = document.getElementsByTagName("main")[0];
 let startBtn = document.getElementById("start");
+
 let startingPosition = "r6-c6";
 let playerPosition = startingPosition;
+let playerDirection;
 let enemyPositions = [];
 let boulderPositions = [];
 let attackingEnemyIndex;
 let gameOver = false;
 let exitTilePosition;
 let exitDirection;
+let caveEntrancePosition = "r1-c6";
+let towerEntrancePosition = "r1-c7";
+let scene1ExitTilePosition = "r3-c1";
+let scene2ExitTilePosition = "r3-c12";
+let caveExitPosition = "r6-c6";
 let round = 0;
 let possibleEnemyPositions = [];
 let seconds = 0;
 let gameStarted = false;
-let canMove = true;
-startBtn.addEventListener("click", startGame);
+let canMove = false;
+let isCave = false;
+let isOutdoor1 = true;
+let isOutdoor2 = false;
+let swordPosition = "r3-c6";
+let swordAcquired = false;
+let boulderDestroyed = false;
+let lives = 1
+startBtn.addEventListener("click", startPrologue);
+
+// ------------------start prologue --------------------------
+
+function startPrologue() {
+  gameStarted = true;
+  let header = document.getElementsByTagName("header")[0];
+  let swordTop = document.getElementById("swordTopLogo");
+  let swordCircle = document.getElementById("swordCircle");
+  let gameMenu = document.getElementById("gameMenu");
+  header.classList.add("fadeOut");
+  startBtn.classList.add("fadeOut");
+  setTimeout(() => {
+    swordTop.classList.add("fadeOut");
+    swordCircle.classList.add("fadeOut");
+  }, 1500);
+  setTimeout(() => {
+    gameMenu.classList.add("fadeOut");
+  }, 3000);
+  setTimeout(() => {
+    gameMenu.classList.add("remove");
+  }, 4000);
+  setTimeout(() => {
+    canMove = true;
+  }, 4000);
+}
+
+function createOutdoorScene1Tiles() {
+  let dirtTiles = [
+    "r6-c6",
+    "r5-c6",
+    "r4-c6",
+    "r3-c6",
+    "r2-c6",
+    "r1-c6",
+    "r3-c1",
+    "r3-c2",
+    "r3-c3",
+    "r3-c4",
+    "r3-c5",
+    "r3-c6",
+  ];
+  for (let index = 1; index <= 72; index++) {
+    let outDoorTile = document.createElement("div");
+
+    if (index <= 12) {
+      if (dirtTiles.includes("r1-c" + index)) {
+        outDoorTile.className = "dirtTile r1-c" + index;
+      } else {
+        outDoorTile.className = "grassTile r1-c" + index;
+      }
+    } else if (index <= 24) {
+      if (dirtTiles.includes("r2-c" + (index - 12))) {
+        outDoorTile.className = "dirtTile r2-c" + (index - 12);
+      } else {
+        outDoorTile.className = "grassTile r2-c" + (index - 12);
+      }
+    } else if (index <= 36) {
+      if (dirtTiles.includes("r3-c" + (index - 24))) {
+        if ("r3-c" + (index - 24) === "r3-c1" && !boulderDestroyed) {
+          boulderPositions.push("r3-c1");
+          outDoorTile.className = "dirtTile r3-c" + (index - 24);
+          let boulderShadow = document.createElement("div");
+          boulderShadow.className = "boulderShadow boulderShadow-r3-c1";
+          let terrianBoulder = document.createElement("img");
+          terrianBoulder.className = "terrianBoulder boulder-r3-c1";
+          terrianBoulder.src = "./image/boulder.png";
+          outDoorTile.append(boulderShadow);
+          outDoorTile.append(terrianBoulder);
+        } else {
+          outDoorTile.className = "dirtTile r3-c" + (index - 24);
+        }
+      } else {
+        outDoorTile.className = "grassTile r3-c" + (index - 24);
+      }
+    } else if (index <= 48) {
+      if (dirtTiles.includes("r4-c" + (index - 36))) {
+        outDoorTile.className = "dirtTile r4-c" + (index - 36);
+      } else {
+        outDoorTile.className = "grassTile r4-c" + (index - 36);
+      }
+    } else if (index <= 60) {
+      if (dirtTiles.includes("r5-c" + (index - 48))) {
+        outDoorTile.className = "dirtTile r5-c" + (index - 48);
+      } else {
+        outDoorTile.className = "grassTile r5-c" + (index - 48);
+      }
+    } else if (index <= 72) {
+      if (dirtTiles.includes("r6-c" + (index - 60))) {
+        outDoorTile.className = "dirtTile r6-c" + (index - 60);
+      } else {
+        outDoorTile.className = "grassTile r6-c" + (index - 60);
+      }
+    }
+    let outDoorTilePosition = outDoorTile.classList[1];
+    let row = outDoorTilePosition.split("-")[0].substring(1);
+    let column = outDoorTilePosition.split("-")[1].substring(1);
+
+    if (row === "1") {
+      let wall = document.createElement("div");
+      if (column === "6") {
+        // cave entrace
+        wall.className = "caveEntrance wallTop";
+      } else {
+        wall.className = "caveWall wallTop";
+      }
+      outDoorTile.append(wall);
+    }
+    if (row === "6") {
+      let wall = document.createElement("div");
+      let treeImg = document.createElement("img");
+      treeImg.className = "tree";
+      treeImg.src = "./image/tree.png";
+      wall.append(treeImg);
+      wall.className = "outdoorWall wallBottom";
+      outDoorTile.append(wall);
+    }
+    if (column === "1") {
+      let wall = document.createElement("div");
+      if (row === "3") {
+        //exit after cave
+        wall.className = "outdoorDirtPath wallLeft";
+      } else {
+        let treeImg = document.createElement("img");
+        treeImg.className = "tree";
+        treeImg.src = "./image/tree.png";
+        wall.append(treeImg);
+        wall.className = "outdoorWall wallLeft";
+      }
+      outDoorTile.append(wall);
+    }
+    if (column === "12") {
+      let wall = document.createElement("div");
+      let treeImg = document.createElement("img");
+      treeImg.className = "tree";
+      treeImg.src = "./image/tree.png";
+      wall.append(treeImg);
+      wall.className = "outdoorWall wallRight";
+      outDoorTile.append(wall);
+    }
+    mainEl.append(outDoorTile);
+  }
+  placePlayer1();
+}
+
+// delayed to avoid interference with start screen animation
+setTimeout(() => {
+  createOutdoorScene1Tiles();
+}, 2000);
+
+function enterCave() {
+  startingPosition = "r6-c6";
+  mainEl.innerHTML = "";
+  isCave = true;
+  isOutdoor1 = false;
+  boulderPositions = [];
+  createCaveTiles();
+}
+
+function createCaveTiles() {
+  for (let index = 1; index <= 72; index++) {
+    let caveTile = document.createElement("div");
+
+    if (index <= 12) {
+      caveTile.className = "stoneTile r1-c" + index;
+    } else if (index <= 24) {
+      if (index - 12 === 3 || index - 12 === 9) {
+        let fireImg = document.createElement("img");
+        fireImg.className = "fire";
+        fireImg.src = "./image/fire.png";
+        caveTile.append(fireImg);
+        caveTile.className = "stoneTile r2-c" + (index - 12);
+      } else if (index - 12 === 6) {
+        let oldCatImg = document.createElement("img");
+        oldCatImg.className = "oldCat";
+        oldCatImg.src = "./image/oldCat.png";
+        caveTile.append(oldCatImg);
+        caveTile.className = "stoneTile r2-c" + (index - 12);
+      } else {
+        caveTile.className = "stoneTile r2-c" + (index - 12);
+      }
+    } else if (index <= 36) {
+      if (index - 24 === 6) {
+        if (!swordAcquired) {
+          let swordTopImg = document.createElement("img");
+          swordTopImg.className = "swordTop";
+          swordTopImg.src = "./image/swordtop.png";
+          caveTile.append(swordTopImg);
+        }
+        caveTile.className = "stoneTile r3-c" + (index - 24);
+      } else {
+        caveTile.className = "stoneTile r3-c" + (index - 24);
+      }
+    } else if (index <= 48) {
+      caveTile.className = "stoneTile r4-c" + (index - 36);
+    } else if (index <= 60) {
+      caveTile.className = "stoneTile r5-c" + (index - 48);
+    } else if (index <= 72) {
+      caveTile.className = "stoneTile r6-c" + (index - 60);
+    }
+    let caveTilePosition = caveTile.classList[1];
+    let row = caveTilePosition.split("-")[0].substring(1);
+    let column = caveTilePosition.split("-")[1].substring(1);
+    // let isDirtTile = dirtTiles.includes(caveTilePosition)
+
+    if (row === "1") {
+      let wall = document.createElement("div");
+      wall.className = "caveWall wallTop";
+      caveTile.append(wall);
+    }
+    if (row === "6") {
+      let wall = document.createElement("div");
+
+      if (column === "6") {
+        wall.className = "caveExit wallBottom";
+      } else {
+        wall.className = "caveWall wallBottom";
+      }
+      caveTile.append(wall);
+    }
+    if (column === "1") {
+      let wall = document.createElement("div");
+      wall.className = "caveWall wallLeft";
+      caveTile.append(wall);
+    }
+    if (column === "12") {
+      let wall = document.createElement("div");
+      wall.className = "caveWall wallRight";
+      caveTile.append(wall);
+    }
+
+    // if (tilePosition === selectedExit) {
+    //   exitTilePosition = tilePosition;
+    //   exitDirection = exitClass;
+    //   let exitTile = document.createElement("div");
+    //   exitTile.className = round === 0 ? exitClass : "exitDoor " + exitClass;
+    //   exitTile.setAttribute("id", "exitTile");
+    //   tile.append(exitTile);
+    //   tile.setAttribute("id", "exit");
+    // }
+
+    mainEl.append(caveTile);
+  }
+  placePlayer1();
+}
+
+function exitCave() {
+  isCave = false;
+  isOutdoor1 = true;
+  mainEl.innerHTML = "";
+  startingPosition = "r1-c6";
+  createOutdoorScene1Tiles();
+}
+
+function enterOutdoorScene2() {
+  isOutdoor1 = false;
+  isOutdoor2 = true;
+  mainEl.innerHTML = "";
+  startingPosition = "r3-c12";
+  createOutdoorScene2Tiles();
+}
+
+function createOutdoorScene2Tiles() {
+  let dirtTiles = [
+    "r1-c7",
+    "r2-c7",
+    "r3-c7",
+    "r3-c8",
+    "r3-c9",
+    "r3-c10",
+    "r3-c11",
+    "r3-c12",
+  ];
+  for (let index = 1; index <= 72; index++) {
+    let outDoorTile = document.createElement("div");
+
+    if (index <= 12) {
+      if (dirtTiles.includes("r1-c" + index)) {
+        outDoorTile.className = "dirtTile r1-c" + index;
+      } else {
+        outDoorTile.className = "grassTile r1-c" + index;
+      }
+    } else if (index <= 24) {
+      if (dirtTiles.includes("r2-c" + (index - 12))) {
+        outDoorTile.className = "dirtTile r2-c" + (index - 12);
+      } else {
+        outDoorTile.className = "grassTile r2-c" + (index - 12);
+      }
+    } else if (index <= 36) {
+      if (dirtTiles.includes("r3-c" + (index - 24))) {
+        if ("r3-c" + (index - 24) === "r3-c1" && !boulderDestroyed) {
+          boulderPositions.push("r3-c1");
+          outDoorTile.className = "dirtTile r3-c" + (index - 24);
+          let terrianBoulder = document.createElement("img");
+          terrianBoulder.className = "terrianBoulder boulder-r3-c1";
+          terrianBoulder.src = "./image/boulder.png";
+          outDoorTile.append(terrianBoulder);
+        } else {
+          outDoorTile.className = "dirtTile r3-c" + (index - 24);
+        }
+      } else {
+        outDoorTile.className = "grassTile r3-c" + (index - 24);
+      }
+    } else if (index <= 48) {
+      if (dirtTiles.includes("r4-c" + (index - 36))) {
+        outDoorTile.className = "dirtTile r4-c" + (index - 36);
+      } else {
+        outDoorTile.className = "grassTile r4-c" + (index - 36);
+      }
+    } else if (index <= 60) {
+      if (dirtTiles.includes("r5-c" + (index - 48))) {
+        outDoorTile.className = "dirtTile r5-c" + (index - 48);
+      } else {
+        outDoorTile.className = "grassTile r5-c" + (index - 48);
+      }
+    } else if (index <= 72) {
+      if (dirtTiles.includes("r6-c" + (index - 60))) {
+        outDoorTile.className = "dirtTile r6-c" + (index - 60);
+      } else {
+        outDoorTile.className = "grassTile r6-c" + (index - 60);
+      }
+    }
+    let outDoorTilePosition = outDoorTile.classList[1];
+    let row = outDoorTilePosition.split("-")[0].substring(1);
+    let column = outDoorTilePosition.split("-")[1].substring(1);
+    // let isDirtTile = dirtTiles.includes(outDoorTilePosition)
+
+    if (row === "1") {
+      let wall = document.createElement("div");
+      if (column === "7") {
+        // tower entrace
+        wall.className = "towerEntrance wallTop";
+      } else {
+        wall.className = "wall wallTop";
+      }
+      outDoorTile.append(wall);
+    }
+    if (row === "6") {
+      let wall = document.createElement("div");
+      let treeImg = document.createElement("img");
+      treeImg.className = "tree";
+      treeImg.src = "./image/tree.png";
+      wall.append(treeImg);
+      wall.className = "outdoorWall wallBottom";
+      outDoorTile.append(wall);
+    }
+    if (column === "1") {
+      let wall = document.createElement("div");
+      let treeImg = document.createElement("img");
+      treeImg.className = "tree";
+      treeImg.src = "./image/tree.png";
+      wall.append(treeImg);
+      wall.className = "outdoorWall wallLeft";
+      outDoorTile.append(wall);
+    }
+    if (column === "12") {
+      let wall = document.createElement("div");
+      if (row === "3") {
+        //return to scene1
+        wall.className = "outdoorDirtPath wallRight";
+      } else {
+        let treeImg = document.createElement("img");
+        treeImg.className = "tree";
+        treeImg.src = "./image/tree.png";
+        wall.append(treeImg);
+        wall.className = "outdoorWall wallRight";
+      }
+      outDoorTile.append(wall);
+    }
+    mainEl.append(outDoorTile);
+  }
+  placePlayer1();
+}
+
+function exitOutDoorScene2() {
+  isOutdoor1 = true;
+  isOutdoor2 = false;
+  mainEl.innerHTML = "";
+  startingPosition = "r3-c1";
+  createOutdoorScene1Tiles();
+}
+
+// ------------------ end prologue-----------------------
 
 let highScore = parseFloat(localStorage.getItem("highscore")) || 0;
 
@@ -52,11 +448,20 @@ function dropBoulder(enemyIndex) {
   }, 1000);
 }
 
-function startGame() {
+function enterTower() {
+  isOutdoor2 = false;
+  mainEl.innerHTML = "";
+  startingPosition = "r6-c7";
+  createTiles();
+  startTower();
+  placePlayer1();
+}
+
+function startTower() {
   const currentRound = round;
 
-  gameStarted = true;
-  startBtn.style.display = "none";
+  // gameStarted = true;
+  // startBtn.style.display = "none";
   secondsTimer = setInterval(() => {
     if (gameOver) {
       clearInterval(secondsTimer);
@@ -64,7 +469,7 @@ function startGame() {
     }
     seconds++;
   }, 1000);
-  displayRound();
+  // displayRound();
   let newEnemyPosition =
     possibleEnemyPositions[
       Math.floor(Math.random() * possibleEnemyPositions.length)
@@ -79,14 +484,15 @@ function startGame() {
   exitTile.classList.add("exitDoor");
 }
 
-function restartGame() {
+function restartRound() {
+  lives--
   playerPosition = startingPosition;
   gameStarted = true;
 
   clearInterval(boulderTimer);
   clearInterval(secondsTimer);
 
-  seconds = 0;
+  // seconds = 0;
   secondsTimer = setInterval(() => {
     if (gameOver) {
       clearInterval(secondsTimer);
@@ -98,7 +504,7 @@ function restartGame() {
   let scoreDiv = document.getElementById("results");
   scoreDiv.style.display = "none";
   attackingEnemyIndex = null;
-  round = -1;
+  round--;
   gameOver = false;
   endRound();
   let exitTile = document.getElementById("exitTile");
@@ -119,18 +525,34 @@ function calculateScore() {
   let scoreDiv = document.getElementById("results");
   scoreDiv.style.display = "flex";
   scoreDiv.style.fontFamily = "Arial";
-  scoreDiv.innerHTML = `
-  <h2>${typeof attackingEnemyIndex === "number" ? "You lose" : "You win"} </h2>
-  <p>High Score: ${highScore}</p>
-  <p>Score: ${finalScore}</p>
-  <p>Time: ${seconds} seconds</p>
-`;
-
+//   scoreDiv.innerHTML = `
+//   <h2>${typeof attackingEnemyIndex === "number" ? "You lose" : "You win"} </h2>
+//   <p>High Score: ${highScore}</p>
+//   <p>Score: ${finalScore}</p>
+//   <p>Time: ${seconds} seconds</p>
+// `
+ scoreDiv.innerHTML = `
+ <h2>${typeof attackingEnemyIndex === "number" ? "Game Over" : "You win"} </h2>
+ <p>Lives remaining: ${lives}</p>
+`
+if(lives > 0) {
+  let continueBtn = document.createElement("button");
+  continueBtn.setAttribute("id", "continue");
+  continueBtn.textContent = "Continue";
+  scoreDiv.append(continueBtn);
+  continueBtn.addEventListener("click", restartRound);
+}
+else{
   let restartBtn = document.createElement("button");
   restartBtn.setAttribute("id", "restart");
-  restartBtn.textContent = "Try Again";
+  restartBtn.textContent = "restart";
   scoreDiv.append(restartBtn);
   restartBtn.addEventListener("click", restartGame);
+}
+}
+
+function restartGame() {
+  location.reload()
 }
 
 function loseGame(enemyIndex) {
@@ -166,7 +588,7 @@ function endRound() {
   round++;
   createTiles();
   placePlayer1();
-  displayRound();
+  // displayRound();
   for (let i = 0; i < round + 1; i++) {
     let newEnemyPosition =
       possibleEnemyPositions[
@@ -274,8 +696,9 @@ function createTiles() {
   }
 }
 
-createTiles();
+// createTiles();
 
+//------------- player logic------------
 function placePlayer1() {
   let startingTile = document.querySelector("." + startingPosition);
   let catImg = document.createElement("img");
@@ -284,8 +707,65 @@ function placePlayer1() {
   startingTile.append(catImg);
 }
 
-placePlayer1();
+function swingSword() {
+  let row = playerPosition.split("-")[0].substring(1);
+  let column = playerPosition.split("-")[1].substring(1);
+  if (
+    (row === "1" && playerDirection === "up") ||
+    (row === "6" && playerDirection === "down") ||
+    (column === "1" && playerDirection === "left") ||
+    (column === "12" && playerDirection === "right")
+  ) {
+    return;
+  }
+  let affectedTile;
+  if (playerDirection === "up") {
+    affectedTile = "r" + (parseInt(row) - 1) + "-c" + column;
+  } else if (playerDirection === "down") {
+    affectedTile = "r" + (parseInt(row) + 1) + "-c" + column;
+  } else if (playerDirection === "left") {
+    affectedTile = "r" + row + "-c" + (parseInt(column) - 1);
+  } else if (playerDirection === "right") {
+    affectedTile = "r" + row + "-c" + (parseInt(column) + 1);
+  }
+  let swordSwingTile = document.querySelector("." + affectedTile);
+  console.log(swordSwingTile);
 
+  swordSwingTile.classList.add("swordSwing");
+
+  let swordAnimation = document.createElement("div");
+  swordAnimation.classList.add("sword-animation");
+
+  let swordAnimationLine = document.createElement("div");
+  swordAnimationLine.classList.add("sword-animation-line");
+
+  swordAnimation.appendChild(swordAnimationLine);
+
+  swordSwingTile.appendChild(swordAnimation);
+
+  swordAnimationLine.addEventListener("animationend", () => {
+    swordAnimation.remove();
+    swordSwingTile.classList.remove("swordSwing"); // Remove the swordSwing class after animation
+  });
+
+  if (boulderPositions.includes(affectedTile)) {
+    let boulderToRemove = document.querySelector(".boulder-" + affectedTile);
+    let boulderShadowToRemove = document.querySelector(
+      ".boulderShadow-" + affectedTile
+    );
+
+    boulderPositions = boulderPositions.filter(
+      (position) => position !== affectedTile
+    );
+
+    boulderToRemove.remove();
+    boulderShadowToRemove.remove();
+    boulderDestroyed = true;
+  }
+}
+
+// ----------end player logic ----------------
+// ------------------enemy logic--------------
 function placeEnemy(index) {
   let startingTile = document.querySelector("." + enemyPositions[index]);
 
@@ -487,6 +967,8 @@ function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
   }, enemyDelay);
 }
 
+// ----------------end enemy logic----------------
+
 // function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
 //   const currentRound = round;
 //   let isAttacking = Math.random() < 0.2;
@@ -533,40 +1015,62 @@ function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex) {
 //   }
 // }
 
+// ----------key press logic-------------
+
 window.addEventListener("keydown", checkKeyPressed);
 
 function checkKeyPressed(evt) {
   if (!gameStarted && evt.keyCode === 32) {
-    startGame();
+    startPrologue();
+  } else if (gameStarted && swordAcquired && !gameOver && evt.keyCode === 32) {
+    swingSword();
   } else if (gameStarted && gameOver && evt.keyCode === 32) {
-    restartGame();
+    lives > 0 ? restartRound() : restartGame();
   }
   if (gameOver) {
     return;
   }
+
   if (canMove && evt.keyCode === 38) {
-    if (exitDirection === "exitTop" && playerPosition === exitTilePosition) {
-      endRound();
+    if (
+      (exitDirection === "exitTop" && playerPosition === exitTilePosition) ||
+      (isOutdoor1 && playerPosition === caveEntrancePosition) ||
+      (isOutdoor2 && playerPosition === towerEntrancePosition)
+    ) {
+      isOutdoor1 ? enterCave() : isOutdoor2 ? enterTower() : endRound();
     }
     moveUp();
+    playerDirection = "up";
     limitMovement();
   } else if (canMove && evt.keyCode === 40) {
-    if (exitDirection === "exitBottom" && playerPosition === exitTilePosition) {
-      endRound();
+    if (
+      (exitDirection === "exitBottom" && playerPosition === exitTilePosition) ||
+      (isCave && playerPosition === caveExitPosition)
+    ) {
+      isCave ? exitCave() : endRound();
     }
     moveDown();
+    playerDirection = "down";
     limitMovement();
   } else if (canMove && evt.keyCode === 37) {
-    if (exitDirection === "exitLeft" && playerPosition === exitTilePosition) {
-      endRound();
+    if (
+      (exitDirection === "exitLeft" && playerPosition === exitTilePosition) ||
+      (isOutdoor1 && playerPosition === scene1ExitTilePosition)
+    ) {
+      isOutdoor1 ? enterOutdoorScene2() : endRound();
     }
     moveLeft();
+    playerDirection = "left";
     limitMovement();
   } else if (canMove && evt.keyCode === 39) {
-    if (exitDirection === "exitRight" && playerPosition === exitTilePosition) {
-      endRound();
+    if (
+      (exitDirection === "exitRight" && playerPosition === exitTilePosition) ||
+      (isOutdoor2 && playerPosition === scene2ExitTilePosition)
+    ) {
+      isOutdoor2 ? exitOutDoorScene2() : endRound();
     }
     moveRight();
+    playerDirection = "right";
     limitMovement();
   }
 }
@@ -707,12 +1211,25 @@ function moveUp() {
     playerPosition = newPosition;
     let newCatImg = document.createElement("img");
     newCatImg.className = "catImg " + newPosition;
-    newCatImg.src = "./image/cat.png";
+    if (isCave && playerPosition === swordPosition) {
+      // picks up sword
+      swordAcquired = true;
+      let swordTop = document.querySelector(".swordTop");
+      swordTop.style.display = "none";
+      newCatImg.src = "./image/swordCat.png";
+    } else if (swordAcquired) {
+      newCatImg.src = "./image/swordCat.png";
+    } else {
+      newCatImg.src = "./image/cat.png";
+    }
     let nextTile = document.querySelector("." + newPosition);
     setTimeout(() => {
       catImg.remove();
       nextTile.append(newCatImg);
     }, 100);
+  }
+  if (isCave && playerPosition === swordPosition) {
+    console.log("picks up sword");
   }
 }
 
@@ -733,12 +1250,25 @@ function moveDown() {
     playerPosition = newPosition;
     let newCatImg = document.createElement("img");
     newCatImg.className = "catImg " + newPosition;
-    newCatImg.src = "./image/cat.png";
+    if (isCave && playerPosition === swordPosition) {
+      // picks up sword
+      swordAcquired = true;
+      let swordTop = document.querySelector(".swordTop");
+      swordTop.style.display = "none";
+      newCatImg.src = "./image/swordCat.png";
+    } else if (swordAcquired) {
+      newCatImg.src = "./image/swordCat.png";
+    } else {
+      newCatImg.src = "./image/cat.png";
+    }
     let nextTile = document.querySelector("." + newPosition);
     setTimeout(() => {
       catImg.remove();
       nextTile.append(newCatImg);
     }, 100);
+  }
+  if (isCave && playerPosition === swordPosition) {
+    console.log("picks up sword");
   }
 }
 function moveLeft() {
@@ -758,7 +1288,17 @@ function moveLeft() {
     playerPosition = newPosition;
     let newCatImg = document.createElement("img");
     newCatImg.className = "catImg " + newPosition;
-    newCatImg.src = "./image/cat.png";
+    if (isCave && playerPosition === swordPosition) {
+      // picks up sword
+      swordAcquired = true;
+      let swordTop = document.querySelector(".swordTop");
+      swordTop.style.display = "none";
+      newCatImg.src = "./image/swordCat.png";
+    } else if (swordAcquired) {
+      newCatImg.src = "./image/swordCat.png";
+    } else {
+      newCatImg.src = "./image/cat.png";
+    }
     let nextTile = document.querySelector("." + newPosition);
     setTimeout(() => {
       catImg.remove();
@@ -784,7 +1324,17 @@ function moveRight() {
     playerPosition = newPosition;
     let newCatImg = document.createElement("img");
     newCatImg.className = "catImg " + newPosition;
-    newCatImg.src = "./image/cat.png";
+    if (isCave && playerPosition === swordPosition) {
+      // picks up sword
+      swordAcquired = true;
+      let swordTop = document.querySelector(".swordTop");
+      swordTop.style.display = "none";
+      newCatImg.src = "./image/swordCat.png";
+    } else if (swordAcquired) {
+      newCatImg.src = "./image/swordCat.png";
+    } else {
+      newCatImg.src = "./image/cat.png";
+    }
     let nextTile = document.querySelector("." + newPosition);
     setTimeout(() => {
       catImg.remove();
@@ -792,3 +1342,15 @@ function moveRight() {
     }, 100);
   }
 }
+
+
+// TODO restart should restart the round and reduce lives by 1 (done)
+
+// TODO sword attack to dogs should do something?
+// TODO make player position the tile last exited each round and adjust enemy spawns
+// TODO add boss stage after round 10
+// TODO add ending
+// TODO add dialogue to boss and old man
+// TODO add sound effects
+// TODO calculate score better
+// TODO (maybe) add secret sword location
