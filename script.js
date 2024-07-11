@@ -6,6 +6,7 @@ let playerPosition = startingPosition;
 let playerDirection;
 let enemyPositions = [];
 let boulderPositions = [];
+let treePositions = [];
 let attackingEnemyIndex;
 let gameOver = false;
 let exitTilePosition;
@@ -26,7 +27,7 @@ let isOutdoor2 = false;
 let swordPosition = "r3-c6";
 let swordAcquired = false;
 let boulderDestroyed = false;
-let lives = 1
+let lives = 1;
 startBtn.addEventListener("click", startPrologue);
 
 // ------------------start prologue --------------------------
@@ -69,20 +70,39 @@ function createOutdoorScene1Tiles() {
     "r3-c5",
     "r3-c6",
   ];
+  let treeTiles = ["r2-c8", "r3-c11", "r5-c10", "r4-c8"];
+
   for (let index = 1; index <= 72; index++) {
     let outDoorTile = document.createElement("div");
-
     if (index <= 12) {
       if (dirtTiles.includes("r1-c" + index)) {
         outDoorTile.className = "dirtTile r1-c" + index;
       } else {
-        outDoorTile.className = "grassTile r1-c" + index;
+        if (treeTiles.includes("r1-c" + index)) {
+          let treeImg = document.createElement("img");
+          treeImg.className = "tree";
+          treeImg.src = "./image/tree.png";
+          outDoorTile.append(treeImg);
+          treePositions.push("r1-c" + index);
+          outDoorTile.className = "grassTile r1-c" + index;
+        } else {
+          outDoorTile.className = "grassTile r1-c" + index;
+        }
       }
     } else if (index <= 24) {
       if (dirtTiles.includes("r2-c" + (index - 12))) {
         outDoorTile.className = "dirtTile r2-c" + (index - 12);
       } else {
-        outDoorTile.className = "grassTile r2-c" + (index - 12);
+        if (treeTiles.includes("r2-c" + (index - 12))) {
+          let treeImg = document.createElement("img");
+          treeImg.className = "tree";
+          treeImg.src = "./image/tree.png";
+          outDoorTile.append(treeImg);
+          treePositions.push("r2-c" + (index - 12));
+          outDoorTile.className = "grassTile r2-c" + (index - 12);
+        } else {
+          outDoorTile.className = "grassTile r2-c" + (index - 12);
+        }
       }
     } else if (index <= 36) {
       if (dirtTiles.includes("r3-c" + (index - 24))) {
@@ -100,25 +120,61 @@ function createOutdoorScene1Tiles() {
           outDoorTile.className = "dirtTile r3-c" + (index - 24);
         }
       } else {
-        outDoorTile.className = "grassTile r3-c" + (index - 24);
+        if (treeTiles.includes("r3-c" + (index - 24))) {
+          let treeImg = document.createElement("img");
+          treeImg.className = "tree";
+          treeImg.src = "./image/tree.png";
+          outDoorTile.append(treeImg);
+          treePositions.push("r3-c" + (index - 24));
+          outDoorTile.className = "grassTile r3-c" + (index - 24);
+        } else {
+          outDoorTile.className = "grassTile r3-c" + (index - 24);
+        }
       }
     } else if (index <= 48) {
       if (dirtTiles.includes("r4-c" + (index - 36))) {
         outDoorTile.className = "dirtTile r4-c" + (index - 36);
       } else {
-        outDoorTile.className = "grassTile r4-c" + (index - 36);
+        if (treeTiles.includes("r4-c" + (index - 36))) {
+          let treeImg = document.createElement("img");
+          treeImg.className = "tree";
+          treeImg.src = "./image/tree.png";
+          outDoorTile.append(treeImg);
+          treePositions.push("r4-c" + (index - 36));
+          outDoorTile.className = "grassTile r4-c" + (index - 36);
+        } else {
+          outDoorTile.className = "grassTile r4-c" + (index - 36);
+        }
       }
     } else if (index <= 60) {
       if (dirtTiles.includes("r5-c" + (index - 48))) {
         outDoorTile.className = "dirtTile r5-c" + (index - 48);
       } else {
-        outDoorTile.className = "grassTile r5-c" + (index - 48);
+        if (treeTiles.includes("r5-c" + (index - 48))) {
+          let treeImg = document.createElement("img");
+          treeImg.className = "tree";
+          treeImg.src = "./image/tree.png";
+          outDoorTile.append(treeImg);
+          treePositions.push("r5-c" + (index - 48));
+          outDoorTile.className = "grassTile r5-c" + (index - 48);
+        } else {
+          outDoorTile.className = "grassTile r5-c" + (index - 48);
+        }
       }
     } else if (index <= 72) {
       if (dirtTiles.includes("r6-c" + (index - 60))) {
         outDoorTile.className = "dirtTile r6-c" + (index - 60);
       } else {
-        outDoorTile.className = "grassTile r6-c" + (index - 60);
+        if (treeTiles.includes("r6-c" + (index - 60))) {
+          let treeImg = document.createElement("img");
+          treeImg.className = "tree";
+          treeImg.src = "./image/tree.png";
+          outDoorTile.append(treeImg);
+          treePositions.push("r6-c" + (index - 60));
+          outDoorTile.className = "grassTile r6-c" + (index - 60);
+        } else {
+          outDoorTile.className = "grassTile r6-c" + (index - 60);
+        }
       }
     }
     let outDoorTilePosition = outDoorTile.classList[1];
@@ -183,6 +239,7 @@ function enterCave() {
   isCave = true;
   isOutdoor1 = false;
   boulderPositions = [];
+  treePositions = [];
   createCaveTiles();
 }
 
@@ -284,6 +341,8 @@ function exitCave() {
 function enterOutdoorScene2() {
   isOutdoor1 = false;
   isOutdoor2 = true;
+  boulderPositions = [];
+  treePositions = [];
   mainEl.innerHTML = "";
   startingPosition = "r3-c12";
   createOutdoorScene2Tiles();
@@ -300,6 +359,15 @@ function createOutdoorScene2Tiles() {
     "r3-c11",
     "r3-c12",
   ];
+  let treeTiles = [
+    "r2-c2",
+    "r3-c4",
+    "r5-c3",
+    "r5-c5",
+    "r6-c7",
+    "r5-c9",
+    "r5-c11",
+  ];
   for (let index = 1; index <= 72; index++) {
     let outDoorTile = document.createElement("div");
 
@@ -307,13 +375,31 @@ function createOutdoorScene2Tiles() {
       if (dirtTiles.includes("r1-c" + index)) {
         outDoorTile.className = "dirtTile r1-c" + index;
       } else {
-        outDoorTile.className = "grassTile r1-c" + index;
+        if (treeTiles.includes("r1-c" + index)) {
+          let treeImg = document.createElement("img");
+          treeImg.className = "tree";
+          treeImg.src = "./image/tree.png";
+          outDoorTile.append(treeImg);
+          treePositions.push("r1-c" + index);
+          outDoorTile.className = "grassTile r1-c" + index;
+        } else {
+          outDoorTile.className = "grassTile r1-c" + index;
+        }
       }
     } else if (index <= 24) {
       if (dirtTiles.includes("r2-c" + (index - 12))) {
         outDoorTile.className = "dirtTile r2-c" + (index - 12);
       } else {
-        outDoorTile.className = "grassTile r2-c" + (index - 12);
+        if (treeTiles.includes("r2-c" + (index - 12))) {
+          let treeImg = document.createElement("img");
+          treeImg.className = "tree";
+          treeImg.src = "./image/tree.png";
+          outDoorTile.append(treeImg);
+          treePositions.push("r2-c" + (index - 12));
+          outDoorTile.className = "grassTile r2-c" + (index - 12);
+        } else {
+          outDoorTile.className = "grassTile r2-c" + (index - 12);
+        }
       }
     } else if (index <= 36) {
       if (dirtTiles.includes("r3-c" + (index - 24))) {
@@ -328,25 +414,61 @@ function createOutdoorScene2Tiles() {
           outDoorTile.className = "dirtTile r3-c" + (index - 24);
         }
       } else {
-        outDoorTile.className = "grassTile r3-c" + (index - 24);
+        if (treeTiles.includes("r3-c" + (index - 24))) {
+          let treeImg = document.createElement("img");
+          treeImg.className = "tree";
+          treeImg.src = "./image/tree.png";
+          outDoorTile.append(treeImg);
+          treePositions.push("r3-c" + (index - 24));
+          outDoorTile.className = "grassTile r3-c" + (index - 24);
+        } else {
+          outDoorTile.className = "grassTile r3-c" + (index - 24);
+        }
       }
     } else if (index <= 48) {
       if (dirtTiles.includes("r4-c" + (index - 36))) {
         outDoorTile.className = "dirtTile r4-c" + (index - 36);
       } else {
-        outDoorTile.className = "grassTile r4-c" + (index - 36);
+        if (treeTiles.includes("r4-c" + (index - 36))) {
+          let treeImg = document.createElement("img");
+          treeImg.className = "tree";
+          treeImg.src = "./image/tree.png";
+          outDoorTile.append(treeImg);
+          treePositions.push("r4-c" + (index - 36));
+          outDoorTile.className = "grassTile r4-c" + (index - 36);
+        } else {
+          outDoorTile.className = "grassTile r4-c" + (index - 36);
+        }
       }
     } else if (index <= 60) {
       if (dirtTiles.includes("r5-c" + (index - 48))) {
         outDoorTile.className = "dirtTile r5-c" + (index - 48);
       } else {
-        outDoorTile.className = "grassTile r5-c" + (index - 48);
+        if (treeTiles.includes("r5-c" + (index - 48))) {
+          let treeImg = document.createElement("img");
+          treeImg.className = "tree";
+          treeImg.src = "./image/tree.png";
+          outDoorTile.append(treeImg);
+          treePositions.push("r5-c" + (index - 48));
+          outDoorTile.className = "grassTile r5-c" + (index - 48);
+        } else {
+          outDoorTile.className = "grassTile r5-c" + (index - 48);
+        }
       }
     } else if (index <= 72) {
       if (dirtTiles.includes("r6-c" + (index - 60))) {
         outDoorTile.className = "dirtTile r6-c" + (index - 60);
       } else {
-        outDoorTile.className = "grassTile r6-c" + (index - 60);
+        if (treeTiles.includes("r6-c" + (index - 60))) {
+          let treeImg = document.createElement("img");
+          treeImg.className = "tree";
+          treeImg.src = "./image/tree.png";
+          outDoorTile.append(treeImg);
+          treePositions.push("r6-c" + (index - 60));
+          outDoorTile.className = "grassTile r6-c" + (index - 60);
+        } else {
+          outDoorTile.className = "grassTile r6-c" + (index - 60);
+        }
       }
     }
     let outDoorTilePosition = outDoorTile.classList[1];
@@ -413,8 +535,6 @@ function exitOutDoorScene2() {
 
 let highScore = parseFloat(localStorage.getItem("highscore")) || 0;
 
-console.log(highScore);
-
 let boulderTimer;
 let secondsTimer;
 
@@ -452,6 +572,8 @@ function enterTower() {
   isOutdoor2 = false;
   mainEl.innerHTML = "";
   startingPosition = "r6-c7";
+  boulderPositions = [];
+  treePositions = [];
   createTiles();
   startTower();
   placePlayer1();
@@ -485,7 +607,7 @@ function startTower() {
 }
 
 function restartRound() {
-  lives--
+  lives--;
   playerPosition = startingPosition;
   gameStarted = true;
 
@@ -525,34 +647,33 @@ function calculateScore() {
   let scoreDiv = document.getElementById("results");
   scoreDiv.style.display = "flex";
   scoreDiv.style.fontFamily = "Arial";
-//   scoreDiv.innerHTML = `
-//   <h2>${typeof attackingEnemyIndex === "number" ? "You lose" : "You win"} </h2>
-//   <p>High Score: ${highScore}</p>
-//   <p>Score: ${finalScore}</p>
-//   <p>Time: ${seconds} seconds</p>
-// `
- scoreDiv.innerHTML = `
+  //   scoreDiv.innerHTML = `
+  //   <h2>${typeof attackingEnemyIndex === "number" ? "You lose" : "You win"} </h2>
+  //   <p>High Score: ${highScore}</p>
+  //   <p>Score: ${finalScore}</p>
+  //   <p>Time: ${seconds} seconds</p>
+  // `
+  scoreDiv.innerHTML = `
  <h2>${typeof attackingEnemyIndex === "number" ? "Game Over" : "You win"} </h2>
  <p>Lives remaining: ${lives}</p>
-`
-if(lives > 0) {
-  let continueBtn = document.createElement("button");
-  continueBtn.setAttribute("id", "continue");
-  continueBtn.textContent = "Continue";
-  scoreDiv.append(continueBtn);
-  continueBtn.addEventListener("click", restartRound);
-}
-else{
-  let restartBtn = document.createElement("button");
-  restartBtn.setAttribute("id", "restart");
-  restartBtn.textContent = "restart";
-  scoreDiv.append(restartBtn);
-  restartBtn.addEventListener("click", restartGame);
-}
+`;
+  if (lives > 0) {
+    let continueBtn = document.createElement("button");
+    continueBtn.setAttribute("id", "continue");
+    continueBtn.textContent = "Continue";
+    scoreDiv.append(continueBtn);
+    continueBtn.addEventListener("click", restartRound);
+  } else {
+    let restartBtn = document.createElement("button");
+    restartBtn.setAttribute("id", "restart");
+    restartBtn.textContent = "restart";
+    scoreDiv.append(restartBtn);
+    restartBtn.addEventListener("click", restartGame);
+  }
 }
 
 function restartGame() {
-  location.reload()
+  location.reload();
 }
 
 function loseGame(enemyIndex) {
@@ -585,6 +706,7 @@ function endRound() {
   mainEl.innerHTML = "";
   enemyPositions = [];
   boulderPositions = [];
+  treePositions = [];
   round++;
   createTiles();
   placePlayer1();
@@ -1203,7 +1325,8 @@ function moveUp() {
     let newPosition = "r" + (parseInt(row) - 1) + "-c" + column;
     if (
       enemyPositions.includes(newPosition) ||
-      boulderPositions.includes(newPosition)
+      boulderPositions.includes(newPosition) ||
+      treePositions.includes(newPosition)
     ) {
       return;
     }
@@ -1242,7 +1365,8 @@ function moveDown() {
     let newPosition = "r" + (parseInt(row) + 1) + "-c" + column;
     if (
       enemyPositions.includes(newPosition) ||
-      boulderPositions.includes(newPosition)
+      boulderPositions.includes(newPosition) ||
+      treePositions.includes(newPosition)
     ) {
       return;
     }
@@ -1280,7 +1404,8 @@ function moveLeft() {
     let newPosition = "r" + row + "-c" + (parseInt(column) - 1);
     if (
       enemyPositions.includes(newPosition) ||
-      boulderPositions.includes(newPosition)
+      boulderPositions.includes(newPosition) ||
+      treePositions.includes(newPosition)
     ) {
       return;
     }
@@ -1316,7 +1441,8 @@ function moveRight() {
     let newPosition = "r" + row + "-c" + (parseInt(column) + 1);
     if (
       enemyPositions.includes(newPosition) ||
-      boulderPositions.includes(newPosition)
+      boulderPositions.includes(newPosition) ||
+      treePositions.includes(newPosition)
     ) {
       return;
     }
@@ -1343,9 +1469,9 @@ function moveRight() {
   }
 }
 
-
 // TODO restart should restart the round and reduce lives by 1 (done)
 
+// TODO add trees to outdoor scene 2
 // TODO sword attack to dogs should do something?
 // TODO make player position the tile last exited each round and adjust enemy spawns
 // TODO add boss stage after round 10
