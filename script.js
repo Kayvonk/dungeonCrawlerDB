@@ -904,11 +904,19 @@ function swingSword() {
     mobsToRemove.forEach((element) => {
       let enemyClass = element.classList[0];
       let enemyIndex = enemyClass.split("-")[1];
-      
+
+      let foundEnemy = enemyPositions.find((item) => item.enemyClass === enemyClass);
+      if (foundEnemy && foundEnemy.isMoving === true) {
+        console.log(foundEnemy);
+        console.log(enemyPositions);
+        console.log("I'm invincible");
+        return;
+      }
+
       slayedEnemies.push(enemyClass);
-      
+
       let allEnemyClass = document.querySelectorAll("." + enemyClass);
-      
+
       allEnemyClass.forEach((img) => {
         img.remove();
       });
@@ -916,7 +924,7 @@ function swingSword() {
       // enemyPositions = enemyPositions.filter(
       //   (position) => position !== affectedTile
       // );
-      enemyPositions = enemyPositions.map((item) => {  
+      enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass) {
           return {
             ...item,
@@ -928,7 +936,6 @@ function swingSword() {
         }
       });
 
-      console.log(enemyPositions);
       let dogImg = document.createElement("img");
 
       if (buffDogeIndexes.includes(parseInt(enemyIndex))) {
@@ -1127,10 +1134,6 @@ function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex, enemyType) {
   );
   if (foundEnemy && foundEnemy.isAlive === false) {
     return;
-  } else {
-    if (foundEnemy) {
-      foundEnemy.isMoving = true;
-    }
   }
 
   let enemyDelay =
@@ -1158,6 +1161,18 @@ function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex, enemyType) {
       isBuffDoge ? dropBoulder(enemyIndex) : null;
       // : fireEnemyBeam(enemyImg, enemyIndex);
     } else {
+      if (foundEnemy) {
+        enemyPositions = enemyPositions.map((item) => {
+          if (item.enemyClass === enemyClass.substring(1)) {
+            return {
+              ...item,             
+              isMoving: true,
+            };
+          } else {
+            return item;
+          }
+        });
+      }
       let directions = ["up", "down", "left", "right"];
       let directionSelected = directions[Math.floor(Math.random() * 4)];
       if (gameOver) {
@@ -1181,6 +1196,9 @@ function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex, enemyType) {
 }
 
 function enemyMoveUp(enemyClass, enemyImgPath, enemyIndex, enemyType) {
+  const foundEnemy = enemyPositions.find(
+    (item) => item.enemyClass === enemyClass.substring(1)
+  );
   let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
   let enemyImg = document.querySelector(enemyClass);
   if (!enemyImg) {
@@ -1218,6 +1236,16 @@ function enemyMoveUp(enemyClass, enemyImgPath, enemyIndex, enemyType) {
         : enemyImgPath;
     let nextTile = document.querySelector("." + newPosition);
     setTimeout(() => {
+      enemyPositions = enemyPositions.map((item) => {
+        if (item.enemyClass === enemyClass.substring(1)) {
+          return {
+            ...item,             
+            isMoving: false,
+          };
+        } else {
+          return item;
+        }
+      });
       enemyImg.remove();
       nextTile.append(newEnemyImg);
     }, 100);
@@ -1225,6 +1253,9 @@ function enemyMoveUp(enemyClass, enemyImgPath, enemyIndex, enemyType) {
 }
 
 function enemyMoveDown(enemyClass, enemyImgPath, enemyIndex, enemyType) {
+  const foundEnemy = enemyPositions.find(
+    (item) => item.enemyClass === enemyClass.substring(1)
+  );
   let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
   let enemyImg = document.querySelector(enemyClass);
   if (!enemyImg) {
@@ -1263,6 +1294,16 @@ function enemyMoveDown(enemyClass, enemyImgPath, enemyIndex, enemyType) {
         : enemyImgPath;
     let nextTile = document.querySelector("." + newPosition);
     setTimeout(() => {
+      enemyPositions = enemyPositions.map((item) => {
+        if (item.enemyClass === enemyClass.substring(1)) {
+          return {
+            ...item,             
+            isMoving: false,
+          };
+        } else {
+          return item;
+        }
+      });
       enemyImg.remove();
       nextTile.append(newEnemyImg);
     }, 100);
@@ -1270,6 +1311,9 @@ function enemyMoveDown(enemyClass, enemyImgPath, enemyIndex, enemyType) {
 }
 
 function enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex, enemyType) {
+  const foundEnemy = enemyPositions.find(
+    (item) => item.enemyClass === enemyClass.substring(1)
+  );
   let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
   let enemyImg = document.querySelector(enemyClass);
   if (!enemyImg) {
@@ -1308,6 +1352,16 @@ function enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex, enemyType) {
         : enemyImgPath;
     let nextTile = document.querySelector("." + newPosition);
     setTimeout(() => {
+      enemyPositions = enemyPositions.map((item) => {
+        if (item.enemyClass === enemyClass.substring(1)) {
+          return {
+            ...item,             
+            isMoving: false,
+          };
+        } else {
+          return item;
+        }
+      });
       enemyImg.remove();
       nextTile.append(newEnemyImg);
     }, 100);
@@ -1315,6 +1369,9 @@ function enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex, enemyType) {
 }
 
 function enemyMoveRight(enemyClass, enemyImgPath, enemyIndex, enemyType) {
+  const foundEnemy = enemyPositions.find(
+    (item) => item.enemyClass === enemyClass.substring(1)
+  );
   let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
   let enemyImg = document.querySelector(enemyClass);
   if (!enemyImg) {
@@ -1353,6 +1410,16 @@ function enemyMoveRight(enemyClass, enemyImgPath, enemyIndex, enemyType) {
         : enemyImgPath;
     let nextTile = document.querySelector("." + newPosition);
     setTimeout(() => {
+      enemyPositions = enemyPositions.map((item) => {
+        if (item.enemyClass === enemyClass.substring(1)) {
+          return {
+            ...item,             
+            isMoving: false,
+          };
+        } else {
+          return item;
+        }
+      });
       enemyImg.remove();
       nextTile.append(newEnemyImg);
     }, 100);
@@ -1587,7 +1654,6 @@ function moveRight() {
 
 // TODO sword attack to dogs should do something?
 // ----if isMoving, then don't allow attack
-
 
 // TODO make player position the tile last exited each round and adjust enemy spawns
 // TODO add boss stage after round 10
