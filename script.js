@@ -4,6 +4,7 @@ let startBtn = document.getElementById("start");
 let startingPosition = "r6-c6";
 let playerPosition = startingPosition;
 let playerDirection;
+let playerEnterDirection;
 let enemyPositions = [];
 let boulderPositions = [];
 let treePositions = [];
@@ -29,6 +30,7 @@ let swordAcquired = false;
 let boulderDestroyed = false;
 let lives = 9;
 let slayedEnemies = [];
+let isBossRound = false;
 startBtn.addEventListener("click", startPrologue);
 
 // ------------------start prologue --------------------------
@@ -572,6 +574,7 @@ function dropBoulder(enemyIndex) {
 function enterTower() {
   isOutdoor2 = false;
   mainEl.innerHTML = "";
+  playerEnterDirection = "bottom";
   startingPosition = "r6-c7";
   boulderPositions = [];
   treePositions = [];
@@ -609,8 +612,8 @@ function startTower() {
   );
   placeEnemy(0);
 
-  let exitTile = document.getElementById("exitTile");
-  exitTile.classList.add("exitDoor");
+  // let exitTile = document.getElementById("exitTile");
+  // exitTile.classList.add("exitDoor");
 }
 
 function restartRound() {
@@ -636,8 +639,8 @@ function restartRound() {
   round--;
   gameOver = false;
   endRound();
-  let exitTile = document.getElementById("exitTile");
-  exitTile.classList.add("exitDoor");
+  // let exitTile = document.getElementById("exitTile");
+  // exitTile.classList.add("exitDoor");
 }
 
 function calculateScore() {
@@ -708,7 +711,8 @@ function displayRound() {
 
 function endRound() {
   if (round + 1 === 10) {
-    return winGame();
+    return startBoss();
+    // return winGame();
   }
   mainEl.innerHTML = "";
   enemyPositions = [];
@@ -738,7 +742,32 @@ function endRound() {
 }
 
 function createTiles() {
-  let exitGroup = ["r1", "c1", "c12"];
+  let playerRow = playerPosition.split("-")[0].substring(1);
+  let playerColumn = playerPosition.split("-")[1].substring(1);
+  if (playerRow === "1") {
+    playerEnterDirection = "top";
+  } else if (playerRow === "6") {
+    playerEnterDirection = "bottom";
+  } else if (playerColumn === "1") {
+    playerEnterDirection = "left";
+  } else if (playerColumn === "12") {
+    playerEnterDirection = "right";
+  }
+
+  let exitGroup = [];
+  if (playerEnterDirection === "bottom") {
+    exitGroup = ["r1", "c1", "c12"];
+  }
+  if (playerEnterDirection === "top") {
+    exitGroup = ["r6", "c1", "c12"];
+  }
+  if (playerEnterDirection === "left") {
+    exitGroup = ["r1", "r6", "c12"];
+  }
+  if (playerEnterDirection === "right") {
+    exitGroup = ["r1", "r6", "c1"];
+  }
+
   let selectedExit;
   let exitClass;
   possibleEnemyPositions = [];
@@ -761,6 +790,25 @@ function createTiles() {
     selectedExit =
       possiblePositions[Math.floor(Math.random() * possiblePositions.length)];
     exitClass = "exitTop";
+  }
+  if (exitGroupSelection === "r6") {
+    let possiblePositions = [
+      "r6-c1",
+      "r6-c2",
+      "r6-c3",
+      "r6-c4",
+      "r6-c5",
+      "r6-c6",
+      "r6-c7",
+      "r6-c8",
+      "r6-c9",
+      "r6-c10",
+      "r6-c11",
+      "r6-c12",
+    ];
+    selectedExit =
+      possiblePositions[Math.floor(Math.random() * possiblePositions.length)];
+    exitClass = "exitBottom";
   }
   if (exitGroupSelection === "c1") {
     let possiblePositions = ["r4-c1", "r3-c1", "r2-c1", "r1-c1"];
@@ -794,8 +842,22 @@ function createTiles() {
     let row = tilePosition.split("-")[0].substring(1);
     let column = tilePosition.split("-")[1].substring(1);
     // adjust here to change enemy spawn locations
-    if (row < 5) {
-      possibleEnemyPositions.push(tilePosition);
+    if (playerEnterDirection === "top") {
+      if (row > 2) {
+        possibleEnemyPositions.push(tilePosition);
+      }
+    } else if (playerEnterDirection === "bottom") {
+      if (row < 5) {
+        possibleEnemyPositions.push(tilePosition);
+      }
+    } else if (playerEnterDirection === "left") {
+      if (column > 2) {
+        possibleEnemyPositions.push(tilePosition);
+      }
+    } else if (playerEnterDirection === "right") {
+      if (column < 11) {
+        possibleEnemyPositions.push(tilePosition);
+      }
     }
 
     if (row === "1") {
@@ -818,14 +880,17 @@ function createTiles() {
       wall.className = "wall wallRight";
       tile.append(wall);
     }
-    if (tilePosition === selectedExit) {
+    if (tilePosition === selectedExit && !isBossRound) {
       exitTilePosition = tilePosition;
       exitDirection = exitClass;
-      let exitTile = document.createElement("div");
-      exitTile.className = round === 0 ? exitClass : "exitDoor " + exitClass;
+
+      let exitTile = document.createElement("img");
+      exitTile.src = "./image/sigil.png";
+      exitTile.className = "exitDoor";
       exitTile.setAttribute("id", "exitTile");
       tile.append(exitTile);
-      tile.setAttribute("id", "exit");
+      // exitTile.className = round === 0 ? exitClass : "exitDoor " + exitClass;
+      // tile.setAttribute("id", "exit");
     }
 
     mainEl.append(tile);
@@ -905,11 +970,10 @@ function swingSword() {
       let enemyClass = element.classList[0];
       let enemyIndex = enemyClass.split("-")[1];
 
-      let foundEnemy = enemyPositions.find((item) => item.enemyClass === enemyClass);
+      let foundEnemy = enemyPositions.find(
+        (item) => item.enemyClass === enemyClass
+      );
       if (foundEnemy && foundEnemy.isMoving === true) {
-        console.log(foundEnemy);
-        console.log(enemyPositions);
-        console.log("I'm invincible");
         return;
       }
 
@@ -1158,14 +1222,15 @@ function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex, enemyType) {
       enemyImg.src = isBuffDoge
         ? "./image/buffdogeAura.png"
         : "./image/dogeRedEyes.png";
-      isBuffDoge ? dropBoulder(enemyIndex) : null;
-      // : fireEnemyBeam(enemyImg, enemyIndex);
+      isBuffDoge
+        ? dropBoulder(enemyIndex)
+        : fireEnemyBeam(enemyImg, enemyIndex);
     } else {
       if (foundEnemy) {
         enemyPositions = enemyPositions.map((item) => {
           if (item.enemyClass === enemyClass.substring(1)) {
             return {
-              ...item,             
+              ...item,
               isMoving: true,
             };
           } else {
@@ -1239,7 +1304,7 @@ function enemyMoveUp(enemyClass, enemyImgPath, enemyIndex, enemyType) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
           return {
-            ...item,             
+            ...item,
             isMoving: false,
           };
         } else {
@@ -1297,7 +1362,7 @@ function enemyMoveDown(enemyClass, enemyImgPath, enemyIndex, enemyType) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
           return {
-            ...item,             
+            ...item,
             isMoving: false,
           };
         } else {
@@ -1355,7 +1420,7 @@ function enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex, enemyType) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
           return {
-            ...item,             
+            ...item,
             isMoving: false,
           };
         } else {
@@ -1413,7 +1478,7 @@ function enemyMoveRight(enemyClass, enemyImgPath, enemyIndex, enemyType) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
           return {
-            ...item,             
+            ...item,
             isMoving: false,
           };
         } else {
@@ -1448,41 +1513,31 @@ function checkKeyPressed(evt) {
 
   if (canMove && evt.keyCode === 38) {
     if (
-      (exitDirection === "exitTop" && playerPosition === exitTilePosition) ||
       (isOutdoor1 && playerPosition === caveEntrancePosition) ||
       (isOutdoor2 && playerPosition === towerEntrancePosition)
     ) {
-      isOutdoor1 ? enterCave() : isOutdoor2 ? enterTower() : endRound();
+      isOutdoor1 ? enterCave() : isOutdoor2 ? enterTower() : null;
     }
     moveUp();
     playerDirection = "up";
     limitMovement();
   } else if (canMove && evt.keyCode === 40) {
-    if (
-      (exitDirection === "exitBottom" && playerPosition === exitTilePosition) ||
-      (isCave && playerPosition === caveExitPosition)
-    ) {
-      isCave ? exitCave() : endRound();
+    if (isCave && playerPosition === caveExitPosition) {
+      isCave ? exitCave() : null;
     }
     moveDown();
     playerDirection = "down";
     limitMovement();
   } else if (canMove && evt.keyCode === 37) {
-    if (
-      (exitDirection === "exitLeft" && playerPosition === exitTilePosition) ||
-      (isOutdoor1 && playerPosition === scene1ExitTilePosition)
-    ) {
-      isOutdoor1 ? enterOutdoorScene2() : endRound();
+    if (isOutdoor1 && playerPosition === scene1ExitTilePosition) {
+      isOutdoor1 ? enterOutdoorScene2() : null;
     }
     moveLeft();
     playerDirection = "left";
     limitMovement();
   } else if (canMove && evt.keyCode === 39) {
-    if (
-      (exitDirection === "exitRight" && playerPosition === exitTilePosition) ||
-      (isOutdoor2 && playerPosition === scene2ExitTilePosition)
-    ) {
-      isOutdoor2 ? exitOutDoorScene2() : endRound();
+    if (isOutdoor2 && playerPosition === scene2ExitTilePosition) {
+      isOutdoor2 ? exitOutDoorScene2() : null;
     }
     moveRight();
     playerDirection = "right";
@@ -1526,9 +1581,12 @@ function moveUp() {
     setTimeout(() => {
       catImg.remove();
       nextTile.append(newCatImg);
+
+      if (playerPosition === exitTilePosition) {
+        startingPosition = playerPosition;
+        endRound();
+      }
     }, 100);
-  }
-  if (isCave && playerPosition === swordPosition) {
   }
 }
 
@@ -1566,9 +1624,11 @@ function moveDown() {
     setTimeout(() => {
       catImg.remove();
       nextTile.append(newCatImg);
+      if (playerPosition === exitTilePosition) {
+        startingPosition = playerPosition;
+        endRound();
+      }
     }, 100);
-  }
-  if (isCave && playerPosition === swordPosition) {
   }
 }
 function moveLeft() {
@@ -1605,6 +1665,10 @@ function moveLeft() {
     setTimeout(() => {
       catImg.remove();
       nextTile.append(newCatImg);
+      if (playerPosition === exitTilePosition) {
+        startingPosition = playerPosition;
+        endRound();
+      }
     }, 100);
   }
 }
@@ -1643,20 +1707,39 @@ function moveRight() {
     setTimeout(() => {
       catImg.remove();
       nextTile.append(newCatImg);
+      if (playerPosition === exitTilePosition) {
+        startingPosition = playerPosition;
+        endRound();
+      }
     }, 100);
   }
 }
 
 // -------end player movement-------------------
 
+// -----------start boss -----------------
+
+function startBoss() {
+  isBossRound = true;
+  mainEl.innerHTML = "";
+  enemyPositions = [];
+  boulderPositions = [];
+  treePositions = [];
+  round++;
+  createTiles();
+  placePlayer1();
+}
+
+// --------------end boss-----------
+
 // TODO restart should restart the round and reduce lives by 1 (done)
 // TODO add trees to outdoor scene 2 (done)
-
-// TODO sword attack to dogs should do something?
-// ----if isMoving, then don't allow attack
+// TODO sword attack to dogs should do something? (done)
+// ----if isMoving, then don't allow attack (done)
 
 // TODO make player position the tile last exited each round and adjust enemy spawns
 // TODO add boss stage after round 10
+
 // TODO add ending
 // TODO add dialogue to boss and old man
 // TODO add sound effects

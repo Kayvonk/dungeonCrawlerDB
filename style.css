@@ -183,9 +183,10 @@ z-index: 5;
 }
 
 .exitDoor {
+  position: absolute;
   width: 5vw;
   height: 10vh;
-  background: radial-gradient(circle, #faecef 0%, #cca2ab 50%, #3d3d3d 100%);
+  /* background: radial-gradient(circle, #faecef 0%, #cca2ab 50%, #3d3d3d 100%); */
 }
 
 .tile {
@@ -288,26 +289,22 @@ z-index: 5;
   background-image: url("./image/dirt.jpg");  
 }
 
-.wallTop,
-.exitTop {
+.wallTop {
   position: absolute;
   top: -10vh;
 }
 
-.wallBottom,
-.exitBottom {
+.wallBottom {
   position: absolute;
   bottom: -10vh;
 }
 
-.wallLeft,
-.exitLeft {
+.wallLeft {
   position: absolute;
   left: -5vw;
 }
 
-.wallRight,
-.exitRight {
+.wallRight {
   position: absolute;
   right: -5vw;
 }
