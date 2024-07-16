@@ -31,16 +31,16 @@ let boulderDestroyed = false;
 let lives = 9;
 let slayedEnemies = [];
 let isBossRound = false;
-let lossPause = false
+let lossPause = false;
 startBtn.addEventListener("click", startPrologue);
 
 // ------------------start prologue --------------------------
 
 function startPrologue() {
   gameStarted = true;
-  playSoundEffect('gameStart')
-  let audioBtn = document.getElementById("audioButton")
-  audioBtn.classList.add('faded');
+  playSoundEffect("gameStart");
+  let audioBtn = document.getElementById("audioButton");
+  audioBtn.classList.add("faded");
   let header = document.getElementsByTagName("header")[0];
   let swordTop = document.getElementById("swordTopLogo");
   let swordCircle = document.getElementById("swordCircle");
@@ -297,7 +297,6 @@ function createCaveTiles() {
     let caveTilePosition = caveTile.classList[1];
     let row = caveTilePosition.split("-")[0].substring(1);
     let column = caveTilePosition.split("-")[1].substring(1);
-    // let isDirtTile = dirtTiles.includes(caveTilePosition)
 
     if (row === "1") {
       let wall = document.createElement("div");
@@ -324,17 +323,6 @@ function createCaveTiles() {
       wall.className = "caveWall wallRight";
       caveTile.append(wall);
     }
-
-    // if (tilePosition === selectedExit) {
-    //   exitTilePosition = tilePosition;
-    //   exitDirection = exitClass;
-    //   let exitTile = document.createElement("div");
-    //   exitTile.className = round === 0 ? exitClass : "exitDoor " + exitClass;
-    //   exitTile.setAttribute("id", "exitTile");
-    //   tile.append(exitTile);
-    //   tile.setAttribute("id", "exit");
-    // }
-
     mainEl.append(caveTile);
   }
   placePlayer1();
@@ -484,7 +472,6 @@ function createOutdoorScene2Tiles() {
     let outDoorTilePosition = outDoorTile.classList[1];
     let row = outDoorTilePosition.split("-")[0].substring(1);
     let column = outDoorTilePosition.split("-")[1].substring(1);
-    // let isDirtTile = dirtTiles.includes(outDoorTilePosition)
 
     if (row === "1") {
       let wall = document.createElement("div");
@@ -592,9 +579,6 @@ function enterTower() {
 
 function startTower() {
   const currentRound = round;
-
-  // gameStarted = true;
-  // startBtn.style.display = "none";
   secondsTimer = setInterval(() => {
     if (gameOver) {
       clearInterval(secondsTimer);
@@ -602,7 +586,6 @@ function startTower() {
     }
     seconds++;
   }, 1000);
-  // displayRound();
   let newEnemyPosition =
     possibleEnemyPositions[
       Math.floor(Math.random() * possibleEnemyPositions.length)
@@ -618,9 +601,6 @@ function startTower() {
     (position) => position !== newEnemyPosition
   );
   placeEnemy(0);
-
-  // let exitTile = document.getElementById("exitTile");
-  // exitTile.classList.add("exitDoor");
 }
 
 function restartRound() {
@@ -631,7 +611,6 @@ function restartRound() {
   clearInterval(boulderTimer);
   clearInterval(secondsTimer);
 
-  // seconds = 0;
   secondsTimer = setInterval(() => {
     if (gameOver) {
       clearInterval(secondsTimer);
@@ -646,8 +625,6 @@ function restartRound() {
   round--;
   gameOver = false;
   endRound();
-  // let exitTile = document.getElementById("exitTile");
-  // exitTile.classList.add("exitDoor");
 }
 
 function calculateScore() {
@@ -664,12 +641,6 @@ function calculateScore() {
   let scoreDiv = document.getElementById("results");
   scoreDiv.style.display = "flex";
   scoreDiv.style.fontFamily = "Arial";
-  //   scoreDiv.innerHTML = `
-  //   <h2>${typeof attackingEnemyIndex === "number" ? "You lose" : "You win"} </h2>
-  //   <p>High Score: ${highScore}</p>
-  //   <p>Score: ${finalScore}</p>
-  //   <p>Time: ${seconds} seconds</p>
-  // `
   scoreDiv.innerHTML = `
  <h2>${typeof attackingEnemyIndex === "number" ? "Game Over" : "You win"} </h2>
  <p>Lives remaining: ${lives}</p>
@@ -695,11 +666,11 @@ function restartGame() {
 
 function loseGame(enemyIndex) {
   attackingEnemyIndex = enemyIndex;
-  playSoundEffect('gameOver')
+  playSoundEffect("gameOver");
   gameOver = true;
-  lossPause = true
+  lossPause = true;
   setTimeout(() => {
-    lossPause = false
+    lossPause = false;
   }, 2000);
 }
 
@@ -725,9 +696,8 @@ function endRound() {
   if (round + 1 === 10) {
     // if (round + 1 === 1) {
     return startBoss();
-    // return winGame();
   }
-  playSoundEffect('teleport')
+  playSoundEffect("teleport");
   mainEl.innerHTML = "";
   enemyPositions = [];
   boulderPositions = [];
@@ -735,7 +705,6 @@ function endRound() {
   round++;
   createTiles();
   placePlayer1();
-  // displayRound();
   for (let i = 0; i < round + 1; i++) {
     let newEnemyPosition =
       possibleEnemyPositions[
@@ -903,8 +872,6 @@ function createTiles() {
       exitTile.className = "exitDoor";
       exitTile.setAttribute("id", "exitTile");
       tile.append(exitTile);
-      // exitTile.className = round === 0 ? exitClass : "exitDoor " + exitClass;
-      // tile.setAttribute("id", "exit");
     }
 
     mainEl.append(tile);
@@ -957,12 +924,11 @@ function swingSword() {
 
   swordSwingTile.appendChild(swordAnimation);
 
-
-  playSoundEffect('swing')
+  playSoundEffect("swing");
 
   swordAnimationLine.addEventListener("animationend", () => {
     swordAnimation.remove();
-    swordSwingTile.classList.remove("swordSwing"); // Remove the swordSwing class after animation
+    swordSwingTile.classList.remove("swordSwing");
   });
 
   if (boulderPositions.includes(affectedTile)) {
@@ -1002,9 +968,6 @@ function swingSword() {
         img.remove();
       });
 
-      // enemyPositions = enemyPositions.filter(
-      //   (position) => position !== affectedTile
-      // );
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass) {
           return {
@@ -1209,7 +1172,6 @@ function fireEnemyBeam(enemyImg, enemyIndex) {
 // ------------start enemy movement------------------
 
 function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex, enemyType) {
-  // let enemyEl = document.querySelector(enemyClass)
   const foundEnemy = enemyPositions.find(
     (item) => item.enemyClass === enemyClass.substring(1)
   );
@@ -1752,17 +1714,16 @@ function startBoss() {
   musicCount = 1; // Index of the boss song
   audio.src = musicArray[musicCount].song; // Change the audio source to boss song
 
-  if(musicToggleStatus) {
-    audio.play() // Start playing the boss music
-    .then(() => {
-      console.log('Boss music is playing.');
-    })
-    .catch((error) => {
-      console.error('Failed to play audio:', error);
-    });
+  if (musicToggleStatus) {
+    audio
+      .play() // Start playing the boss music
+      .then(() => {
+        console.log("Boss music is playing.");
+      })
+      .catch((error) => {
+        console.error("Failed to play audio:", error);
+      });
   }
-
-    
 }
 
 function placeBoss() {
@@ -1887,63 +1848,60 @@ let musicCount = 0;
 
 let musicToggleStatus = false;
 
-
 let audio = new Audio(musicArray[musicCount].song);
 
-// Function to toggle music playback
 let toggleMusic = () => {
   if (musicToggleStatus) {
-    // Stop the current music
     audio.pause();
-    audio.currentTime = 0; // Reset to the beginning
+    audio.currentTime = 0;
   } else {
-    // Start playing the music
-    audio.play()
+    audio
+      .play()
       .then(() => {
-        console.log('Audio is playing.');
+        console.log("Audio is playing.");
       })
       .catch((error) => {
-        console.error('Failed to play audio:', error);
+        console.error("Failed to play audio:", error);
       });
   }
 
   musicToggleStatus = !musicToggleStatus;
 
-  let audioButton = document.getElementById('audioButton');
-  audioButton.textContent = musicToggleStatus ? '🔇' : '🔊'; 
+  let audioButton = document.getElementById("audioButton");
+  audioButton.textContent = musicToggleStatus ? "🔇" : "🔊";
 };
 
 let updateVolume = (event) => {
   audio.volume = event.target.value;
 };
 
-window.addEventListener('load', () => {
-  let audioButton = document.getElementById('audioButton');
-  let volumeSlider = document.getElementById('volumeSlider');
+window.addEventListener("load", () => {
+  let audioButton = document.getElementById("audioButton");
+  let volumeSlider = document.getElementById("volumeSlider");
 
-  audioButton.textContent = musicToggleStatus ? '🔇' : '🔊';
+  audioButton.textContent = musicToggleStatus ? "🔇" : "🔊";
 
-  audioButton.addEventListener('click', toggleMusic);
+  audioButton.addEventListener("click", toggleMusic);
 
   audio.volume = volumeSlider.value;
 
-  volumeSlider.addEventListener('input', updateVolume);
-
+  volumeSlider.addEventListener("input", updateVolume);
 });
 
 const soundEffects = {
   gameOver: new Audio("./audio/se/gameOver.mp3"),
   gameStart: new Audio("./audio/se/gameStart.mp3"),
   swing: new Audio("./audio/se/swing.mp3"),
-  teleport: new Audio("./audio/se/teleport.mp3")
+  teleport: new Audio("./audio/se/teleport.mp3"),
 };
 
-Object.values(soundEffects).forEach(effect => effect.volume = 0.1);
+Object.values(soundEffects).forEach((effect) => (effect.volume = 0.1));
 soundEffects.swing.playbackRate = 1.5;
 
 const playSoundEffect = (effect) => {
   if (soundEffects[effect]) {
-    soundEffects[effect].play()
+    soundEffects[effect]
+      .play()
       .then(() => {
         console.log(`${effect} sound effect is playing.`);
       })
@@ -1957,20 +1915,11 @@ const playSoundEffect = (effect) => {
 
 // -------------end music logic--------------
 
-// TODO restart should restart the round and reduce lives by 1 (done)
-// TODO add trees to outdoor scene 2 (done)
-// TODO sword attack to dogs should do something? (done)
-// ----if isMoving, then don't allow attack (done)
-
 // TODO make player position the tile last exited each round and adjust enemy spawns (done)
 // ----- could do more to ensure spawns and enemy positions are correct
-
-// TODO add boss stage after round 10
+// on the 1st floor tele can spawn on same row
+// on continue, tele can spawn on same tile
 
 // TODO add ending
-// TODO add dialogue to boss and old man (done)
-// TODO add sound effects
-// TODO calculate score better
-// TODO (maybe) add secret sword location
-
-// i didn't think you would make it this far....no matter. This ends here!
+// TODO add boss stage after round 10
+// TODO calculate score better (probably lives left plus time inverted bonus)
