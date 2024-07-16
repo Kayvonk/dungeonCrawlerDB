@@ -37,6 +37,9 @@ startBtn.addEventListener("click", startPrologue);
 
 function startPrologue() {
   gameStarted = true;
+  let audioBtn = document.getElementById("audioButton")
+  // audioBtn.style.opacity = .5
+  audioBtn.classList.add('faded');
   let header = document.getElementsByTagName("header")[0];
   let swordTop = document.getElementById("swordTopLogo");
   let swordCircle = document.getElementById("swordCircle");
@@ -713,8 +716,8 @@ function displayRound() {
 }
 
 function endRound() {
-  // if (round + 1 === 10) {
-  if (round + 1 === 1) {
+  if (round + 1 === 10) {
+    // if (round + 1 === 1) {
     return startBoss();
     // return winGame();
   }
@@ -1735,6 +1738,18 @@ function startBoss() {
   placePlayer1();
   placeBoss();
   canMove = false;
+
+  musicCount = 1; // Index of the boss song
+  audio.src = musicArray[musicCount].song; // Change the audio source to boss song
+  audio.play() // Start playing the boss music
+    .then(() => {
+      console.log('Boss music is playing.');
+    })
+    .catch((error) => {
+      console.error('Failed to play audio:', error);
+    });
+
+    
 }
 
 function placeBoss() {
@@ -1763,8 +1778,8 @@ function introduceBoss(selectedTile) {
       dialogueContent.textContent += character;
       characterCounter++;
     } else {
-       clearInterval(characterTimer) 
-       startBossFight(selectedTile)
+      clearInterval(characterTimer);
+      startBossFight(selectedTile);
     }
   }, 100);
 
@@ -1788,7 +1803,7 @@ function introduceOldCat(selectedTile) {
     if (characterCounter < bossDialogue.length - 1) {
       characterCounter++;
     } else {
-        clearInterval(characterTimer);
+      clearInterval(characterTimer);
     }
   }, 100);
 
@@ -1801,44 +1816,110 @@ function startBossFight(selectedTile) {
   let dialogueBox = document.querySelector(".dialogue-box");
   setTimeout(() => {
     dialogueBox.remove();
-    
-let shadowClone1Position = "r3-c4"
-let shadowClone2Position = "r3-c8"
 
+    let shadowClone1Position = "r3-c4";
+    let shadowClone2Position = "r3-c8";
 
-let shadowClone1Animation = document.createElement("img")
-shadowClone1Animation.src = "./image/shadowSamuraiDoge.png"
-shadowClone1Animation.className = "shadowCloneDog1-animate cloneLeft"
-selectedTile.append(shadowClone1Animation)
+    let shadowClone1Animation = document.createElement("img");
+    shadowClone1Animation.src = "./image/shadowSamuraiDoge.png";
+    shadowClone1Animation.className = "shadowCloneDog1-animate cloneLeft";
+    selectedTile.append(shadowClone1Animation);
 
-let shadowClone2Animation = document.createElement("img")
-shadowClone2Animation.src = "./image/shadowSamuraiDoge.png"
-shadowClone2Animation.className = "shadowCloneDog2-animate cloneRight"
-selectedTile.append(shadowClone2Animation)
+    let shadowClone2Animation = document.createElement("img");
+    shadowClone2Animation.src = "./image/shadowSamuraiDoge.png";
+    shadowClone2Animation.className = "shadowCloneDog2-animate cloneRight";
+    selectedTile.append(shadowClone2Animation);
 
-shadowClone1Animation.addEventListener("animationend", () => {
-  shadowClone1Animation.remove();
-  let shadowClone1Tile = document.querySelector("." + shadowClone1Position)
-  let shadowClone1 = document.createElement("img")
-shadowClone1.src = "./image/shadowSamuraiDoge.png"
-shadowClone1.className = "shadowCloneDog1"
-shadowClone1Tile.append(shadowClone1)
-});
-shadowClone2Animation.addEventListener("animationend", () => {
-  shadowClone2Animation.remove();
-  let shadowClone2Tile = document.querySelector("." + shadowClone2Position)
-  let shadowClone2 = document.createElement("img")
-shadowClone2.src = "./image/shadowSamuraiDoge.png"
-shadowClone2.className = "shadowCloneDog1"
-shadowClone2Tile.append(shadowClone2)
-
-});
-
+    shadowClone1Animation.addEventListener("animationend", () => {
+      shadowClone1Animation.remove();
+      let shadowClone1Tile = document.querySelector("." + shadowClone1Position);
+      let shadowClone1 = document.createElement("img");
+      shadowClone1.src = "./image/shadowSamuraiDoge.png";
+      shadowClone1.className = "shadowCloneDog1";
+      shadowClone1Tile.append(shadowClone1);
+    });
+    shadowClone2Animation.addEventListener("animationend", () => {
+      shadowClone2Animation.remove();
+      let shadowClone2Tile = document.querySelector("." + shadowClone2Position);
+      let shadowClone2 = document.createElement("img");
+      shadowClone2.src = "./image/shadowSamuraiDoge.png";
+      shadowClone2.className = "shadowCloneDog1";
+      shadowClone2Tile.append(shadowClone2);
+    });
   }, 2000);
-
 }
 
 // --------------end boss-----------
+
+/* ----------music logic------------- */
+
+let musicArray = [
+  {
+    name: "opening",
+    song: "./audio/bgm/opening.mp3",
+    duration: "430000",
+  },
+  {
+    name: "boss",
+    song: "./audio/bgm/boss.mp3",
+    duration: "212000",
+  },
+  {
+    name: "ending",
+    song: "./audio/bgm/ending.mp3",
+    duration: "242000",
+  },
+];
+let musicCount = 0;
+
+let musicToggleStatus = false;
+
+
+let audio = new Audio(musicArray[musicCount].song);
+
+// Function to toggle music playback
+let toggleMusic = () => {
+  if (musicToggleStatus) {
+    // Stop the current music
+    audio.pause();
+    audio.currentTime = 0; // Reset to the beginning
+  } else {
+    // Start playing the music
+    audio.play()
+      .then(() => {
+        console.log('Audio is playing.');
+      })
+      .catch((error) => {
+        console.error('Failed to play audio:', error);
+      });
+  }
+
+  musicToggleStatus = !musicToggleStatus;
+
+  let audioButton = document.getElementById('audioButton');
+  audioButton.textContent = musicToggleStatus ? '🔇' : '🔊'; 
+};
+
+let updateVolume = (event) => {
+  audio.volume = event.target.value;
+};
+
+window.addEventListener('load', () => {
+  let audioButton = document.getElementById('audioButton');
+  let volumeSlider = document.getElementById('volumeSlider');
+
+  audioButton.textContent = musicToggleStatus ? '🔇' : '🔊';
+
+  audioButton.addEventListener('click', toggleMusic);
+
+  audio.volume = volumeSlider.value;
+
+  volumeSlider.addEventListener('input', updateVolume);
+
+});
+
+
+// -------------end music logic--------------
 
 // TODO restart should restart the round and reduce lives by 1 (done)
 // TODO add trees to outdoor scene 2 (done)

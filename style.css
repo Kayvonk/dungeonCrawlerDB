@@ -645,24 +645,10 @@ z-index: 5;
 
 .dialogue-content {
   margin: 0;
-  font-size: 1em;
+  font-size: 1.6em;
   margin-bottom: 20px;
 }
 
-.dialogue-button {
-  background-color: gold;
-  color: black;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.dialogue-button:hover {
-  background-color: darkgoldenrod;
-}
 
 /* -----------boss fight-------------- */
 
@@ -714,3 +700,53 @@ z-index: 5;
   position: relative;  
 }
 
+
+
+/* ----------music logic------------- */
+
+#audioControlContainer {
+  position: fixed;
+  bottom: 50px;
+  left: 50px;
+  display: flex;
+  align-items: center;
+  z-index: 11;  
+}
+
+#audioButton {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  transition: opacity 0.5s ease; /* Smooth transition for opacity */
+
+}
+
+.faded {
+  opacity: .5;
+}
+
+#audioButton:hover,
+#volumeSlider:hover {
+  opacity: 1; /* Full opacity on hover */
+}
+
+#audioControlContainer:hover #audioButton {
+  opacity: 1; /* Full opacity on hover */
+}
+
+#volumeSlider {
+  width: 100px;
+  margin-left: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: #eee;
+  border-radius: 5px;
+}
+
+#audioControlContainer:hover #volumeSlider {
+  opacity: 1;
+}
