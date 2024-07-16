@@ -613,3 +613,104 @@ z-index: 5;
     transform: rotate(90deg);
   }
 }
+
+/* ------dialogue box------- */
+
+
+/* Dialogue Box styling */
+.dialogue-box {
+  position: absolute; /* Position absolute for dialog placement */
+  left: 50%;
+  bottom: 25vh;
+  transform: translate(-50%, 50%);
+  background-color: rgba(0, 0, 0, 0.8); /* Slightly opaque black background */
+  color: #fff; /* White text */
+  border-radius: 10px; /* Slight border radius */
+  padding: 20px;
+  width: 30vw;
+  height: 10vh;
+  box-shadow: 
+      0 0 0 2px rgba(0, 0, 0, 0.2),
+      0 0 0 6px rgba(255, 215, 0, 0.8);
+  text-align:start; 
+  overflow: hidden; /* Ensures content does not overflow the border radius */
+  z-index: 10; /* Ensures the dialogue box appears on top */
+}
+
+.dialogue-title {
+  margin: 0;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.dialogue-content {
+  margin: 0;
+  font-size: 1em;
+  margin-bottom: 20px;
+}
+
+.dialogue-button {
+  background-color: gold;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dialogue-button:hover {
+  background-color: darkgoldenrod;
+}
+
+/* -----------boss fight-------------- */
+
+.cloneLeft {
+  animation: cloneLeft 0.1s forwards;
+}
+
+@keyframes cloneLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-10vw);
+  }
+}
+
+.cloneRight {
+  animation: cloneRight 0.1s forwards;
+}
+
+@keyframes cloneRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(10vw);
+  }
+}
+
+
+.bossImg{
+  width: 6vw;
+  height: 12vh;
+  z-index: 2;
+  position: relative;  
+}
+
+.shadowCloneDog1-animate, .shadowCloneDog2-animate {
+  width: 6vw;
+  height: 12vh;
+  z-index: 2;
+  position: absolute;  
+}
+
+.shadowCloneDog1, .shadowCloneDog2 {
+  width: 6vw;
+  height: 12vh;
+  z-index: 2;
+  position: relative;  
+}
+

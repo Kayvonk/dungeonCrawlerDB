@@ -264,6 +264,9 @@ function createCaveTiles() {
         oldCatImg.className = "oldCat";
         oldCatImg.src = "./image/oldCat.png";
         caveTile.append(oldCatImg);
+
+        introduceOldCat(caveTile);
+
         caveTile.className = "stoneTile r2-c" + (index - 12);
       } else {
         caveTile.className = "stoneTile r2-c" + (index - 12);
@@ -710,7 +713,8 @@ function displayRound() {
 }
 
 function endRound() {
-  if (round + 1 === 10) {
+  // if (round + 1 === 10) {
+  if (round + 1 === 1) {
     return startBoss();
     // return winGame();
   }
@@ -885,7 +889,7 @@ function createTiles() {
       exitDirection = exitClass;
 
       let exitTile = document.createElement("img");
-      exitTile.src = "./image/sigil.png";
+      exitTile.src = "./image/redSigil.png";
       exitTile.className = "exitDoor";
       exitTile.setAttribute("id", "exitTile");
       tile.append(exitTile);
@@ -1726,8 +1730,112 @@ function startBoss() {
   boulderPositions = [];
   treePositions = [];
   round++;
+  startingPosition = "r6-c6";
   createTiles();
   placePlayer1();
+  placeBoss();
+  canMove = false;
+}
+
+function placeBoss() {
+  let bossPosition = "r3-c6";
+  let selectedTile = document.querySelector("." + bossPosition);
+  let bossImg = document.createElement("img");
+  bossImg.src = "./image/samuraiDoge.png";
+  bossImg.className = "bossImg";
+  selectedTile.append(bossImg);
+  introduceBoss(selectedTile);
+}
+
+function introduceBoss(selectedTile) {
+  const dialogueBox = document.createElement("div");
+  dialogueBox.className = "dialogue-box";
+
+  const dialogueContent = document.createElement("p");
+  dialogueContent.className = "dialogue-content";
+
+  let bossDialogue =
+    "I didn't think you would make it this far....no matter. This ends here!";
+  let characterCounter = 0;
+  let characterTimer = setInterval(() => {
+    const character = bossDialogue[characterCounter];
+    if (characterCounter < bossDialogue.length) {
+      dialogueContent.textContent += character;
+      characterCounter++;
+    } else {
+       clearInterval(characterTimer) 
+       startBossFight(selectedTile)
+    }
+  }, 100);
+
+  dialogueBox.appendChild(dialogueContent);
+
+  selectedTile.appendChild(dialogueBox);
+}
+
+function introduceOldCat(selectedTile) {
+  const dialogueBox = document.createElement("div");
+  dialogueBox.className = "dialogue-box";
+
+  const dialogueContent = document.createElement("p");
+  dialogueContent.className = "dialogue-content";
+
+  let bossDialogue = "It's dangerous to go alone. Take this!";
+  let characterCounter = 0;
+  let characterTimer = setInterval(() => {
+    const character = bossDialogue[characterCounter];
+    dialogueContent.textContent += character;
+    if (characterCounter < bossDialogue.length - 1) {
+      characterCounter++;
+    } else {
+        clearInterval(characterTimer);
+    }
+  }, 100);
+
+  dialogueBox.appendChild(dialogueContent);
+
+  selectedTile.appendChild(dialogueBox);
+}
+
+function startBossFight(selectedTile) {
+  let dialogueBox = document.querySelector(".dialogue-box");
+  setTimeout(() => {
+    dialogueBox.remove();
+    
+let shadowClone1Position = "r3-c4"
+let shadowClone2Position = "r3-c8"
+
+
+let shadowClone1Animation = document.createElement("img")
+shadowClone1Animation.src = "./image/shadowSamuraiDoge.png"
+shadowClone1Animation.className = "shadowCloneDog1-animate cloneLeft"
+selectedTile.append(shadowClone1Animation)
+
+let shadowClone2Animation = document.createElement("img")
+shadowClone2Animation.src = "./image/shadowSamuraiDoge.png"
+shadowClone2Animation.className = "shadowCloneDog2-animate cloneRight"
+selectedTile.append(shadowClone2Animation)
+
+shadowClone1Animation.addEventListener("animationend", () => {
+  shadowClone1Animation.remove();
+  let shadowClone1Tile = document.querySelector("." + shadowClone1Position)
+  let shadowClone1 = document.createElement("img")
+shadowClone1.src = "./image/shadowSamuraiDoge.png"
+shadowClone1.className = "shadowCloneDog1"
+shadowClone1Tile.append(shadowClone1)
+});
+shadowClone2Animation.addEventListener("animationend", () => {
+  shadowClone2Animation.remove();
+  let shadowClone2Tile = document.querySelector("." + shadowClone2Position)
+  let shadowClone2 = document.createElement("img")
+shadowClone2.src = "./image/shadowSamuraiDoge.png"
+shadowClone2.className = "shadowCloneDog1"
+shadowClone2Tile.append(shadowClone2)
+
+});
+
+  }, 2000);
+
 }
 
 // --------------end boss-----------
@@ -1737,11 +1845,15 @@ function startBoss() {
 // TODO sword attack to dogs should do something? (done)
 // ----if isMoving, then don't allow attack (done)
 
-// TODO make player position the tile last exited each round and adjust enemy spawns
+// TODO make player position the tile last exited each round and adjust enemy spawns (done)
+// ----- could do more to ensure spawns and enemy positions are correct
+
 // TODO add boss stage after round 10
 
 // TODO add ending
-// TODO add dialogue to boss and old man
+// TODO add dialogue to boss and old man (done)
 // TODO add sound effects
 // TODO calculate score better
 // TODO (maybe) add secret sword location
+
+// i didn't think you would make it this far....no matter. This ends here!
