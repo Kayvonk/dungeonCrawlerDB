@@ -31,14 +31,15 @@ let boulderDestroyed = false;
 let lives = 9;
 let slayedEnemies = [];
 let isBossRound = false;
+let lossPause = false
 startBtn.addEventListener("click", startPrologue);
 
 // ------------------start prologue --------------------------
 
 function startPrologue() {
   gameStarted = true;
+  playSoundEffect('gameStart')
   let audioBtn = document.getElementById("audioButton")
-  // audioBtn.style.opacity = .5
   audioBtn.classList.add('faded');
   let header = document.getElementsByTagName("header")[0];
   let swordTop = document.getElementById("swordTopLogo");
@@ -694,7 +695,12 @@ function restartGame() {
 
 function loseGame(enemyIndex) {
   attackingEnemyIndex = enemyIndex;
+  playSoundEffect('gameOver')
   gameOver = true;
+  lossPause = true
+  setTimeout(() => {
+    lossPause = false
+  }, 2000);
 }
 
 function winGame() {
@@ -721,6 +727,7 @@ function endRound() {
     return startBoss();
     // return winGame();
   }
+  playSoundEffect('teleport')
   mainEl.innerHTML = "";
   enemyPositions = [];
   boulderPositions = [];
@@ -949,6 +956,9 @@ function swingSword() {
   swordAnimation.appendChild(swordAnimationLine);
 
   swordSwingTile.appendChild(swordAnimation);
+
+
+  playSoundEffect('swing')
 
   swordAnimationLine.addEventListener("animationend", () => {
     swordAnimation.remove();
@@ -1511,7 +1521,7 @@ function checkKeyPressed(evt) {
     startPrologue();
   } else if (gameStarted && swordAcquired && !gameOver && evt.keyCode === 32) {
     swingSword();
-  } else if (gameStarted && gameOver && evt.keyCode === 32) {
+  } else if (gameStarted && gameOver && evt.keyCode === 32 && !lossPause) {
     lives > 0 ? restartRound() : restartGame();
   }
   if (gameOver) {
@@ -1741,13 +1751,16 @@ function startBoss() {
 
   musicCount = 1; // Index of the boss song
   audio.src = musicArray[musicCount].song; // Change the audio source to boss song
-  audio.play() // Start playing the boss music
+
+  if(musicToggleStatus) {
+    audio.play() // Start playing the boss music
     .then(() => {
       console.log('Boss music is playing.');
     })
     .catch((error) => {
       console.error('Failed to play audio:', error);
     });
+  }
 
     
 }
@@ -1918,6 +1931,29 @@ window.addEventListener('load', () => {
 
 });
 
+const soundEffects = {
+  gameOver: new Audio("./audio/se/gameOver.mp3"),
+  gameStart: new Audio("./audio/se/gameStart.mp3"),
+  swing: new Audio("./audio/se/swing.mp3"),
+  teleport: new Audio("./audio/se/teleport.mp3")
+};
+
+Object.values(soundEffects).forEach(effect => effect.volume = 0.1);
+soundEffects.swing.playbackRate = 1.5;
+
+const playSoundEffect = (effect) => {
+  if (soundEffects[effect]) {
+    soundEffects[effect].play()
+      .then(() => {
+        console.log(`${effect} sound effect is playing.`);
+      })
+      .catch((error) => {
+        console.error(`Failed to play ${effect} sound effect:`, error);
+      });
+  } else {
+    console.error(`Sound effect "${effect}" not found.`);
+  }
+};
 
 // -------------end music logic--------------
 
