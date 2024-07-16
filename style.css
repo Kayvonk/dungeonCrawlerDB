@@ -711,7 +711,7 @@ header > p:first-child {
 /* -----------boss fight-------------- */
 
 .cloneLeft {
-  animation: cloneLeft 0.1s forwards;
+  animation: cloneLeft 1s forwards;
 }
 
 @keyframes cloneLeft {
@@ -724,7 +724,7 @@ header > p:first-child {
 }
 
 .cloneRight {
-  animation: cloneRight 0.1s forwards;
+  animation: cloneRight 1s forwards;
 }
 
 @keyframes cloneRight {

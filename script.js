@@ -570,6 +570,7 @@ function enterTower() {
   mainEl.innerHTML = "";
   playerEnterDirection = "bottom";
   startingPosition = "r6-c7";
+  playerPosition = startingPosition;
   boulderPositions = [];
   treePositions = [];
   createTiles();
@@ -727,6 +728,10 @@ function endRound() {
 function createTiles() {
   let playerRow = playerPosition.split("-")[0].substring(1);
   let playerColumn = playerPosition.split("-")[1].substring(1);
+  console.log(playerPosition);
+  console.log(playerRow);
+  console.log(playerColumn);
+
   if (playerRow === "1") {
     playerEnterDirection = "top";
   } else if (playerRow === "6") {
@@ -878,8 +883,6 @@ function createTiles() {
   }
 }
 
-// createTiles();
-
 //------------- player logic------------
 function placePlayer1() {
   let startingTile = document.querySelector("." + startingPosition);
@@ -998,10 +1001,183 @@ function swingSword() {
   }
 }
 
+// -------start player movement-------------------
+
+function moveUp() {
+  let catImg = document.querySelector(".catImg");
+  let catPosition = catImg.classList[1];
+  let row = catPosition.split("-")[0].substring(1);
+  let column = catPosition.split("-")[1].substring(1);
+  if (row > 1) {
+    let newPosition = "r" + (parseInt(row) - 1) + "-c" + column;
+    //change
+    if (
+      enemyPositions.some((element) => element.position === newPosition) ||
+      boulderPositions.includes(newPosition) ||
+      treePositions.includes(newPosition)
+    ) {
+      return;
+    }
+    catImg.classList.add("moveUp");
+    playerPosition = newPosition;
+    let newCatImg = document.createElement("img");
+    newCatImg.className = "catImg " + newPosition;
+    if (isCave && playerPosition === swordPosition) {
+      // picks up sword
+      swordAcquired = true;
+      let swordTop = document.querySelector(".swordTop");
+      swordTop.style.display = "none";
+      newCatImg.src = "./image/swordCat.png";
+    } else if (swordAcquired) {
+      newCatImg.src = "./image/swordCat.png";
+    } else {
+      newCatImg.src = "./image/cat.png";
+    }
+    let nextTile = document.querySelector("." + newPosition);
+    setTimeout(() => {
+      catImg.remove();
+      nextTile.append(newCatImg);
+
+      if (playerPosition === exitTilePosition) {
+        startingPosition = playerPosition;
+        endRound();
+      }
+    }, 100);
+  }
+}
+
+function moveDown() {
+  let catImg = document.querySelector(".catImg");
+  let catPosition = catImg.classList[1];
+  let row = catPosition.split("-")[0].substring(1);
+  let column = catPosition.split("-")[1].substring(1);
+  if (row < 6) {
+    let newPosition = "r" + (parseInt(row) + 1) + "-c" + column;
+    //change
+    if (
+      enemyPositions.some((element) => element.position === newPosition) ||
+      boulderPositions.includes(newPosition) ||
+      treePositions.includes(newPosition)
+    ) {
+      return;
+    }
+    catImg.classList.add("moveDown");
+    playerPosition = newPosition;
+    let newCatImg = document.createElement("img");
+    newCatImg.className = "catImg " + newPosition;
+    if (isCave && playerPosition === swordPosition) {
+      // picks up sword
+      swordAcquired = true;
+      let swordTop = document.querySelector(".swordTop");
+      swordTop.style.display = "none";
+      newCatImg.src = "./image/swordCat.png";
+    } else if (swordAcquired) {
+      newCatImg.src = "./image/swordCat.png";
+    } else {
+      newCatImg.src = "./image/cat.png";
+    }
+    let nextTile = document.querySelector("." + newPosition);
+    setTimeout(() => {
+      catImg.remove();
+      nextTile.append(newCatImg);
+      if (playerPosition === exitTilePosition) {
+        startingPosition = playerPosition;
+        endRound();
+      }
+    }, 100);
+  }
+}
+function moveLeft() {
+  let catImg = document.querySelector(".catImg");
+  let catPosition = catImg.classList[1];
+  let row = catPosition.split("-")[0].substring(1);
+  let column = catPosition.split("-")[1].substring(1);
+  if (column > 1) {
+    let newPosition = "r" + row + "-c" + (parseInt(column) - 1);
+    //change
+    if (
+      enemyPositions.some((element) => element.position === newPosition) ||
+      boulderPositions.includes(newPosition) ||
+      treePositions.includes(newPosition)
+    ) {
+      return;
+    }
+    catImg.classList.add("moveLeft");
+    playerPosition = newPosition;
+    let newCatImg = document.createElement("img");
+    newCatImg.className = "catImg " + newPosition;
+    if (isCave && playerPosition === swordPosition) {
+      // picks up sword
+      swordAcquired = true;
+      let swordTop = document.querySelector(".swordTop");
+      swordTop.style.display = "none";
+      newCatImg.src = "./image/swordCat.png";
+    } else if (swordAcquired) {
+      newCatImg.src = "./image/swordCat.png";
+    } else {
+      newCatImg.src = "./image/cat.png";
+    }
+    let nextTile = document.querySelector("." + newPosition);
+    setTimeout(() => {
+      catImg.remove();
+      nextTile.append(newCatImg);
+      if (playerPosition === exitTilePosition) {
+        startingPosition = playerPosition;
+        endRound();
+      }
+    }, 100);
+  }
+}
+
+function moveRight() {
+  let catImg = document.querySelector(".catImg");
+  let catPosition = catImg.classList[1];
+  let row = catPosition.split("-")[0].substring(1);
+  let column = catPosition.split("-")[1].substring(1);
+  if (column < 12) {
+    let newPosition = "r" + row + "-c" + (parseInt(column) + 1);
+    //change
+    if (
+      enemyPositions.some((element) => element.position === newPosition) ||
+      boulderPositions.includes(newPosition) ||
+      treePositions.includes(newPosition)
+    ) {
+      return;
+    }
+    catImg.classList.add("moveRight");
+    playerPosition = newPosition;
+    let newCatImg = document.createElement("img");
+    newCatImg.className = "catImg " + newPosition;
+    if (isCave && playerPosition === swordPosition) {
+      // picks up sword
+      swordAcquired = true;
+      let swordTop = document.querySelector(".swordTop");
+      swordTop.style.display = "none";
+      newCatImg.src = "./image/swordCat.png";
+    } else if (swordAcquired) {
+      newCatImg.src = "./image/swordCat.png";
+    } else {
+      newCatImg.src = "./image/cat.png";
+    }
+    let nextTile = document.querySelector("." + newPosition);
+    setTimeout(() => {
+      catImg.remove();
+      nextTile.append(newCatImg);
+      if (playerPosition === exitTilePosition) {
+        startingPosition = playerPosition;
+        endRound();
+      }
+    }, 100);
+  }
+}
+
+// --------end player movement----------------
+
 // ----------end player logic ----------------
 
 // ------------------enemy logic--------------
 function placeEnemy(index) {
+  console.log(enemyPositions);
   let startingTile = document.querySelector(
     "." + enemyPositions[index].position
   );
@@ -1524,178 +1700,6 @@ function checkKeyPressed(evt) {
   }
 }
 
-// -------start player movement-------------------
-
-function moveUp() {
-  let catImg = document.querySelector(".catImg");
-  let catPosition = catImg.classList[1];
-  let row = catPosition.split("-")[0].substring(1);
-  let column = catPosition.split("-")[1].substring(1);
-  if (row > 1) {
-    let newPosition = "r" + (parseInt(row) - 1) + "-c" + column;
-    //change
-    if (
-      enemyPositions.some((element) => element.position === newPosition) ||
-      boulderPositions.includes(newPosition) ||
-      treePositions.includes(newPosition)
-    ) {
-      return;
-    }
-    catImg.classList.add("moveUp");
-    playerPosition = newPosition;
-    let newCatImg = document.createElement("img");
-    newCatImg.className = "catImg " + newPosition;
-    if (isCave && playerPosition === swordPosition) {
-      // picks up sword
-      swordAcquired = true;
-      let swordTop = document.querySelector(".swordTop");
-      swordTop.style.display = "none";
-      newCatImg.src = "./image/swordCat.png";
-    } else if (swordAcquired) {
-      newCatImg.src = "./image/swordCat.png";
-    } else {
-      newCatImg.src = "./image/cat.png";
-    }
-    let nextTile = document.querySelector("." + newPosition);
-    setTimeout(() => {
-      catImg.remove();
-      nextTile.append(newCatImg);
-
-      if (playerPosition === exitTilePosition) {
-        startingPosition = playerPosition;
-        endRound();
-      }
-    }, 100);
-  }
-}
-
-function moveDown() {
-  let catImg = document.querySelector(".catImg");
-  let catPosition = catImg.classList[1];
-  let row = catPosition.split("-")[0].substring(1);
-  let column = catPosition.split("-")[1].substring(1);
-  if (row < 6) {
-    let newPosition = "r" + (parseInt(row) + 1) + "-c" + column;
-    //change
-    if (
-      enemyPositions.some((element) => element.position === newPosition) ||
-      boulderPositions.includes(newPosition) ||
-      treePositions.includes(newPosition)
-    ) {
-      return;
-    }
-    catImg.classList.add("moveDown");
-    playerPosition = newPosition;
-    let newCatImg = document.createElement("img");
-    newCatImg.className = "catImg " + newPosition;
-    if (isCave && playerPosition === swordPosition) {
-      // picks up sword
-      swordAcquired = true;
-      let swordTop = document.querySelector(".swordTop");
-      swordTop.style.display = "none";
-      newCatImg.src = "./image/swordCat.png";
-    } else if (swordAcquired) {
-      newCatImg.src = "./image/swordCat.png";
-    } else {
-      newCatImg.src = "./image/cat.png";
-    }
-    let nextTile = document.querySelector("." + newPosition);
-    setTimeout(() => {
-      catImg.remove();
-      nextTile.append(newCatImg);
-      if (playerPosition === exitTilePosition) {
-        startingPosition = playerPosition;
-        endRound();
-      }
-    }, 100);
-  }
-}
-function moveLeft() {
-  let catImg = document.querySelector(".catImg");
-  let catPosition = catImg.classList[1];
-  let row = catPosition.split("-")[0].substring(1);
-  let column = catPosition.split("-")[1].substring(1);
-  if (column > 1) {
-    let newPosition = "r" + row + "-c" + (parseInt(column) - 1);
-    //change
-    if (
-      enemyPositions.some((element) => element.position === newPosition) ||
-      boulderPositions.includes(newPosition) ||
-      treePositions.includes(newPosition)
-    ) {
-      return;
-    }
-    catImg.classList.add("moveLeft");
-    playerPosition = newPosition;
-    let newCatImg = document.createElement("img");
-    newCatImg.className = "catImg " + newPosition;
-    if (isCave && playerPosition === swordPosition) {
-      // picks up sword
-      swordAcquired = true;
-      let swordTop = document.querySelector(".swordTop");
-      swordTop.style.display = "none";
-      newCatImg.src = "./image/swordCat.png";
-    } else if (swordAcquired) {
-      newCatImg.src = "./image/swordCat.png";
-    } else {
-      newCatImg.src = "./image/cat.png";
-    }
-    let nextTile = document.querySelector("." + newPosition);
-    setTimeout(() => {
-      catImg.remove();
-      nextTile.append(newCatImg);
-      if (playerPosition === exitTilePosition) {
-        startingPosition = playerPosition;
-        endRound();
-      }
-    }, 100);
-  }
-}
-
-function moveRight() {
-  let catImg = document.querySelector(".catImg");
-  let catPosition = catImg.classList[1];
-  let row = catPosition.split("-")[0].substring(1);
-  let column = catPosition.split("-")[1].substring(1);
-  if (column < 12) {
-    let newPosition = "r" + row + "-c" + (parseInt(column) + 1);
-    //change
-    if (
-      enemyPositions.some((element) => element.position === newPosition) ||
-      boulderPositions.includes(newPosition) ||
-      treePositions.includes(newPosition)
-    ) {
-      return;
-    }
-    catImg.classList.add("moveRight");
-    playerPosition = newPosition;
-    let newCatImg = document.createElement("img");
-    newCatImg.className = "catImg " + newPosition;
-    if (isCave && playerPosition === swordPosition) {
-      // picks up sword
-      swordAcquired = true;
-      let swordTop = document.querySelector(".swordTop");
-      swordTop.style.display = "none";
-      newCatImg.src = "./image/swordCat.png";
-    } else if (swordAcquired) {
-      newCatImg.src = "./image/swordCat.png";
-    } else {
-      newCatImg.src = "./image/cat.png";
-    }
-    let nextTile = document.querySelector("." + newPosition);
-    setTimeout(() => {
-      catImg.remove();
-      nextTile.append(newCatImg);
-      if (playerPosition === exitTilePosition) {
-        startingPosition = playerPosition;
-        endRound();
-      }
-    }, 100);
-  }
-}
-
-// -------end player movement-------------------
-
 // -----------start boss -----------------
 
 function startBoss() {
@@ -1715,14 +1719,7 @@ function startBoss() {
   audio.src = musicArray[musicCount].song; // Change the audio source to boss song
 
   if (musicToggleStatus) {
-    audio
-      .play() // Start playing the boss music
-      .then(() => {
-        console.log("Boss music is playing.");
-      })
-      .catch((error) => {
-        console.error("Failed to play audio:", error);
-      });
+    audio.play();
   }
 }
 
@@ -1855,14 +1852,7 @@ let toggleMusic = () => {
     audio.pause();
     audio.currentTime = 0;
   } else {
-    audio
-      .play()
-      .then(() => {
-        console.log("Audio is playing.");
-      })
-      .catch((error) => {
-        console.error("Failed to play audio:", error);
-      });
+    audio.play();
   }
 
   musicToggleStatus = !musicToggleStatus;
@@ -1900,25 +1890,13 @@ soundEffects.swing.playbackRate = 1.5;
 
 const playSoundEffect = (effect) => {
   if (soundEffects[effect]) {
-    soundEffects[effect]
-      .play()
-      .then(() => {
-        console.log(`${effect} sound effect is playing.`);
-      })
-      .catch((error) => {
-        console.error(`Failed to play ${effect} sound effect:`, error);
-      });
+    soundEffects[effect].play();
   } else {
     console.error(`Sound effect "${effect}" not found.`);
   }
 };
 
 // -------------end music logic--------------
-
-// TODO make player position the tile last exited each round and adjust enemy spawns (done)
-// ----- could do more to ensure spawns and enemy positions are correct
-// on the 1st floor tele can spawn on same row
-// on continue, tele can spawn on same tile
 
 // TODO add ending
 // TODO add boss stage after round 10
