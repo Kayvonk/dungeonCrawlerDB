@@ -1728,28 +1728,32 @@ function checkKeyPressed(evt) {
     }
     moveUp();
     playerDirection = "up";
-    limitMovement();
+    console.log(round);
+    round !== 0 ? limitMovement() : null;
   } else if (canMove && evt.keyCode === 40) {
     if (isCave && playerPosition === caveExitPosition) {
       isCave ? exitCave() : null;
     }
     moveDown();
     playerDirection = "down";
-    limitMovement();
+    console.log(round);
+    round !== 0 ? limitMovement() : null;
   } else if (canMove && evt.keyCode === 37) {
     if (isOutdoor1 && playerPosition === scene1ExitTilePosition) {
       isOutdoor1 ? enterOutdoorScene2() : null;
     }
     moveLeft();
     playerDirection = "left";
-    limitMovement();
+    console.log(round);
+    round !== 0 ? limitMovement() : null;
   } else if (canMove && evt.keyCode === 39) {
     if (isOutdoor2 && playerPosition === scene2ExitTilePosition) {
       isOutdoor2 ? exitOutDoorScene2() : null;
     }
     moveRight();
     playerDirection = "right";
-    limitMovement();
+    console.log(round);
+    round !== 0 ? limitMovement() : null;
   }
 }
 
@@ -1959,6 +1963,7 @@ function startBossFight(selectedTile) {
       startBossMovement(".shadowCloneDog2", "./image/shadowSamuraiDoge.png", 2);
       startBossMovement(".bossImg", "./image/samuraiDoge.png", 0);
       playingBossDialogue = false
+      canMove = true;
     });
   }, 2000);
 }
