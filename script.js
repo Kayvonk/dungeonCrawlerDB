@@ -32,6 +32,35 @@ let lives = 9;
 let slayedEnemies = [];
 let isBossRound = false;
 let lossPause = false;
+let playingBossDialogue = false
+let bossPosition = "r3-c6";
+let shadowClone1Position = "r3-c4";
+let shadowClone2Position = "r3-c8";
+
+let bossEnemyPositions = [
+  {
+    position: "r3-c6",
+    enemyClass: "bossImg",
+    isAlive: true,
+    isMoving: false,
+    hitsRemaining: 3,
+  },
+  {
+    position: "r3-c4",
+    enemyClass: "shadowCloneDog1",
+    isAlive: true,
+    isMoving: false,
+    hitsRemaining: 1,
+  },
+  {
+    position: "r3-c8",
+    enemyClass: "shadowCloneDog2",
+    isAlive: true,
+    isMoving: false,
+    hitsRemaining: 1,
+  },
+];
+
 startBtn.addEventListener("click", startPrologue);
 
 // ------------------start prologue --------------------------
@@ -539,7 +568,12 @@ let buffDogeIndexes = [4, 8];
 
 function limitMovement() {
   canMove = false;
-  setTimeout(() => {
+  let limitMovementTimer = setTimeout(() => {
+    if(playingBossDialogue) {
+      clearTimeout(limitMovementTimer)
+      console.log("stop");
+    }
+    console.log("limiting!!!!!!!!!!");
     canMove = true;
   }, 100);
 }
@@ -694,13 +728,37 @@ function displayRound() {
 }
 
 function endRound() {
-  if (round + 1 === 10) {
-    // if (round + 1 === 1) {
+  // skip to boss
+  // if (round + 1 === 10) {
+  if (round + 1 === 1) {
     return startBoss();
   }
   playSoundEffect("teleport");
   mainEl.innerHTML = "";
   enemyPositions = [];
+  bossEnemyPositions = [
+    {
+      position: "r3-c6",
+      enemyClass: "bossImg",
+      isAlive: true,
+      isMoving: false,
+      hitsRemaining: 3,
+    },
+    {
+      position: "r3-c4",
+      enemyClass: "shadowCloneDog1",
+      isAlive: true,
+      isMoving: false,
+      hitsRemaining: 1,
+    },
+    {
+      position: "r3-c8",
+      enemyClass: "shadowCloneDog2",
+      isAlive: true,
+      isMoving: false,
+      hitsRemaining: 1,
+    },
+  ];
   boulderPositions = [];
   treePositions = [];
   round++;
@@ -728,10 +786,6 @@ function endRound() {
 function createTiles() {
   let playerRow = playerPosition.split("-")[0].substring(1);
   let playerColumn = playerPosition.split("-")[1].substring(1);
-  console.log(playerPosition);
-  console.log(playerRow);
-  console.log(playerColumn);
-
   if (playerRow === "1") {
     playerEnterDirection = "top";
   } else if (playerRow === "6") {
@@ -1177,7 +1231,6 @@ function moveRight() {
 
 // ------------------enemy logic--------------
 function placeEnemy(index) {
-  console.log(enemyPositions);
   let startingTile = document.querySelector(
     "." + enemyPositions[index].position
   );
@@ -1700,127 +1753,7 @@ function checkKeyPressed(evt) {
   }
 }
 
-// -----------start boss -----------------
-
-function startBoss() {
-  isBossRound = true;
-  mainEl.innerHTML = "";
-  enemyPositions = [];
-  boulderPositions = [];
-  treePositions = [];
-  round++;
-  startingPosition = "r6-c6";
-  createTiles();
-  placePlayer1();
-  placeBoss();
-  canMove = false;
-
-  musicCount = 1; // Index of the boss song
-  audio.src = musicArray[musicCount].song; // Change the audio source to boss song
-
-  if (musicToggleStatus) {
-    audio.play();
-  }
-}
-
-function placeBoss() {
-  let bossPosition = "r3-c6";
-  let selectedTile = document.querySelector("." + bossPosition);
-  let bossImg = document.createElement("img");
-  bossImg.src = "./image/samuraiDoge.png";
-  bossImg.className = "bossImg";
-  selectedTile.append(bossImg);
-  introduceBoss(selectedTile);
-}
-
-function introduceBoss(selectedTile) {
-  const dialogueBox = document.createElement("div");
-  dialogueBox.className = "dialogue-box";
-
-  const dialogueContent = document.createElement("p");
-  dialogueContent.className = "dialogue-content";
-
-  let bossDialogue =
-    "I didn't think you would make it this far....no matter. This ends here!";
-  let characterCounter = 0;
-  let characterTimer = setInterval(() => {
-    const character = bossDialogue[characterCounter];
-    if (characterCounter < bossDialogue.length) {
-      dialogueContent.textContent += character;
-      characterCounter++;
-    } else {
-      clearInterval(characterTimer);
-      startBossFight(selectedTile);
-    }
-  }, 100);
-
-  dialogueBox.appendChild(dialogueContent);
-
-  selectedTile.appendChild(dialogueBox);
-}
-
-function introduceOldCat(selectedTile) {
-  const dialogueBox = document.createElement("div");
-  dialogueBox.className = "dialogue-box";
-
-  const dialogueContent = document.createElement("p");
-  dialogueContent.className = "dialogue-content";
-
-  let bossDialogue = "It's dangerous to go alone. Take this!";
-  let characterCounter = 0;
-  let characterTimer = setInterval(() => {
-    const character = bossDialogue[characterCounter];
-    dialogueContent.textContent += character;
-    if (characterCounter < bossDialogue.length - 1) {
-      characterCounter++;
-    } else {
-      clearInterval(characterTimer);
-    }
-  }, 100);
-
-  dialogueBox.appendChild(dialogueContent);
-
-  selectedTile.appendChild(dialogueBox);
-}
-
-function startBossFight(selectedTile) {
-  let dialogueBox = document.querySelector(".dialogue-box");
-  setTimeout(() => {
-    dialogueBox.remove();
-
-    let shadowClone1Position = "r3-c4";
-    let shadowClone2Position = "r3-c8";
-
-    let shadowClone1Animation = document.createElement("img");
-    shadowClone1Animation.src = "./image/shadowSamuraiDoge.png";
-    shadowClone1Animation.className = "shadowCloneDog1-animate cloneLeft";
-    selectedTile.append(shadowClone1Animation);
-
-    let shadowClone2Animation = document.createElement("img");
-    shadowClone2Animation.src = "./image/shadowSamuraiDoge.png";
-    shadowClone2Animation.className = "shadowCloneDog2-animate cloneRight";
-    selectedTile.append(shadowClone2Animation);
-
-    shadowClone1Animation.addEventListener("animationend", () => {
-      shadowClone1Animation.remove();
-      let shadowClone1Tile = document.querySelector("." + shadowClone1Position);
-      let shadowClone1 = document.createElement("img");
-      shadowClone1.src = "./image/shadowSamuraiDoge.png";
-      shadowClone1.className = "shadowCloneDog1";
-      shadowClone1Tile.append(shadowClone1);
-    });
-    shadowClone2Animation.addEventListener("animationend", () => {
-      shadowClone2Animation.remove();
-      let shadowClone2Tile = document.querySelector("." + shadowClone2Position);
-      let shadowClone2 = document.createElement("img");
-      shadowClone2.src = "./image/shadowSamuraiDoge.png";
-      shadowClone2.className = "shadowCloneDog1";
-      shadowClone2Tile.append(shadowClone2);
-    });
-  }, 2000);
-}
-
-// --------------end boss-----------
+// ----------end key press logic-----------
 
 /* ----------music logic------------- */
 
@@ -1898,6 +1831,422 @@ const playSoundEffect = (effect) => {
 
 // -------------end music logic--------------
 
-// TODO add ending
+// ----start dialogue logic---------
+
+function introduceOldCat(selectedTile) {
+  const dialogueBox = document.createElement("div");
+  dialogueBox.className = "dialogue-box";
+
+  const dialogueContent = document.createElement("p");
+  dialogueContent.className = "dialogue-content";
+
+  let bossDialogue = "It's dangerous to go alone. Take this!";
+  let characterCounter = 0;
+  let characterTimer = setInterval(() => {
+    const character = bossDialogue[characterCounter];
+    dialogueContent.textContent += character;
+    if (characterCounter < bossDialogue.length - 1) {
+      characterCounter++;
+    } else {
+      clearInterval(characterTimer);
+    }
+  }, 100);
+
+  dialogueBox.appendChild(dialogueContent);
+
+  selectedTile.appendChild(dialogueBox);
+}
+
+function introduceBoss(selectedTile) {
+  canMove = false;
+  const dialogueBox = document.createElement("div");
+  dialogueBox.className = "dialogue-box";
+
+  const dialogueContent = document.createElement("p");
+  dialogueContent.className = "dialogue-content";
+
+  let bossDialogue =
+    "I didn't think you would make it this far... no matter. This ends here!";
+  let characterCounter = 0;
+  let characterTimer = setInterval(() => {
+    const character = bossDialogue[characterCounter];
+    if (characterCounter < bossDialogue.length) {
+      dialogueContent.textContent += character;
+      characterCounter++;
+    } else {
+      clearInterval(characterTimer);
+      startBossFight(selectedTile);
+    }
+  }, 100);
+
+  dialogueBox.appendChild(dialogueContent);
+
+  selectedTile.appendChild(dialogueBox);
+}
+
+// ----end dialogue logic---------
+
+// -----------start boss -----------------
+
+function startBoss() {
+  isBossRound = true;
+  playingBossDialogue = true 
+  mainEl.innerHTML = "";
+  enemyPositions = [];
+  boulderPositions = [];
+  treePositions = [];
+  round++;
+  startingPosition = "r6-c6";
+  createTiles();
+  placePlayer1();
+  placeBoss();
+
+  musicCount = 1; // Index of the boss song
+  audio.src = musicArray[musicCount].song; // Change the audio source to boss song
+
+  if (musicToggleStatus) {
+    audio.play();
+  }
+}
+
+function placeBoss() {
+  // let bossPosition = startBossMovement("shadowCloneDog1", "./image/shadowSamuraiDoge.png", shadowClone1Position);
+  let selectedTile = document.querySelector("." + bossPosition);
+  let bossImg = document.createElement("img");
+  bossImg.src = "./image/samuraiDoge.png";
+  bossImg.className = "bossImg" + " " + bossEnemyPositions[0].position;
+  selectedTile.append(bossImg);
+  canMove = false;
+  introduceBoss(selectedTile);
+}
+
+function startBossFight(selectedTile) {
+  let dialogueBox = document.querySelector(".dialogue-box");
+
+
+
+  setTimeout(() => {
+    dialogueBox.remove();
+
+    let shadowClone1Animation = document.createElement("img");
+    shadowClone1Animation.src = "./image/shadowSamuraiDoge.png";
+    shadowClone1Animation.className = "shadowCloneDog1-animate cloneLeft";
+    selectedTile.append(shadowClone1Animation);
+
+    let shadowClone2Animation = document.createElement("img");
+    shadowClone2Animation.src = "./image/shadowSamuraiDoge.png";
+    shadowClone2Animation.className = "shadowCloneDog2-animate cloneRight";
+    selectedTile.append(shadowClone2Animation);
+
+    shadowClone1Animation.addEventListener("animationend", () => {
+      shadowClone1Animation.remove();
+      let shadowClone1Tile = document.querySelector("." + shadowClone1Position);
+      let shadowClone1 = document.createElement("img");
+      shadowClone1.src = "./image/shadowSamuraiDoge.png";
+      shadowClone1.className =
+        "shadowCloneDog1 " + bossEnemyPositions[1].position;
+      shadowClone1Tile.append(shadowClone1);
+      startBossMovement(".shadowCloneDog1", "./image/shadowSamuraiDoge.png", 1);
+    });
+    shadowClone2Animation.addEventListener("animationend", () => {
+      shadowClone2Animation.remove();
+      let shadowClone2Tile = document.querySelector("." + shadowClone2Position);
+      let shadowClone2 = document.createElement("img");
+      shadowClone2.src = "./image/shadowSamuraiDoge.png";
+      shadowClone2.className =
+        "shadowCloneDog2 " + bossEnemyPositions[2].position;
+      shadowClone2Tile.append(shadowClone2);
+      startBossMovement(".shadowCloneDog2", "./image/shadowSamuraiDoge.png", 2);
+      startBossMovement(".bossImg", "./image/samuraiDoge.png", 0);
+      playingBossDialogue = false
+    });
+  }, 2000);
+}
+
+function startBossMovement(enemyClass, enemyImgPath, enemyIndex) {
+  const foundEnemy = bossEnemyPositions.find(
+    (item) => item.enemyClass === enemyClass.substring(1)
+  );
+  if (foundEnemy && foundEnemy.isAlive === false) {
+    return;
+  }
+
+  let enemyDelay =
+    1000 / ((round + 1) * 0.25) > 1000
+      ? 1000
+      : 1000 / ((round + 1) * 0.25) < 750
+      ? 750
+      : 1000 / ((round + 1) * 0.25);
+
+  // let isAttacking = Math.random() < 0.2;
+  let isAttacking = false;
+  let enemyTimer = setTimeout(() => {
+    let enemyImg = document.querySelector(enemyClass);
+    if (!enemyImg) {
+      return;
+    }
+    if (isAttacking) {
+      enemyImg.src = enemyImgPath;
+
+      // isBuffDoge
+      //   ? dropBoulder(enemyIndex)
+      //   : fireEnemyBeam(enemyImg, enemyIndex);
+    } else {
+      if (foundEnemy) {
+        bossEnemyPositions = bossEnemyPositions.map((item) => {
+          if (item.enemyClass === enemyClass.substring(1)) {
+            return {
+              ...item,
+              isMoving: true,
+            };
+          } else {
+            return item;
+          }
+        });
+      }
+      let directions = ["up", "down", "left", "right"];
+      let directionSelected = directions[Math.floor(Math.random() * 4)];
+      if (gameOver) {
+        return;
+      }
+      if (directionSelected === "up") {
+        bossEnemyMoveUp(enemyClass, enemyImgPath, enemyIndex);
+      } else if (directionSelected === "down") {
+        bossEnemyMoveDown(enemyClass, enemyImgPath, enemyIndex);
+      } else if (directionSelected === "left") {
+        bossEnemyMoveLeft(enemyClass, enemyImgPath, enemyIndex);
+      } else if (directionSelected === "right") {
+        bossEnemyMoveRight(enemyClass, enemyImgPath, enemyIndex);
+      }
+    }
+    if (gameOver) {
+      return;
+    }
+    startBossMovement(enemyClass, enemyImgPath, enemyIndex);
+  }, enemyDelay);
+}
+
+function bossEnemyMoveUp(enemyClass, enemyImgPath, enemyIndex) {
+  const foundEnemy = enemyPositions.find(
+    (item) => item.enemyClass === enemyClass.substring(1)
+  );
+  let enemyImg = document.querySelector(enemyClass);
+  if (!enemyImg) {
+    return;
+  }
+
+  let enemyPosition = enemyImg.classList[1];
+  let row = enemyPosition.split("-")[0].substring(1);
+  let column = enemyPosition.split("-")[1].substring(1);
+  if (row > 1) {
+    let newPosition = "r" + (parseInt(row) - 1) + "-c" + column;
+
+    enemyPositions = enemyPositions.map((item) => {
+      if (item.enemyClass === enemyClass.substring(1)) {
+        return {
+          ...item,
+          position: newPosition,
+        };
+      } else {
+        return item;
+      }
+    });
+
+    if (playerPosition === newPosition) {
+      loseGame(enemyIndex);
+    }
+    enemyImg.classList.add("moveUp");
+    let newEnemyImg = document.createElement("img");
+    newEnemyImg.className = enemyClass.substring(1) + " " + newPosition;
+    newEnemyImg.src =
+      attackingEnemyIndex === enemyIndex
+        ? "./image/dogeAttack.png"
+        : enemyImgPath;
+    let nextTile = document.querySelector("." + newPosition);
+    setTimeout(() => {
+      enemyPositions = enemyPositions.map((item) => {
+        if (item.enemyClass === enemyClass.substring(1)) {
+          return {
+            ...item,
+            isMoving: false,
+          };
+        } else {
+          return item;
+        }
+      });
+      enemyImg.remove();
+      nextTile.append(newEnemyImg);
+    }, 100);
+  }
+}
+
+function bossEnemyMoveDown(enemyClass, enemyImgPath, enemyIndex) {
+  const foundEnemy = enemyPositions.find(
+    (item) => item.enemyClass === enemyClass.substring(1)
+  );
+  let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
+  let enemyImg = document.querySelector(enemyClass);
+  if (!enemyImg) {
+    return;
+  }
+  let enemyPosition = enemyImg.classList[1];
+  let row = enemyPosition.split("-")[0].substring(1);
+  let column = enemyPosition.split("-")[1].substring(1);
+  if (row < 6) {
+    let newPosition = "r" + (parseInt(row) + 1) + "-c" + column;
+
+    enemyPositions = enemyPositions.map((item) => {
+      if (item.enemyClass === enemyClass.substring(1)) {
+        return {
+          ...item,
+          position: newPosition,
+        };
+      } else {
+        return item;
+      }
+    });
+
+    if (playerPosition === newPosition) {
+      loseGame(enemyIndex);
+    }
+    enemyImg.classList.add("moveDown");
+
+    let newEnemyImg = document.createElement("img");
+    newEnemyImg.className = enemyClass.substring(1) + " " + newPosition;
+    newEnemyImg.src =
+      attackingEnemyIndex === enemyIndex
+        ? "./image/dogeAttack.png"
+        : enemyImgPath;
+    let nextTile = document.querySelector("." + newPosition);
+    setTimeout(() => {
+      enemyPositions = enemyPositions.map((item) => {
+        if (item.enemyClass === enemyClass.substring(1)) {
+          return {
+            ...item,
+            isMoving: false,
+          };
+        } else {
+          return item;
+        }
+      });
+      enemyImg.remove();
+      nextTile.append(newEnemyImg);
+    }, 100);
+  }
+}
+
+function bossEnemyMoveLeft(enemyClass, enemyImgPath, enemyIndex) {
+  const foundEnemy = enemyPositions.find(
+    (item) => item.enemyClass === enemyClass.substring(1)
+  );
+  let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
+  let enemyImg = document.querySelector(enemyClass);
+  if (!enemyImg) {
+    return;
+  }
+  let enemyPosition = enemyImg.classList[1];
+  let row = enemyPosition.split("-")[0].substring(1);
+  let column = enemyPosition.split("-")[1].substring(1);
+  if (column > 1) {
+    let newPosition = "r" + row + "-c" + (parseInt(column) - 1);
+
+    enemyPositions = enemyPositions.map((item) => {
+      if (item.enemyClass === enemyClass.substring(1)) {
+        return {
+          ...item,
+          position: newPosition,
+        };
+      } else {
+        return item;
+      }
+    });
+
+    if (playerPosition === newPosition) {
+      loseGame(enemyIndex);
+    }
+    enemyImg.classList.add("moveLeft");
+
+    let newEnemyImg = document.createElement("img");
+    newEnemyImg.className = enemyClass.substring(1) + " " + newPosition;
+    newEnemyImg.src =
+      attackingEnemyIndex === enemyIndex
+        ? "./image/dogeAttack.png"
+        : enemyImgPath;
+    let nextTile = document.querySelector("." + newPosition);
+    setTimeout(() => {
+      enemyPositions = enemyPositions.map((item) => {
+        if (item.enemyClass === enemyClass.substring(1)) {
+          return {
+            ...item,
+            isMoving: false,
+          };
+        } else {
+          return item;
+        }
+      });
+      enemyImg.remove();
+      nextTile.append(newEnemyImg);
+    }, 100);
+  }
+}
+
+function bossEnemyMoveRight(enemyClass, enemyImgPath, enemyIndex) {
+  const foundEnemy = enemyPositions.find(
+    (item) => item.enemyClass === enemyClass.substring(1)
+  );
+  let isBuffDoge = buffDogeIndexes.includes(enemyIndex);
+  let enemyImg = document.querySelector(enemyClass);
+  if (!enemyImg) {
+    return;
+  }
+  let enemyPosition = enemyImg.classList[1];
+  let row = enemyPosition.split("-")[0].substring(1);
+  let column = enemyPosition.split("-")[1].substring(1);
+  if (column < 12) {
+    let newPosition = "r" + row + "-c" + (parseInt(column) + 1);
+
+    enemyPositions = enemyPositions.map((item) => {
+      if (item.enemyClass === enemyClass.substring(1)) {
+        return {
+          ...item,
+          position: newPosition,
+        };
+      } else {
+        return item;
+      }
+    });
+
+    if (playerPosition === newPosition) {
+      loseGame(enemyIndex);
+    }
+    enemyImg.classList.add("moveRight");
+
+    let newEnemyImg = document.createElement("img");
+    newEnemyImg.className = enemyClass.substring(1) + " " + newPosition;
+    newEnemyImg.src =
+      attackingEnemyIndex === enemyIndex
+        ? "./image/dogeAttack.png"
+        : enemyImgPath;
+    let nextTile = document.querySelector("." + newPosition);
+    setTimeout(() => {
+      enemyPositions = enemyPositions.map((item) => {
+        if (item.enemyClass === enemyClass.substring(1)) {
+          return {
+            ...item,
+            isMoving: false,
+          };
+        } else {
+          return item;
+        }
+      });
+      enemyImg.remove();
+      nextTile.append(newEnemyImg);
+    }, 100);
+  }
+}
+
+// --------------end boss-----------
+
 // TODO add boss stage after round 10
+// TODO add ending
 // TODO calculate score better (probably lives left plus time inverted bonus)
