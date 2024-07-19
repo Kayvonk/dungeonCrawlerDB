@@ -1992,11 +1992,19 @@ function startBossMovement(enemyClass, enemyImgPath, enemyIndex) {
       return;
     }
     if (isAttacking) {
-      // change to eyes attack animation
-      enemyImg.src = isBoss
-        ? "./image/samuraiDoge.png"
-        : "./image/shadowSamuraiDoge.png";
-      fireBigBeam(enemyClass);
+      // if(Math.random() < .20) {
+      if (false) {
+        // change to eyes attack animation
+        enemyImg.src = isBoss
+          ? "./image/samuraiDoge.png"
+          : "./image/shadowSamuraiDoge.png";
+        fireBigBeam(enemyClass);
+      } else {
+        enemyImg.src = isBoss
+          ? "./image/samuraiDoge.png"
+          : "./image/shadowSamuraiDoge.png";
+        performOctoSlash(enemyClass);
+      }
       // isBuffDoge
       //   ? dropBoulder(enemyIndex)
       //   : fireEnemyBeam(enemyImg, enemyIndex);
@@ -2069,13 +2077,7 @@ function fireBigBeam(enemyClass) {
       }
       newEnemyTile.append(newBossEnemyImg);
       fireBigBeamLeft("r2-c11");
-      // console.log("quadrant1");
-      // console.log("quadrant1");
-    }
-    // if (quadrant2.includes(playerPosition)) {
-    //   console.log("quadrant2");
-    // }
-    else if (
+    } else if (
       quadrant3.includes(playerPosition) ||
       quadrant4.includes(playerPosition)
     ) {
@@ -2087,7 +2089,8 @@ function fireBigBeam(enemyClass) {
         enemyClass === ".bossImg"
           ? "./image/samuraiDoge.png"
           : "./image/shadowSamuraiDoge.png";
-      newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+      // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+      newBossEnemyImg.className = enemyClass.substring(1);
       if (foundEnemy) {
         enemyPositions = enemyPositions.map((item) => {
           if (item.enemyClass === enemyClass.substring(1)) {
@@ -2104,13 +2107,7 @@ function fireBigBeam(enemyClass) {
       }
       newEnemyTile.append(newBossEnemyImg);
       fireBigBeamRight("r2-c2");
-      // console.log("quadrant2");
-      // console.log("quadrant3");
-    }
-    // if (quadrant4.includes(playerPosition)) {
-    //   console.log("quadrant4");
-    // }
-    else if (
+    } else if (
       quadrant5.includes(playerPosition) ||
       quadrant6.includes(playerPosition)
     ) {
@@ -2122,7 +2119,8 @@ function fireBigBeam(enemyClass) {
         enemyClass === ".bossImg"
           ? "./image/samuraiDoge.png"
           : "./image/shadowSamuraiDoge.png";
-      newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+      // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+      newBossEnemyImg.className = enemyClass.substring(1);
       if (foundEnemy) {
         enemyPositions = enemyPositions.map((item) => {
           if (item.enemyClass === enemyClass.substring(1)) {
@@ -2139,13 +2137,7 @@ function fireBigBeam(enemyClass) {
       }
       newEnemyTile.append(newBossEnemyImg);
       fireBigBeamLeft("r5-c11");
-      // console.log("quadrant3");
-      // console.log("quadrant5");
-    }
-    // if (quadrant6.includes(playerPosition)) {
-    //   console.log("quadrant6");
-    // }
-    else if (
+    } else if (
       quadrant7.includes(playerPosition) ||
       quadrant8.includes(playerPosition)
     ) {
@@ -2157,7 +2149,8 @@ function fireBigBeam(enemyClass) {
         enemyClass === ".bossImg"
           ? "./image/samuraiDoge.png"
           : "./image/shadowSamuraiDoge.png";
-      newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+      // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+      newBossEnemyImg.className = enemyClass.substring(1);
       if (foundEnemy) {
         enemyPositions = enemyPositions.map((item) => {
           if (item.enemyClass === enemyClass.substring(1)) {
@@ -2174,12 +2167,7 @@ function fireBigBeam(enemyClass) {
       }
       newEnemyTile.append(newBossEnemyImg);
       fireBigBeamRight("r5-c2");
-      // console.log("quadrant4");
-      // console.log("quadrant7");
     }
-    // if (quadrant8.includes(playerPosition)) {
-    //   console.log("quadrant8");
-    // }
   } else if (Math.random() > 0.5) {
     if (quadrant1.includes(playerPosition)) {
       let currentEnemyPositon = document.querySelector(enemyClass);
@@ -2190,7 +2178,8 @@ function fireBigBeam(enemyClass) {
         enemyClass === ".bossImg"
           ? "./image/samuraiDoge.png"
           : "./image/shadowSamuraiDoge.png";
-      newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+      // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+      newBossEnemyImg.className = enemyClass.substring(1);
       if (foundEnemy) {
         enemyPositions = enemyPositions.map((item) => {
           if (item.enemyClass === enemyClass.substring(1)) {
@@ -2217,7 +2206,8 @@ function fireBigBeam(enemyClass) {
       enemyClass === ".bossImg"
         ? "./image/samuraiDoge.png"
         : "./image/shadowSamuraiDoge.png";
-    newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+    // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+    newBossEnemyImg.className = enemyClass.substring(1);
     if (foundEnemy) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
@@ -2243,7 +2233,8 @@ function fireBigBeam(enemyClass) {
       enemyClass === ".bossImg"
         ? "./image/samuraiDoge.png"
         : "./image/shadowSamuraiDoge.png";
-    newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+    newBossEnemyImg.className = enemyClass.substring(1);
+    // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
     if (foundEnemy) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
@@ -2269,7 +2260,8 @@ function fireBigBeam(enemyClass) {
       enemyClass === ".bossImg"
         ? "./image/samuraiDoge.png"
         : "./image/shadowSamuraiDoge.png";
-    newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+    // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+    newBossEnemyImg.className = enemyClass.substring(1);
     if (foundEnemy) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
@@ -2295,7 +2287,8 @@ function fireBigBeam(enemyClass) {
       enemyClass === ".bossImg"
         ? "./image/samuraiDoge.png"
         : "./image/shadowSamuraiDoge.png";
-    newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+    // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+    newBossEnemyImg.className = enemyClass.substring(1);
     if (foundEnemy) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
@@ -2321,7 +2314,8 @@ function fireBigBeam(enemyClass) {
       enemyClass === ".bossImg"
         ? "./image/samuraiDoge.png"
         : "./image/shadowSamuraiDoge.png";
-    newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+    // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+    newBossEnemyImg.className = enemyClass.substring(1);
     if (foundEnemy) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
@@ -2347,7 +2341,8 @@ function fireBigBeam(enemyClass) {
       enemyClass === ".bossImg"
         ? "./image/samuraiDoge.png"
         : "./image/shadowSamuraiDoge.png";
-    newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+    // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+    newBossEnemyImg.className = enemyClass.substring(1);
     if (foundEnemy) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
@@ -2373,7 +2368,8 @@ function fireBigBeam(enemyClass) {
       enemyClass === ".bossImg"
         ? "./image/samuraiDoge.png"
         : "./image/shadowSamuraiDoge.png";
-    newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+    // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+    newBossEnemyImg.className = enemyClass.substring(1);
     if (foundEnemy) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
@@ -2708,66 +2704,61 @@ function fireBigBeamUp(newEnemyTile) {
   let affectedTiles = [];
   if (newEnemyTile === "r5-c2") {
     let enemyBeamTimer = setTimeout(() => {
-    let startRow = parseInt(newEnemyTile.charAt(1));
-    let endRow = parseInt(1);
-    let column = parseInt(newEnemyTile.substring(4));
+      let startRow = parseInt(newEnemyTile.charAt(1));
+      let endRow = parseInt(1);
+      let column = parseInt(newEnemyTile.substring(4));
 
-    for (let i = startRow - 1; i >= endRow; i--) {
-      affectedTiles.push("r" + i + "-c" + (column - 1));
-      affectedTiles.push("r" + i + "-c" + column);
-      affectedTiles.push("r" + i + "-c" + (column + 1));
-    }
-    console.log(affectedTiles);
-    damageBigBeamTiles(affectedTiles, "fireUp")
-  }, 500); // Initial delay of 500ms before executing the code
+      for (let i = startRow - 1; i >= endRow; i--) {
+        affectedTiles.push("r" + i + "-c" + (column - 1));
+        affectedTiles.push("r" + i + "-c" + column);
+        affectedTiles.push("r" + i + "-c" + (column + 1));
+      }
+      // console.log(affectedTiles);
+      damageBigBeamTiles(affectedTiles, "fireUp");
+    }, 500); // Initial delay of 500ms before executing the code
   } else if (newEnemyTile === "r5-c5") {
     let enemyBeamTimer = setTimeout(() => {
-    let startRow = parseInt(newEnemyTile.charAt(1));
-    let endRow = parseInt(1);
-    let column = parseInt(newEnemyTile.substring(4));
+      let startRow = parseInt(newEnemyTile.charAt(1));
+      let endRow = parseInt(1);
+      let column = parseInt(newEnemyTile.substring(4));
 
-    for (let i = startRow - 1; i >= endRow; i--) {
-      affectedTiles.push("r" + i + "-c" + (column - 1));
-      affectedTiles.push("r" + i + "-c" + column);
-      affectedTiles.push("r" + i + "-c" + (column + 1));
-    }
-    console.log(affectedTiles);
-    damageBigBeamTiles(affectedTiles, "fireUp")
-  }, 500); // Initial delay of 500ms before executing the code
+      for (let i = startRow - 1; i >= endRow; i--) {
+        affectedTiles.push("r" + i + "-c" + (column - 1));
+        affectedTiles.push("r" + i + "-c" + column);
+        affectedTiles.push("r" + i + "-c" + (column + 1));
+      }
+      // console.log(affectedTiles);
+      damageBigBeamTiles(affectedTiles, "fireUp");
+    }, 500); // Initial delay of 500ms before executing the code
   } else if (newEnemyTile === "r5-c8") {
     let enemyBeamTimer = setTimeout(() => {
-    let startRow = parseInt(newEnemyTile.charAt(1));
-    let endRow = parseInt(1);
-    let column = parseInt(newEnemyTile.substring(4));
+      let startRow = parseInt(newEnemyTile.charAt(1));
+      let endRow = parseInt(1);
+      let column = parseInt(newEnemyTile.substring(4));
 
-    for (let i = startRow - 1; i >= endRow; i--) {
-      affectedTiles.push("r" + i + "-c" + (column - 1));
-      affectedTiles.push("r" + i + "-c" + column);
-      affectedTiles.push("r" + i + "-c" + (column + 1));
-    }
-    console.log(affectedTiles);
-    damageBigBeamTiles(affectedTiles, "fireUp")
-  }, 500); // Initial delay of 500ms before executing the code
+      for (let i = startRow - 1; i >= endRow; i--) {
+        affectedTiles.push("r" + i + "-c" + (column - 1));
+        affectedTiles.push("r" + i + "-c" + column);
+        affectedTiles.push("r" + i + "-c" + (column + 1));
+      }
+      // console.log(affectedTiles);
+      damageBigBeamTiles(affectedTiles, "fireUp");
+    }, 500); // Initial delay of 500ms before executing the code
   } else if (newEnemyTile === "r5-c11") {
     let enemyBeamTimer = setTimeout(() => {
+      let startRow = parseInt(newEnemyTile.charAt(1));
+      let endRow = parseInt(1);
+      let column = parseInt(newEnemyTile.substring(4));
 
-    let startRow = parseInt(newEnemyTile.charAt(1));
-    let endRow = parseInt(1);
-    let column = parseInt(newEnemyTile.substring(4));
-
-    for (let i = startRow - 1; i >= endRow; i--) {
-      affectedTiles.push("r" + i + "-c" + (column - 1));
-      affectedTiles.push("r" + i + "-c" + column);
-      affectedTiles.push("r" + i + "-c" + (column + 1));
-    }
-    console.log(affectedTiles);
-    damageBigBeamTiles(affectedTiles, "fireUp")
-  }, 500); // Initial delay of 500ms before executing the code
-
+      for (let i = startRow - 1; i >= endRow; i--) {
+        affectedTiles.push("r" + i + "-c" + (column - 1));
+        affectedTiles.push("r" + i + "-c" + column);
+        affectedTiles.push("r" + i + "-c" + (column + 1));
+      }
+      // console.log(affectedTiles);
+      damageBigBeamTiles(affectedTiles, "fireUp");
+    }, 500); // Initial delay of 500ms before executing the code
   }
-
-
-
 }
 function fireBigBeamDown(newEnemyTile) {
   let affectedTiles = [];
@@ -2783,24 +2774,10 @@ function fireBigBeamDown(newEnemyTile) {
         affectedTiles.push("r" + i + "-c" + column);
         affectedTiles.push("r" + i + "-c" + (column + 1));
       }
-      console.log(affectedTiles);
-      damageBigBeamTiles(affectedTiles, "fireDown")
+      // console.log(affectedTiles);
+      damageBigBeamTiles(affectedTiles, "fireDown");
     }, 500); // Initial delay of 500ms before executing the code
   } else if (newEnemyTile === "r2-c5") {
-      let enemyBeamTimer = setTimeout(() => {
-        let startRow = parseInt(newEnemyTile.charAt(1));
-        let endRow = parseInt(6);
-        let column = parseInt(newEnemyTile.substring(4));
-
-        for (let i = startRow + 1; i <= endRow; i++) {
-          affectedTiles.push("r" + i + "-c" + (column - 1));
-          affectedTiles.push("r" + i + "-c" + column);
-          affectedTiles.push("r" + i + "-c" + (column + 1));
-        }
-        console.log(affectedTiles);
-        damageBigBeamTiles(affectedTiles, "fireDown")
-      }, 500); // Initial delay of 500ms before executing the code
-  }else if (newEnemyTile === "r2-c8") {
     let enemyBeamTimer = setTimeout(() => {
       let startRow = parseInt(newEnemyTile.charAt(1));
       let endRow = parseInt(6);
@@ -2811,24 +2788,38 @@ function fireBigBeamDown(newEnemyTile) {
         affectedTiles.push("r" + i + "-c" + column);
         affectedTiles.push("r" + i + "-c" + (column + 1));
       }
-      console.log(affectedTiles);
-      damageBigBeamTiles(affectedTiles, "fireDown")
+      // console.log(affectedTiles);
+      damageBigBeamTiles(affectedTiles, "fireDown");
     }, 500); // Initial delay of 500ms before executing the code
-}else if (newEnemyTile === "r2-c11") {
-  let enemyBeamTimer = setTimeout(() => {
-    let startRow = parseInt(newEnemyTile.charAt(1));
-    let endRow = parseInt(6);
-    let column = parseInt(newEnemyTile.substring(4));
+  } else if (newEnemyTile === "r2-c8") {
+    let enemyBeamTimer = setTimeout(() => {
+      let startRow = parseInt(newEnemyTile.charAt(1));
+      let endRow = parseInt(6);
+      let column = parseInt(newEnemyTile.substring(4));
 
-    for (let i = startRow + 1; i <= endRow; i++) {
-      affectedTiles.push("r" + i + "-c" + (column - 1));
-      affectedTiles.push("r" + i + "-c" + column);
-      affectedTiles.push("r" + i + "-c" + (column + 1));
-    }
-    console.log(affectedTiles);
-    damageBigBeamTiles(affectedTiles, "fireDown")
-  }, 500); // Initial delay of 500ms before executing the code
-}
+      for (let i = startRow + 1; i <= endRow; i++) {
+        affectedTiles.push("r" + i + "-c" + (column - 1));
+        affectedTiles.push("r" + i + "-c" + column);
+        affectedTiles.push("r" + i + "-c" + (column + 1));
+      }
+      // console.log(affectedTiles);
+      damageBigBeamTiles(affectedTiles, "fireDown");
+    }, 500); // Initial delay of 500ms before executing the code
+  } else if (newEnemyTile === "r2-c11") {
+    let enemyBeamTimer = setTimeout(() => {
+      let startRow = parseInt(newEnemyTile.charAt(1));
+      let endRow = parseInt(6);
+      let column = parseInt(newEnemyTile.substring(4));
+
+      for (let i = startRow + 1; i <= endRow; i++) {
+        affectedTiles.push("r" + i + "-c" + (column - 1));
+        affectedTiles.push("r" + i + "-c" + column);
+        affectedTiles.push("r" + i + "-c" + (column + 1));
+      }
+      // console.log(affectedTiles);
+      damageBigBeamTiles(affectedTiles, "fireDown");
+    }, 500); // Initial delay of 500ms before executing the code
+  }
 }
 
 function fireBigBeamLeft(newEnemyTile) {
@@ -2842,8 +2833,8 @@ function fireBigBeamLeft(newEnemyTile) {
       affectedTiles.push("r" + row + "-c" + i);
       affectedTiles.push("r" + (row + 1) + "-c" + i);
     }
-    console.log(affectedTiles);
-    damageBigBeamTiles(affectedTiles, "fireLeft")
+    // console.log(affectedTiles);
+    damageBigBeamTiles(affectedTiles, "fireLeft");
   } else if (newEnemyTile === "r5-c11") {
     let row = parseInt(newEnemyTile.charAt(1));
     let startColumn = parseInt(newEnemyTile.substring(4));
@@ -2852,10 +2843,9 @@ function fireBigBeamLeft(newEnemyTile) {
       affectedTiles.push("r" + (row - 1) + "-c" + i);
       affectedTiles.push("r" + row + "-c" + i);
       affectedTiles.push("r" + (row + 1) + "-c" + i);
-
     }
-    console.log(affectedTiles);
-    damageBigBeamTiles(affectedTiles, "fireLeft")
+    // console.log(affectedTiles);
+    damageBigBeamTiles(affectedTiles, "fireLeft");
   }
 }
 function fireBigBeamRight(newEnemyTile) {
@@ -2870,8 +2860,8 @@ function fireBigBeamRight(newEnemyTile) {
       affectedTiles.push("r" + (row + 1) + "-c" + i);
     }
 
-    console.log(affectedTiles);
-    damageBigBeamTiles(affectedTiles, "fireRight")
+    // console.log(affectedTiles);
+    damageBigBeamTiles(affectedTiles, "fireRight");
   } else if (newEnemyTile === "r5-c2") {
     let row = parseInt(newEnemyTile.charAt(1));
     let startColumn = parseInt(newEnemyTile.substring(4));
@@ -2882,65 +2872,63 @@ function fireBigBeamRight(newEnemyTile) {
       affectedTiles.push("r" + (row + 1) + "-c" + i);
     }
 
-    console.log(affectedTiles);
-    damageBigBeamTiles(affectedTiles, "fireRight")
+    // console.log(affectedTiles);
+    damageBigBeamTiles(affectedTiles, "fireRight");
   }
 }
 
-function damageBigBeamTiles (affectedTiles, directionSelected) {
+function damageBigBeamTiles(affectedTiles, directionSelected) {
   for (let j = 0; j < affectedTiles.length; j++) {
     let delayTimer = setTimeout(() => {
-    //  cancel under condition
+      //  cancel under condition
       let damageTile = document.querySelector("." + affectedTiles[j]);
       let originalColor = "#008b8a";
 
       damageTile.style.backgroundColor = "lightsalmon";
 
       let damageTileTimer = setTimeout(() => {
-        if((j + 2) % 3 === 0){
-          
-        if (directionSelected === "fireUp") {
-          let laserBeam = document.createElement("div");
-          laserBeam.className =
-            j === 1
-              ? "laserBeam bigLaserBeamVerticalStartFireUp"
-              : j === affectedTiles.length - 1
-              ? "laserBeam bigLaserBeamVerticalEndFireUp"
-              : "laserBeam bigLaserBeamVertical";
-          damageTile.append(laserBeam);
-        } else if (directionSelected === "fireDown") {
-          let laserBeam = document.createElement("div");
-          laserBeam.className =
-           j === 1
-              ? "laserBeam bigLaserBeamVerticalStartFireDown"
-              : j === affectedTiles.length - 1
-              ? "laserBeam bigLaserBeamVerticalEndFireDown"
-              : "laserBeam bigLaserBeamVertical";
+        if ((j + 2) % 3 === 0) {
+          if (directionSelected === "fireUp") {
+            let laserBeam = document.createElement("div");
+            laserBeam.className =
+              j === 1
+                ? "laserBeam bigLaserBeamVerticalStartFireUp"
+                : j === affectedTiles.length - 1
+                ? "laserBeam bigLaserBeamVerticalEndFireUp"
+                : "laserBeam bigLaserBeamVertical";
+            damageTile.append(laserBeam);
+          } else if (directionSelected === "fireDown") {
+            let laserBeam = document.createElement("div");
+            laserBeam.className =
+              j === 1
+                ? "laserBeam bigLaserBeamVerticalStartFireDown"
+                : j === affectedTiles.length - 1
+                ? "laserBeam bigLaserBeamVerticalEndFireDown"
+                : "laserBeam bigLaserBeamVertical";
 
-          damageTile.append(laserBeam);
-        } 
-        else if (directionSelected === "fireLeft") {
-          let laserBeam = document.createElement("div");
-          laserBeam.className =
-           j === 1
-              ? "laserBeam bigLaserBeamHorizontalStartFireLeft"
-              : j === affectedTiles.length - 1
-              ? "laserBeam bigLaserBeamHorizontalEndFireLeft"
-              : "laserBeam bigLaserBeamHorizontal";
+            damageTile.append(laserBeam);
+          } else if (directionSelected === "fireLeft") {
+            let laserBeam = document.createElement("div");
+            laserBeam.className =
+              j === 1
+                ? "laserBeam bigLaserBeamHorizontalStartFireLeft"
+                : j === affectedTiles.length - 1
+                ? "laserBeam bigLaserBeamHorizontalEndFireLeft"
+                : "laserBeam bigLaserBeamHorizontal";
 
-          damageTile.append(laserBeam);
-        } else if (directionSelected === "fireRight") {
-          let laserBeam = document.createElement("div");
-          laserBeam.className =
-            j === 1
-              ? "laserBeam bigLaserBeamHorizontalStartFireRight"
-              : j === affectedTiles.length - 1
-              ? "laserBeam bigLaserBeamHorizontalEndFireRight"
-              : "laserBeam bigLaserBeamHorizontal";
+            damageTile.append(laserBeam);
+          } else if (directionSelected === "fireRight") {
+            let laserBeam = document.createElement("div");
+            laserBeam.className =
+              j === 1
+                ? "laserBeam bigLaserBeamHorizontalStartFireRight"
+                : j === affectedTiles.length - 1
+                ? "laserBeam bigLaserBeamHorizontalEndFireRight"
+                : "laserBeam bigLaserBeamHorizontal";
 
-          damageTile.append(laserBeam);
+            damageTile.append(laserBeam);
+          }
         }
-      }
         damageTile.style.backgroundColor = originalColor; // Revert back to original color
 
         if (affectedTiles[j] === playerPosition) {
@@ -2949,7 +2937,163 @@ function damageBigBeamTiles (affectedTiles, directionSelected) {
       }, 500); // Revert back to original color after 500ms
     }, 500); // Delay each iteration by 500ms
   }
+}
 
+// ----------Octo-Slash------------------
+
+function performOctoSlash(enemyClass) {
+  const foundEnemy = bossEnemyPositions.find(
+    (item) => item.enemyClass === enemyClass.substring(1)
+  );
+
+  possibleStartPositions = ["r3-c4", "r3-c6", "r3-c8"];
+
+  let startingAttackPosition =
+    possibleStartPositions[
+      Math.floor(Math.random() * possibleStartPositions.length)
+    ];
+  console.log("enemyClass:", enemyClass);
+  console.log("startingAttackPosition:", startingAttackPosition);
+
+  let currentEnemyPositon = document.querySelector(enemyClass);
+  currentEnemyPositon.remove();
+  let newEnemyTile = document.querySelector("." + startingAttackPosition);
+  let newBossEnemyImg = document.createElement("img");
+  newBossEnemyImg.src =
+    enemyClass === ".bossImg"
+      ? "./image/samuraiDoge.png"
+      : "./image/shadowSamuraiDoge.png";
+  // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+  newBossEnemyImg.className = enemyClass.substring(1);
+  if (foundEnemy) {
+    enemyPositions = enemyPositions.map((item) => {
+      if (item.enemyClass === enemyClass.substring(1)) {
+        console.log("rawr");
+        return {
+          ...item,
+          position: startingAttackPosition,
+          isMoving: false,
+        };
+      } else {
+        return item;
+      }
+    });
+  }
+  newEnemyTile.append(newBossEnemyImg);
+
+  let mainAxisTiles = [];
+  let offAxisTiles = [];
+
+  if (startingAttackPosition === "r3-c4") {
+    mainAxisTiles = [
+      "r3-c2",
+      "r3-c3",
+      "r3-c5",
+      "r3-c6",
+      "r5-c4",
+      "r4-c4",
+      "r2-c4",
+      "r1-c4",
+    ];
+    offAxisTiles = [
+      "r5-c2",
+      "r4-c3",
+      "r2-c5",
+      "r1-c6",
+      "r1-c2",
+      "r2-c3",
+      "r4-c5",
+      "r5-c6",
+    ];
+  } else if (startingAttackPosition === "r3-c6") {
+    mainAxisTiles = [
+      "r3-c4",
+      "r3-c5",
+      "r3-c7",
+      "r3-c8",
+      "r5-c6",
+      "r4-c6",
+      "r2-c6",
+      "r1-c6",
+    ];
+    offAxisTiles = [
+      "r5-c4",
+      "r4-c5",
+      "r2-c7",
+      "r1-c8",
+      "r1-c4",
+      "r2-c5",
+      "r4-c7",
+      "r5-c8",
+    ];
+  } else if (startingAttackPosition === "r3-c8") {
+    mainAxisTiles = [
+      "r3-c6",
+      "r3-c7",
+      "r3-c9",
+      "r3-c10",
+      "r5-c8",
+      "r4-c8",
+      "r2-c8",
+      "r1-c8",
+    ];
+    offAxisTiles = [
+      "r5-c6",
+      "r4-c7",
+      "r2-c9",
+      "r1-c10",
+      "r1-c6",
+      "r2-c7",
+      "r4-c9",
+      "r5-c10",
+    ];
+  }
+
+  for (let j = 0; j < mainAxisTiles.length; j++) {
+    let delayTimer = setTimeout(() => {
+      //  cancel under condition
+      let damageTile = document.querySelector("." + mainAxisTiles[j]);
+      let originalColor = "#008b8a";
+
+      damageTile.style.backgroundColor = "lightsalmon";
+
+      let damageTileTimer = setTimeout(() => {
+        let laserBeam = document.createElement("div");
+        laserBeam.className = "laserBeam bigLaserBeamHorizontal";
+
+        damageTile.append(laserBeam);
+
+        damageTile.style.backgroundColor = originalColor; // Revert back to original color
+
+        if (mainAxisTiles[j] === playerPosition) {
+          loseGame(-1);
+        }
+      }, 500); // Revert back to original color after 500ms
+    }, 500); // Delay each iteration by 500ms
+
+    for (let j = 0; j < offAxisTiles.length; j++) {
+      let delayTimer = setTimeout(() => {
+        //  cancel under condition
+        let damageTile = document.querySelector("." + offAxisTiles[j]);
+        let originalColor = "#008b8a";
+
+        damageTile.style.backgroundColor = "lightsalmon";
+
+        let damageTileTimer = setTimeout(() => {
+          let laserBeam = document.createElement("div");
+          laserBeam.className = "laserBeam bigLaserBeamHorizontal";
+
+          damageTile.append(laserBeam);
+
+          damageTile.style.backgroundColor = originalColor; // Revert back to original color
+
+          if (offAxisTiles[j] === playerPosition) {
+            loseGame(-1);
+          }
+        }, 500); // Revert back to original color after 500ms
+      }, 1000); // Delay each iteration by 500ms
+    }
+  }
 }
 
 // --------------end boss-----------
