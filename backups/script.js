@@ -3065,8 +3065,8 @@ function performOctoSlash(enemyClass) {
       let swordSlashEffectLine = document.createElement("div");
       swordSlashEffectLine.className =
         j < 4
-          ? "horizontalSlashEffectLine"
-          : "verticalSlashEffectLine";
+          ? "swordSlashEffectLine verticalSlashEffectLine"
+          : "swordSlashEffectLine horizontalSlashEffectLine";
 
       swordSlashEffect.appendChild(swordSlashEffectLine);
       swordEffectContainer.appendChild(swordSlashEffect);
@@ -3103,8 +3103,8 @@ function performOctoSlash(enemyClass) {
       let swordSlashEffectLine = document.createElement("div");
       swordSlashEffectLine.className =
         k < 4
-          ? "diagonalSlashBLTRLine"
-          : "diagonalSlashTLBRLine";
+          ? "swordSlashEffectLine diagonalSlashBLTRLine"
+          : "swordSlashEffectLine diagonalSlashTLBRLine";
 
       swordSlashEffect.appendChild(swordSlashEffectLine);
       swordEffectContainer.appendChild(swordSlashEffect);
