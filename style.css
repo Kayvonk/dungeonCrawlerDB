@@ -441,6 +441,7 @@ header > p:first-child {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  z-index: 11;
 }
 
 .laserBeamVertical {
@@ -456,9 +457,9 @@ header > p:first-child {
 }
 
 .bigLaserBeamVertical {
-  width: 9vw;
+  width: 12vw;
   height: 10vh;
-  animation: growAndShrinkVertical 1s forwards;
+  animation: bigBeamGrowAndShrinkVertical 1s forwards;
   background: linear-gradient(
     90deg,
     rgba(255, 0, 0, 1) 0%,
@@ -466,7 +467,6 @@ header > p:first-child {
     rgba(255, 0, 0, 1) 100%
   );
 }
-
 
 .laserBeamVerticalRounded {
   width: 3vw;
@@ -496,11 +496,11 @@ header > p:first-child {
 }
 
 .bigLaserBeamVerticalStartFireUp {
-  width: 9vw;
+  width: 12vw;
   height: 10vh;
   border-bottom-left-radius: 50%;
   border-bottom-right-radius: 50%;
-  animation: growAndShrinkVertical 1s forwards;
+  animation: bigBeamGrowAndShrinkVertical 1s forwards;
   background: linear-gradient(
     90deg,
     rgba(255, 0, 0, 1) 0%,
@@ -523,11 +523,11 @@ header > p:first-child {
   );
 }
 .bigLaserBeamVerticalEndFireUp {
-  width: 9vw;
+  width: 12vw;
   height: 10vh;
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
-  animation: growAndShrinkVertical 1s forwards;
+  animation: bigBeamGrowAndShrinkVertical 1s forwards;
   background: linear-gradient(
     90deg,
     rgba(255, 0, 0, 1) 0%,
@@ -551,11 +551,11 @@ header > p:first-child {
 }
 
 .bigLaserBeamVerticalStartFireDown {
-  width: 9vw;
+  width: 12vw;
   height: 10vh;
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
-  animation: growAndShrinkVertical 1s forwards;
+  animation: bigBeamGrowAndShrinkVertical 1s forwards;
   background: linear-gradient(
     90deg,
     rgba(255, 0, 0, 1) 0%,
@@ -579,11 +579,11 @@ header > p:first-child {
 }
 
 .bigLaserBeamVerticalEndFireDown {
-  width: 9vw;
+  width: 12vw;
   height: 10vh;
   border-bottom-left-radius: 50%;
   border-bottom-right-radius: 50%;
-  animation: growAndShrinkVertical 1s forwards;
+  animation: bigBeamGrowAndShrinkVertical 1s forwards;
   background: linear-gradient(
     90deg,
     rgba(255, 0, 0, 1) 0%,
@@ -606,8 +606,8 @@ header > p:first-child {
 
 .bigLaserBeamHorizontal {
   width: 5vw;
-  height: 18vh;
-  animation: growAndShrinkHorizontal 1s forwards;
+  height: 24vh;
+  animation: bigBeamGrowAndShrinkHorizontal 1s forwards;
   background: linear-gradient(
     0deg,
     rgba(255, 0, 0, 1) 0%,
@@ -645,10 +645,10 @@ header > p:first-child {
 
 .bigLaserBeamHorizontalStartFireLeft {
   width: 5vw;
-  height: 18vh;
+  height: 24vh;
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
-  animation: growAndShrinkHorizontal 1s forwards;
+  animation: bigBeamGrowAndShrinkHorizontal 1s forwards;
   background: linear-gradient(
     0deg,
     rgba(255, 0, 0, 1) 0%,
@@ -673,10 +673,10 @@ header > p:first-child {
 
 .bigLaserBeamHorizontalEndFireLeft {
   width: 5vw;
-  height: 18vh;
+  height: 24vh;
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%;
-  animation: growAndShrinkHorizontal 1s forwards;
+  animation: bigBeamGrowAndShrinkHorizontal 1s forwards;
   background: linear-gradient(
     0deg,
     rgba(255, 0, 0, 1) 0%,
@@ -701,10 +701,10 @@ header > p:first-child {
 
 .bigLaserBeamHorizontalStartFireRight {
   width: 5vw;
-  height: 18vh;
+  height: 24vh;
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%;
-  animation: growAndShrinkHorizontal 1s forwards;
+  animation: bigBeamGrowAndShrinkHorizontal 1s forwards;
   background: linear-gradient(
     0deg,
     rgba(255, 0, 0, 1) 0%,
@@ -729,10 +729,10 @@ header > p:first-child {
 
 .bigLaserBeamHorizontalEndFireRight {
   width: 5vw;
-  height: 18vh;
+  height: 24vh;
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
-  animation: growAndShrinkHorizontal 1s forwards;
+  animation: bigBeamGrowAndShrinkHorizontal 1s forwards;
   background: linear-gradient(
     0deg,
     rgba(255, 0, 0, 1) 0%,
@@ -758,6 +758,26 @@ header > p:first-child {
   }
   50% {
     height: 6vh; /* Middle height */
+  }
+}
+
+@keyframes bigBeamGrowAndShrinkVertical {
+  0%,
+  100% {
+    width: 0vw; /* Start and end width */
+  }
+  50% {
+    width: 12vw; /* Middle width */
+  }
+}
+
+@keyframes bigBeamGrowAndShrinkHorizontal {
+  0%,
+  100% {
+    height: 0vh; /* Start and end height */
+  }
+  50% {
+    height: 24vh; /* Middle height */
   }
 }
 
