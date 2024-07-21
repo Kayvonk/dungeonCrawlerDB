@@ -567,13 +567,12 @@ let secondsTimer;
 let buffDogeIndexes = [4, 8];
 
 function limitMovement() {
+ const currentRound = round
   canMove = false;
   let limitMovementTimer = setTimeout(() => {
-    if (playingBossDialogue) {
+    if (playingBossDialogue || currentRound !== round) {
       clearTimeout(limitMovementTimer);
-      // console.log("stop");
     }
-    // console.log("limiting!!!!!!!!!!");
     canMove = true;
   }, 100);
 }
@@ -1728,32 +1727,28 @@ function checkKeyPressed(evt) {
     }
     moveUp();
     playerDirection = "up";
-    console.log(round);
-    round !== 0 ? limitMovement() : null;
+    limitMovement()
   } else if (canMove && evt.keyCode === 40) {
     if (isCave && playerPosition === caveExitPosition) {
       isCave ? exitCave() : null;
     }
     moveDown();
     playerDirection = "down";
-    console.log(round);
-    round !== 0 ? limitMovement() : null;
+   limitMovement()
   } else if (canMove && evt.keyCode === 37) {
     if (isOutdoor1 && playerPosition === scene1ExitTilePosition) {
       isOutdoor1 ? enterOutdoorScene2() : null;
     }
     moveLeft();
     playerDirection = "left";
-    console.log(round);
-    round !== 0 ? limitMovement() : null;
+    limitMovement()
   } else if (canMove && evt.keyCode === 39) {
     if (isOutdoor2 && playerPosition === scene2ExitTilePosition) {
       isOutdoor2 ? exitOutDoorScene2() : null;
     }
     moveRight();
     playerDirection = "right";
-    console.log(round);
-    round !== 0 ? limitMovement() : null;
+  limitMovement()
   }
 }
 
@@ -1975,25 +1970,19 @@ function startBossMovement(enemyClass, enemyImgPath, enemyIndex) {
     return;
   }
   let isBoss = foundEnemy.enemyClass === "bossImg";
-  // console.log(isBoss);
 
-  let enemyDelay =
-    1000 / ((round + 1) * 0.25) > 1000
-      ? 1000
-      : 1000 / ((round + 1) * 0.25) < 750
-      ? 750
-      : 1000 / ((round + 1) * 0.25);
+  let enemyDelay = 1500 
 
-  // let isAttacking = Math.random() < 0.5;
-  let isAttacking = true;
+  let isAttacking = Math.random() < 0.5;
+  // let isAttacking = true;
   let enemyTimer = setTimeout(() => {
     let enemyImg = document.querySelector(enemyClass);
     if (!enemyImg) {
       return;
     }
     if (isAttacking) {
-      // if(Math.random() < .20) {
-      if (false) {
+      if(Math.random() < .50) {
+      // if (false) {
         // change to eyes attack animation
         enemyImg.src = isBoss
           ? "./image/samuraiDoge.png"
@@ -2043,7 +2032,6 @@ function startBossMovement(enemyClass, enemyImgPath, enemyIndex) {
   }, enemyDelay);
 }
 function fireBigBeam(enemyClass) {
-  console.log("enemyClass:", enemyClass);
   const foundEnemy = bossEnemyPositions.find(
     (item) => item.enemyClass === enemyClass.substring(1)
   );
@@ -2060,11 +2048,10 @@ function fireBigBeam(enemyClass) {
         enemyClass === ".bossImg"
           ? "./image/samuraiDoge.png"
           : "./image/shadowSamuraiDoge.png";
-      newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
+      newBossEnemyImg.className = enemyClass.substring(1) + " " + "r2-c11";
       if (foundEnemy) {
         enemyPositions = enemyPositions.map((item) => {
           if (item.enemyClass === enemyClass.substring(1)) {
-            console.log("rawr");
             return {
               ...item,
               position: "r2-c11",
@@ -2090,11 +2077,10 @@ function fireBigBeam(enemyClass) {
           ? "./image/samuraiDoge.png"
           : "./image/shadowSamuraiDoge.png";
       // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
-      newBossEnemyImg.className = enemyClass.substring(1);
+      newBossEnemyImg.className = enemyClass.substring(1)  + " " + "r2-c2";
       if (foundEnemy) {
         enemyPositions = enemyPositions.map((item) => {
           if (item.enemyClass === enemyClass.substring(1)) {
-            console.log("rawr");
             return {
               ...item,
               position: "r2-c2",
@@ -2120,11 +2106,10 @@ function fireBigBeam(enemyClass) {
           ? "./image/samuraiDoge.png"
           : "./image/shadowSamuraiDoge.png";
       // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
-      newBossEnemyImg.className = enemyClass.substring(1);
+      newBossEnemyImg.className = enemyClass.substring(1) + " " +  "r5-c11";
       if (foundEnemy) {
         enemyPositions = enemyPositions.map((item) => {
           if (item.enemyClass === enemyClass.substring(1)) {
-            console.log("rawr");
             return {
               ...item,
               position: "r5-c11",
@@ -2150,11 +2135,10 @@ function fireBigBeam(enemyClass) {
           ? "./image/samuraiDoge.png"
           : "./image/shadowSamuraiDoge.png";
       // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
-      newBossEnemyImg.className = enemyClass.substring(1);
+      newBossEnemyImg.className = enemyClass.substring(1)  + " " +  "r5-c2";
       if (foundEnemy) {
         enemyPositions = enemyPositions.map((item) => {
           if (item.enemyClass === enemyClass.substring(1)) {
-            console.log("rawr");
             return {
               ...item,
               position: "r5-c2",
@@ -2179,11 +2163,10 @@ function fireBigBeam(enemyClass) {
           ? "./image/samuraiDoge.png"
           : "./image/shadowSamuraiDoge.png";
       // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
-      newBossEnemyImg.className = enemyClass.substring(1);
+      newBossEnemyImg.className = enemyClass.substring(1)  + " " +  "r5-c2";
       if (foundEnemy) {
         enemyPositions = enemyPositions.map((item) => {
           if (item.enemyClass === enemyClass.substring(1)) {
-            console.log("rawr");
             return {
               ...item,
               position: "r5-c2",
@@ -2207,11 +2190,10 @@ function fireBigBeam(enemyClass) {
         ? "./image/samuraiDoge.png"
         : "./image/shadowSamuraiDoge.png";
     // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
-    newBossEnemyImg.className = enemyClass.substring(1);
+    newBossEnemyImg.className = enemyClass.substring(1)  + " " +  "r5-c5";
     if (foundEnemy) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
-          console.log("rawr");
           return {
             ...item,
             position: "r5-c5",
@@ -2233,12 +2215,11 @@ function fireBigBeam(enemyClass) {
       enemyClass === ".bossImg"
         ? "./image/samuraiDoge.png"
         : "./image/shadowSamuraiDoge.png";
-    newBossEnemyImg.className = enemyClass.substring(1);
+    newBossEnemyImg.className = enemyClass.substring(1)  + " " +  "r5-c8";
     // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
     if (foundEnemy) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
-          console.log("rawr");
           return {
             ...item,
             position: "r5-c8",
@@ -2261,11 +2242,10 @@ function fireBigBeam(enemyClass) {
         ? "./image/samuraiDoge.png"
         : "./image/shadowSamuraiDoge.png";
     // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
-    newBossEnemyImg.className = enemyClass.substring(1);
+    newBossEnemyImg.className = enemyClass.substring(1)  + " " +  "r5-c11";
     if (foundEnemy) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
-          console.log("rawr");
           return {
             ...item,
             position: "r5-c11",
@@ -2288,11 +2268,10 @@ function fireBigBeam(enemyClass) {
         ? "./image/samuraiDoge.png"
         : "./image/shadowSamuraiDoge.png";
     // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
-    newBossEnemyImg.className = enemyClass.substring(1);
+    newBossEnemyImg.className = enemyClass.substring(1)  + " " +  "r2-c2";
     if (foundEnemy) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
-          console.log("rawr");
           return {
             ...item,
             position: "r2-c2",
@@ -2315,11 +2294,10 @@ function fireBigBeam(enemyClass) {
         ? "./image/samuraiDoge.png"
         : "./image/shadowSamuraiDoge.png";
     // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
-    newBossEnemyImg.className = enemyClass.substring(1);
+    newBossEnemyImg.className = enemyClass.substring(1)  + " " +  "r2-c5";
     if (foundEnemy) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
-          console.log("rawr");
           return {
             ...item,
             position: "r2-c5",
@@ -2342,11 +2320,10 @@ function fireBigBeam(enemyClass) {
         ? "./image/samuraiDoge.png"
         : "./image/shadowSamuraiDoge.png";
     // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
-    newBossEnemyImg.className = enemyClass.substring(1);
+    newBossEnemyImg.className = enemyClass.substring(1)  + " " +  "r2-c8";
     if (foundEnemy) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
-          console.log("rawr");
           return {
             ...item,
             position: "r2-c8",
@@ -2369,11 +2346,10 @@ function fireBigBeam(enemyClass) {
         ? "./image/samuraiDoge.png"
         : "./image/shadowSamuraiDoge.png";
     // newBossEnemyImg.className = enemyClass.substring(1) + " " + newEnemyTile;
-    newBossEnemyImg.className = enemyClass.substring(1);
+    newBossEnemyImg.className = enemyClass.substring(1)  + " " + "r2-c11";
     if (foundEnemy) {
       enemyPositions = enemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
-          console.log("rawr");
           return {
             ...item,
             position: "r2-c11",
@@ -2397,8 +2373,9 @@ function bossEnemyMoveUp(enemyClass, enemyImgPath, enemyIndex) {
   if (!enemyImg) {
     return;
   }
-
+  console.log(enemyImg);
   let enemyPosition = enemyImg.classList[1];
+  console.log(enemyPosition);
   let row = enemyPosition.split("-")[0].substring(1);
   let column = enemyPosition.split("-")[1].substring(1);
   if (row > 1) {
@@ -2452,7 +2429,9 @@ function bossEnemyMoveDown(enemyClass, enemyImgPath, enemyIndex) {
   if (!enemyImg) {
     return;
   }
+  console.log(enemyImg);
   let enemyPosition = enemyImg.classList[1];
+  console.log(enemyPosition);
   let row = enemyPosition.split("-")[0].substring(1);
   let column = enemyPosition.split("-")[1].substring(1);
   if (row < 6) {
@@ -2507,8 +2486,10 @@ function bossEnemyMoveLeft(enemyClass, enemyImgPath, enemyIndex) {
   if (!enemyImg) {
     return;
   }
+  console.log(enemyImg);
   let enemyPosition = enemyImg.classList[1];
-  let row = enemyPosition.split("-")[0].substring(1);
+  console.log(enemyPosition);
+    let row = enemyPosition.split("-")[0].substring(1);
   let column = enemyPosition.split("-")[1].substring(1);
   if (column > 1) {
     let newPosition = "r" + row + "-c" + (parseInt(column) - 1);
@@ -2562,7 +2543,9 @@ function bossEnemyMoveRight(enemyClass, enemyImgPath, enemyIndex) {
   if (!enemyImg) {
     return;
   }
+  console.log(enemyImg);
   let enemyPosition = enemyImg.classList[1];
+  console.log(enemyPosition);
   let row = enemyPosition.split("-")[0].substring(1);
   let column = enemyPosition.split("-")[1].substring(1);
   if (column < 12) {
@@ -2713,7 +2696,6 @@ function fireBigBeamUp(newEnemyTile) {
         affectedTiles.push("r" + i + "-c" + column);
         affectedTiles.push("r" + i + "-c" + (column + 1));
       }
-      // console.log(affectedTiles);
       damageBigBeamTiles(affectedTiles, "fireUp");
     }, 500); // Initial delay of 500ms before executing the code
   } else if (newEnemyTile === "r5-c5") {
@@ -2727,7 +2709,6 @@ function fireBigBeamUp(newEnemyTile) {
         affectedTiles.push("r" + i + "-c" + column);
         affectedTiles.push("r" + i + "-c" + (column + 1));
       }
-      // console.log(affectedTiles);
       damageBigBeamTiles(affectedTiles, "fireUp");
     }, 500); // Initial delay of 500ms before executing the code
   } else if (newEnemyTile === "r5-c8") {
@@ -2741,7 +2722,6 @@ function fireBigBeamUp(newEnemyTile) {
         affectedTiles.push("r" + i + "-c" + column);
         affectedTiles.push("r" + i + "-c" + (column + 1));
       }
-      // console.log(affectedTiles);
       damageBigBeamTiles(affectedTiles, "fireUp");
     }, 500); // Initial delay of 500ms before executing the code
   } else if (newEnemyTile === "r5-c11") {
@@ -2755,7 +2735,6 @@ function fireBigBeamUp(newEnemyTile) {
         affectedTiles.push("r" + i + "-c" + column);
         affectedTiles.push("r" + i + "-c" + (column + 1));
       }
-      // console.log(affectedTiles);
       damageBigBeamTiles(affectedTiles, "fireUp");
     }, 500); // Initial delay of 500ms before executing the code
   }
@@ -2774,7 +2753,6 @@ function fireBigBeamDown(newEnemyTile) {
         affectedTiles.push("r" + i + "-c" + column);
         affectedTiles.push("r" + i + "-c" + (column + 1));
       }
-      // console.log(affectedTiles);
       damageBigBeamTiles(affectedTiles, "fireDown");
     }, 500); // Initial delay of 500ms before executing the code
   } else if (newEnemyTile === "r2-c5") {
@@ -2788,7 +2766,6 @@ function fireBigBeamDown(newEnemyTile) {
         affectedTiles.push("r" + i + "-c" + column);
         affectedTiles.push("r" + i + "-c" + (column + 1));
       }
-      // console.log(affectedTiles);
       damageBigBeamTiles(affectedTiles, "fireDown");
     }, 500); // Initial delay of 500ms before executing the code
   } else if (newEnemyTile === "r2-c8") {
@@ -2802,7 +2779,6 @@ function fireBigBeamDown(newEnemyTile) {
         affectedTiles.push("r" + i + "-c" + column);
         affectedTiles.push("r" + i + "-c" + (column + 1));
       }
-      // console.log(affectedTiles);
       damageBigBeamTiles(affectedTiles, "fireDown");
     }, 500); // Initial delay of 500ms before executing the code
   } else if (newEnemyTile === "r2-c11") {
@@ -2816,7 +2792,6 @@ function fireBigBeamDown(newEnemyTile) {
         affectedTiles.push("r" + i + "-c" + column);
         affectedTiles.push("r" + i + "-c" + (column + 1));
       }
-      // console.log(affectedTiles);
       damageBigBeamTiles(affectedTiles, "fireDown");
     }, 500); // Initial delay of 500ms before executing the code
   }
@@ -2833,7 +2808,6 @@ function fireBigBeamLeft(newEnemyTile) {
       affectedTiles.push("r" + row + "-c" + i);
       affectedTiles.push("r" + (row + 1) + "-c" + i);
     }
-    // console.log(affectedTiles);
     damageBigBeamTiles(affectedTiles, "fireLeft");
   } else if (newEnemyTile === "r5-c11") {
     let row = parseInt(newEnemyTile.charAt(1));
@@ -2844,7 +2818,6 @@ function fireBigBeamLeft(newEnemyTile) {
       affectedTiles.push("r" + row + "-c" + i);
       affectedTiles.push("r" + (row + 1) + "-c" + i);
     }
-    // console.log(affectedTiles);
     damageBigBeamTiles(affectedTiles, "fireLeft");
   }
 }
@@ -2860,7 +2833,6 @@ function fireBigBeamRight(newEnemyTile) {
       affectedTiles.push("r" + (row + 1) + "-c" + i);
     }
 
-    // console.log(affectedTiles);
     damageBigBeamTiles(affectedTiles, "fireRight");
   } else if (newEnemyTile === "r5-c2") {
     let row = parseInt(newEnemyTile.charAt(1));
@@ -2872,7 +2844,6 @@ function fireBigBeamRight(newEnemyTile) {
       affectedTiles.push("r" + (row + 1) + "-c" + i);
     }
 
-    // console.log(affectedTiles);
     damageBigBeamTiles(affectedTiles, "fireRight");
   }
 }
@@ -2963,7 +2934,7 @@ function performOctoSlash(enemyClass) {
     enemyClass === ".bossImg"
       ? "./image/samuraiDoge.png"
       : "./image/shadowSamuraiDoge.png";
-  newBossEnemyImg.className = enemyClass.substring(1);
+  newBossEnemyImg.className = enemyClass.substring(1) + " " + startingAttackPosition;
   if (foundEnemy) {
     enemyPositions = enemyPositions.map((item) => {
       if (item.enemyClass === enemyClass.substring(1)) {
@@ -3065,8 +3036,8 @@ function performOctoSlash(enemyClass) {
       let swordSlashEffectLine = document.createElement("div");
       swordSlashEffectLine.className =
         j < 4
-          ? "swordSlashEffectLine verticalSlashEffectLine"
-          : "swordSlashEffectLine horizontalSlashEffectLine";
+          ? "horizontalSlashEffectLine"
+          : "verticalSlashEffectLine";
 
       swordSlashEffect.appendChild(swordSlashEffectLine);
       swordEffectContainer.appendChild(swordSlashEffect);
@@ -3103,8 +3074,8 @@ function performOctoSlash(enemyClass) {
       let swordSlashEffectLine = document.createElement("div");
       swordSlashEffectLine.className =
         k < 4
-          ? "swordSlashEffectLine diagonalSlashBLTRLine"
-          : "swordSlashEffectLine diagonalSlashTLBRLine";
+          ? "diagonalSlashBLTRLine"
+          : "diagonalSlashTLBRLine";
 
       swordSlashEffect.appendChild(swordSlashEffectLine);
       swordEffectContainer.appendChild(swordSlashEffect);

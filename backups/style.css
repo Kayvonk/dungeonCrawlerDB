@@ -984,16 +984,6 @@ header > p:first-child {
   animation: swordSwing 0.5s ease-out forwards;
 }
 
-/* .swordSlashEffectLine {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-  pointer-events: none;
-  opacity: 0;
-} */
 
 /* Horizontal sword slash effect line */
 .horizontalSlashEffectLine {
@@ -1016,7 +1006,7 @@ header > p:first-child {
   height: 10vh; /* Full height for the vertical slash */
   background-color: #ffffff; /* Color of the sword slash */
   border-radius: 4px; /* Rounded edges for the sword slash */
-  transform: translate(-50%, -50%) rotate(90deg); /* Vertical line */
+  transform: translate(-50%, -50%) rotate(180deg); /* Vertical line */
 }
 
 /* Diagonal sword slash effect from bottom-left to top-right */
