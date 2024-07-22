@@ -931,7 +931,7 @@ header > p:first-child {
   left: 50px;
   display: flex;
   align-items: center;
-  z-index: 11;
+  z-index: 21;
 }
 
 #audioButton {

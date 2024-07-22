@@ -573,6 +573,7 @@ function limitMovement() {
   let limitMovementTimer = setTimeout(() => {
     if (playingBossDialogue || currentRound !== round) {
       clearTimeout(limitMovementTimer);
+      return
     }
     canMove = true;
   }, 100);
@@ -733,7 +734,7 @@ function displayRound() {
 }
 
 function endRound() {
-  if (round + 1 === 10) {
+  if (round + 1 === 1) {
     return startBoss();
   }
   playSoundEffect("teleport");
@@ -950,6 +951,9 @@ function placePlayer1() {
 }
 
 function swingSword() {
+  if(playingBossDialogue) {
+    return
+  }
   let row = playerPosition.split("-")[0].substring(1);
   let column = playerPosition.split("-")[1].substring(1);
   if (
@@ -1996,6 +2000,8 @@ function introduceBoss(selectedTile) {
 // -----------start boss -----------------
 
 function startBoss() {
+  startingPosition = "r6-c6";
+  playerPosition = startingPosition;
   exitTilePosition = null;
   isBossRound = true;
   playingBossDialogue = true;
