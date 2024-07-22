@@ -608,10 +608,9 @@ function enterTower() {
   playerPosition = startingPosition;
   boulderPositions = [];
   treePositions = [];
-  // createTiles();
-  // startTower();
-  // placePlayer1();
-  startEnding()
+  createTiles();
+  startTower();
+  placePlayer1();
 }
 
 function startTower() {
@@ -734,9 +733,7 @@ function displayRound() {
 }
 
 function endRound() {
-  // skip to boss
   if (round + 1 === 10) {
-  // if (round + 1 === 1) {
     return startBoss();
   }
   playSoundEffect("teleport");
