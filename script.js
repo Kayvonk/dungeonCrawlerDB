@@ -734,7 +734,7 @@ function displayRound() {
 }
 
 function endRound() {
-  if (round + 1 === 1) {
+  if (round + 1 === 10) {
     return startBoss();
   }
   playSoundEffect("teleport");
