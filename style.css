@@ -13,7 +13,11 @@ body {
   align-items: center;
   min-height: 100vh;
   position: relative;
+  overflow: hidden;
 }
+
+/* head { display: block; } */
+/* title { display: block; font-size: 200%; font-weight: bold; } */
 
 main {
   width: 60vw;
@@ -23,44 +27,120 @@ main {
   border-radius: 12px;
 }
 
-header {
-  font-size: 48px;
-  font-family: "DungeonCrawler";
+#gameMenu {
   position: absolute;
-  top: 0;
-  line-height: 1px;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
   z-index: 5;
 }
 
-header > p:first-child {
-  position: absolute;
-  top: -10px;
-  left: -40px;
-}
-header > p:last-child {
-  position: relative;
-  bottom: -20px;
-  right: -40px;
+@keyframes slice-in-bottom {
+  0% {
+    mask-position: 0 0;
+  }
+  100% {
+    mask-position: 0 -200%;
+  }
 }
 
-footer {
+header {
+  font-size: 70px;
   font-family: "DungeonCrawler";
   position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translate(-50%, -50%);
+  color: white;
+  line-height: 1;
+  z-index: 5;
+  overflow: hidden;
+}
+
+header > p:first-child {
+  position: relative;
+  display: inline-block;
+  mask-image: linear-gradient(
+    to top,
+    transparent 0%,
+    black 100%,
+    transparent 50%
+  );
+  mask-size: 100% 200%;
+  animation: slice-in-bottom 2s forwards;
+}
+
+#swordFigure {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  animation: fadeIn 1s ease-in-out 0.5s forwards;
+}
+
+.remove {
+  display: none;
+}
+
+.fadeOut {
+  animation: fadeOut 1s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+#swordTopLogo {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  z-index: 7;
+}
+
+#swordCircle {
+  width: 125px;
+  height: 25px;
+  background-color: #f3f3f3;
+  position: absolute;
   bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%) skewX(200deg);
+  border-radius: 50%;
+  z-index: 5;
 }
 
 #start {
+  position: absolute;
   padding: 20px 60px;
   border-radius: 12px;
   border: none;
   box-shadow: 2px 2px 5px 2px rgb(49, 49, 49);
-  font-family: "DungeonCrawler";
+  font-family: monospace;
   color: white;
   font-size: 34px;
   background-color: #004258d0;
-  position: relative;
-  bottom: 10px;
   cursor: pointer;
+  left: 50%;
+  top: 75%;
+  transform: translate(-50%, -50%);
 }
 
 #start:hover {
@@ -68,7 +148,8 @@ footer {
   background-color: #045d7ad0;
 }
 
-#restart {
+#restart,
+#continue {
   padding: 10px 20px;
   border-radius: 12px;
   border: none;
@@ -105,9 +186,10 @@ footer {
 }
 
 .exitDoor {
+  position: absolute;
   width: 5vw;
   height: 10vh;
-  background: radial-gradient(circle, #faecef 0%, #cca2ab 50%, #3d3d3d 100%);
+  /* background: radial-gradient(circle, #faecef 0%, #cca2ab 50%, #3d3d3d 100%); */
 }
 
 .tile {
@@ -123,6 +205,59 @@ footer {
   border-image: linear-gradient(to bottom right, #0ce6d8, #000907) 1;
 }
 
+.grassTile {
+  width: 5vw;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+  background-image: url("./image/grass.png");
+}
+
+.dirtTile {
+  width: 5vw;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+  background-image: url("./image/dirt.jpg");
+}
+
+.stoneTile {
+  width: 5vw;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+  background-image: url("./image/stone.jpg");
+}
+
+.tree {
+  width: 5vw;
+  height: 10vh;
+}
+
+.fire {
+  width: 5vw;
+  height: 10vh;
+}
+
+.oldCat {
+  width: 5vw;
+  height: 10vh;
+}
+
+.swordTop {
+  width: 5vw;
+  height: 10vh;
+}
+
 .wall {
   width: 5vw;
   height: 10vh;
@@ -132,26 +267,48 @@ footer {
   border-image: linear-gradient(to bottom right, #00ebdc, #004258) 1;
 }
 
-.wallTop,
-.exitTop {
+.caveWall {
+  width: 5vw;
+  height: 10vh;
+  background-image: url("./image/caveTile.png");
+}
+
+.caveExit,
+.caveEntrance,
+.towerEntrance {
+  width: 5vw;
+  height: 10vh;
+  background: radial-gradient(circle, #0a0809 0%, #222222 50%, #7b7b7b 100%);
+}
+
+.outdoorWall {
+  width: 5vw;
+  height: 10vh;
+  background-image: url("./image/grass.png");
+}
+
+.outdoorDirtPath {
+  width: 5vw;
+  height: 10vh;
+  background-image: url("./image/dirt.jpg");
+}
+
+.wallTop {
   position: absolute;
   top: -10vh;
 }
 
-.wallBottom,
-.exitBottom {
+.wallBottom {
   position: absolute;
   bottom: -10vh;
 }
 
-.wallLeft,
-.exitLeft {
+.wallLeft {
   position: absolute;
   left: -5vw;
 }
 
-.wallRight,
-.exitRight {
+.wallRight {
   position: absolute;
   right: -5vw;
 }
@@ -162,18 +319,25 @@ footer {
   z-index: 3;
 }
 
-.dogImg0,
-.dogImg1,
-.dogImg2,
-.dogImg3,
-.dogImg4,
-.dogImg5,
-.dogImg6,
-.dogImg7,
-.dogImg8,
-.dogImg9 {
+.dogImg,
+.dogImg-0,
+.dogImg-1,
+.dogImg-2,
+.dogImg-3,
+.dogImg-5,
+.dogImg-6,
+.dogImg-7,
+.dogImg-9 {
   width: 4vw;
   height: 8vh;
+  z-index: 2;
+}
+
+.buffDogeImg,
+.dogImg-4,
+.dogImg-8 {
+  width: 6vw;
+  height: 12vh;
   z-index: 2;
 }
 
@@ -188,6 +352,12 @@ footer {
   border-radius: 50%;
   background-color: #2b2b2bb2;
   animation: growShadow 1s forwards;
+}
+
+.terrianBoulder {
+  width: 5vw;
+  height: 10vh;
+  position: absolute;
 }
 
 .boulder {
@@ -272,13 +442,31 @@ footer {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  z-index: 11;
 }
 
 .laserBeamVertical {
   width: 3vw;
   height: 10vh;
   animation: growAndShrinkVertical 1s forwards;
-  background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
+}
+
+.bigLaserBeamVertical {
+  width: 12vw;
+  height: 10vh;
+  animation: bigBeamGrowAndShrinkVertical 1s forwards;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
 }
 
 .laserBeamVerticalRounded {
@@ -286,7 +474,12 @@ footer {
   height: 10vh;
   border-radius: 50%;
   animation: growAndShrinkVertical 1s forwards;
-  background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
 }
 
 .laserBeamVerticalStartFireUp {
@@ -295,7 +488,26 @@ footer {
   border-bottom-left-radius: 50%;
   border-bottom-right-radius: 50%;
   animation: growAndShrinkVertical 1s forwards;
-  background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
+}
+
+.bigLaserBeamVerticalStartFireUp {
+  width: 12vw;
+  height: 10vh;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  animation: bigBeamGrowAndShrinkVertical 1s forwards;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
 }
 
 .laserBeamVerticalEndFireUp {
@@ -304,7 +516,25 @@ footer {
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
   animation: growAndShrinkVertical 1s forwards;
-  background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
+}
+.bigLaserBeamVerticalEndFireUp {
+  width: 12vw;
+  height: 10vh;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  animation: bigBeamGrowAndShrinkVertical 1s forwards;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
 }
 
 .laserBeamVerticalStartFireDown {
@@ -313,7 +543,26 @@ footer {
   border-top-left-radius: 50%;
   border-top-right-radius: 50%;
   animation: growAndShrinkVertical 1s forwards;
-  background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
+}
+
+.bigLaserBeamVerticalStartFireDown {
+  width: 12vw;
+  height: 10vh;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  animation: bigBeamGrowAndShrinkVertical 1s forwards;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
 }
 
 .laserBeamVerticalEndFireDown {
@@ -322,14 +571,50 @@ footer {
   border-bottom-left-radius: 50%;
   border-bottom-right-radius: 50%;
   animation: growAndShrinkVertical 1s forwards;
-  background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
+}
+
+.bigLaserBeamVerticalEndFireDown {
+  width: 12vw;
+  height: 10vh;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  animation: bigBeamGrowAndShrinkVertical 1s forwards;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
 }
 
 .laserBeamHorizontal {
   width: 5vw;
   height: 6vh;
   animation: growAndShrinkHorizontal 1s forwards;
-  background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
+  background: linear-gradient(
+    0deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
+}
+
+.bigLaserBeamHorizontal {
+  width: 5vw;
+  height: 24vh;
+  animation: bigBeamGrowAndShrinkHorizontal 1s forwards;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
 }
 
 .laserBeamHorizontalRounded {
@@ -337,7 +622,12 @@ footer {
   height: 6vh;
   border-radius: 50%;
   animation: growAndShrinkHorizontal 1s forwards;
-  background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
+  background: linear-gradient(
+    0deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
 }
 
 .laserBeamHorizontalStartFireLeft {
@@ -346,7 +636,26 @@ footer {
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
   animation: growAndShrinkHorizontal 1s forwards;
-  background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
+  background: linear-gradient(
+    0deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
+}
+
+.bigLaserBeamHorizontalStartFireLeft {
+  width: 5vw;
+  height: 24vh;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  animation: bigBeamGrowAndShrinkHorizontal 1s forwards;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
 }
 
 .laserBeamHorizontalEndFireLeft {
@@ -355,7 +664,26 @@ footer {
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%;
   animation: growAndShrinkHorizontal 1s forwards;
-  background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
+  background: linear-gradient(
+    0deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
+}
+
+.bigLaserBeamHorizontalEndFireLeft {
+  width: 5vw;
+  height: 24vh;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+  animation: bigBeamGrowAndShrinkHorizontal 1s forwards;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
 }
 
 .laserBeamHorizontalStartFireRight {
@@ -364,7 +692,26 @@ footer {
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%;
   animation: growAndShrinkHorizontal 1s forwards;
-  background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
+  background: linear-gradient(
+    0deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
+}
+
+.bigLaserBeamHorizontalStartFireRight {
+  width: 5vw;
+  height: 24vh;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+  animation: bigBeamGrowAndShrinkHorizontal 1s forwards;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
 }
 
 .laserBeamHorizontalEndFireRight {
@@ -373,7 +720,26 @@ footer {
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
   animation: growAndShrinkHorizontal 1s forwards;
-  background: linear-gradient(0deg, rgba(255,0,0,1) 0%, rgba(245,177,177,1) 50%, rgba(255,0,0,1) 100%);
+  background: linear-gradient(
+    0deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
+}
+
+.bigLaserBeamHorizontalEndFireRight {
+  width: 5vw;
+  height: 24vh;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  animation: bigBeamGrowAndShrinkHorizontal 1s forwards;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(245, 177, 177, 1) 50%,
+    rgba(255, 0, 0, 1) 100%
+  );
 }
 
 @keyframes growAndShrinkVertical {
@@ -395,3 +761,369 @@ footer {
     height: 6vh; /* Middle height */
   }
 }
+
+@keyframes bigBeamGrowAndShrinkVertical {
+  0%,
+  100% {
+    width: 0vw; /* Start and end width */
+  }
+  50% {
+    width: 12vw; /* Middle width */
+  }
+}
+
+@keyframes bigBeamGrowAndShrinkHorizontal {
+  0%,
+  100% {
+    height: 0vh; /* Start and end height */
+  }
+  50% {
+    height: 24vh; /* Middle height */
+  }
+}
+
+@keyframes swordSwipe {
+  0% {
+    opacity: 1;
+    transform: translate(50%, -50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 50%);
+  }
+}
+
+.swordSwing {
+  position: relative;
+}
+
+.sword-animation {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  animation: swordSwipe 0.5s ease-out forwards;
+}
+
+.sword-animation-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 2px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.animateDeath {
+  animation: deathAnimation 1s linear;
+}
+
+@keyframes deathAnimation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(90deg);
+  }
+}
+
+/* ------dialogue box------- */
+
+/* Dialogue Box styling */
+.dialogue-box {
+  position: absolute; /* Position absolute for dialog placement */
+  left: 50%;
+  bottom: 25vh;
+  transform: translate(-50%, 50%);
+  background-color: rgba(0, 0, 0, 0.8); /* Slightly opaque black background */
+  color: #fff; /* White text */
+  border-radius: 10px; /* Slight border radius */
+  padding: 20px;
+  width: 30vw;
+  height: 10vh;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2), 0 0 0 6px rgba(255, 215, 0, 0.8);
+  text-align: start;
+  overflow: hidden; /* Ensures content does not overflow the border radius */
+  z-index: 10; /* Ensures the dialogue box appears on top */
+}
+
+.dialogue-title {
+  margin: 0;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.dialogue-content {
+  margin: 0;
+  font-size: 1.6em;
+  margin-bottom: 20px;
+}
+
+/* -----------boss fight-------------- */
+
+.cloneLeft {
+  animation: cloneLeft 1s forwards;
+}
+
+@keyframes cloneLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-10vw);
+  }
+}
+
+.cloneRight {
+  animation: cloneRight 1s forwards;
+}
+
+@keyframes cloneRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(10vw);
+  }
+}
+
+.bossImg {
+  width: 6vw;
+  height: 12vh;
+  z-index: 2;
+  position: relative;
+}
+
+.logImg {
+  width: 6vw;
+  height: 12vh;
+  z-index: 2;
+  position: absolute;
+}
+
+.shadowCloneDog1-animate,
+.shadowCloneDog2-animate {
+  width: 6vw;
+  height: 12vh;
+  z-index: 2;
+  position: absolute;
+}
+
+.shadowCloneDog1,
+.shadowCloneDog2 {
+  width: 6vw;
+  height: 12vh;
+  z-index: 2;
+  position: relative;
+}
+
+/* ----------music logic------------- */
+
+#audioControlContainer {
+  position: fixed;
+  bottom: 50px;
+  left: 50px;
+  display: flex;
+  align-items: center;
+  z-index: 11;
+}
+
+#audioButton {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  transition: opacity 0.5s ease; /* Smooth transition for opacity */
+}
+
+.faded {
+  opacity: 0.5;
+}
+
+#audioButton:hover,
+#volumeSlider:hover {
+  opacity: 1; /* Full opacity on hover */
+}
+
+#audioControlContainer:hover #audioButton {
+  opacity: 1; /* Full opacity on hover */
+}
+
+#volumeSlider {
+  width: 100px;
+  margin-left: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: #eee;
+  border-radius: 5px;
+}
+
+#audioControlContainer:hover #volumeSlider {
+  opacity: 1;
+}
+
+
+/* ---------Octo Slash----------- */
+
+/* General styles for the sword slash effect container */
+.swordEffectContainer {
+  position: relative;
+}
+
+/* General styles for the sword animation */
+.swordSlashEffect {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  animation: swordSwing 0.5s ease-out forwards;
+}
+
+
+/* Horizontal sword slash effect line */
+.horizontalSlashEffectLine {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 5px; /* Thickness of the sword slash */
+  width: 5vw; /* Full width for the horizontal slash */
+  background-color: #ffffff; /* Color of the sword slash */
+  border-radius: 4px; /* Rounded edges for the sword slash */
+  transform: translate(-50%, -50%) rotate(0deg); /* Horizontal line */
+}
+
+/* Vertical sword slash effect line */
+.verticalSlashEffectLine {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px; /* Thickness of the sword slash */
+  height: 10vh; /* Full height for the vertical slash */
+  background-color: #ffffff; /* Color of the sword slash */
+  border-radius: 4px; /* Rounded edges for the sword slash */
+  transform: translate(-50%, -50%) rotate(180deg); /* Vertical line */
+}
+
+/* Diagonal sword slash effect from bottom-left to top-right */
+.diagonalSlashBLTRLine {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px; /* Adjust the size of the sword slash */
+  height: 5px;
+  background-color: #ffffff; /* Color of the sword slash */
+  border-radius: 4px; /* Rounded edges for the sword slash */
+  transform: translate(-50%, -50%) rotate(-45deg); /* Bottom-left to top-right diagonal */
+}
+
+/* Diagonal sword slash effect from top-left to bottom-right */
+.diagonalSlashTLBRLine {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px; /* Adjust the size of the sword slash */
+  height: 5px;
+  background-color: #ffffff; /* Color of the sword slash */
+  border-radius: 4px; /* Rounded edges for the sword slash */
+  transform: translate(-50%, -50%) rotate(45deg); /* Top-left to bottom-right diagonal */
+}
+
+/* Keyframe animation for the sword swipe effect */
+@keyframes swordSwing {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1); /* Start at full opacity and scale */
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.5); /* End with opacity fading out and scale */
+  }
+}
+
+/* ------------start ending ------------- */
+
+#endingContainer {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  opacity: 0;
+  display: none;
+  animation: fadeIn 1s ease-in-out .5s forwards;
+}
+
+.endingSceneContainer {
+  position: absolute;
+  width: 100vw;
+  height: 40vh;
+  top: 50%;
+  background-color: black;
+  transform: translateY(-50%);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2), 0 0 0 6px rgba(255, 215, 0, 0.8);
+}
+
+.cardboardCat {
+  position: absolute;
+  width: 7vw;
+  height: 12vh;
+  left: 40%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  animation: flyThroughSpace 3s ease-in-out infinite; 
+}
+
+@keyframes flyThroughSpace {
+  0%, 100% {
+    transform: translate(-50%, -20%);
+  }
+  50% {
+    transform: translate(-50%, -70%);
+  }
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background-color: white;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: moveStars 10s linear infinite;
+}
+
+@keyframes moveStars {
+  0% {
+    transform: translateX(100vw); 
+  }
+  100% {
+    transform: translateX(-100vw);
+  }
+}
+
+/* .endHeader {
+  font-family: "DungeonCrawler";
+  position: absolute;
+  font-size: 44px;
+  left: 50%;
+  top: -20%;
+  color: #f3f3f3;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+} */
+
+
+/* ------------end ending ------------- */
+

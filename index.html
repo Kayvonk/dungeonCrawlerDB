@@ -7,15 +7,23 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <header>
-      <p>DUNGEON</p>
-      <p>CRAWLER</p>
-    </header>
-    <main></main>
-    <section id="results"></section>
-    <footer>
+    <section id="gameMenu">
+      <header>
+        <p>DUNGEON CRAWLER</p>
+      </header>
+      <figure id="swordFigure">
+        <img src="./image/swordtop.png" alt="sword" id="swordTopLogo" />
+        <div id="swordCircle"></div>
+      </figure>
       <button id="start">Start</button>
-    </footer>
+    </section>
+    <div id="audioControlContainer">
+      <button id="audioButton" aria-label="Toggle Music">🔊</button>
+      <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="0.5" aria-label="Volume">
+    </div>
+    <main></main>
+    <section id="endingContainer"></section>
+    <section id="results"></section>
     <script src="./script.js"></script>
   </body>
 </html>
