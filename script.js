@@ -1,6 +1,6 @@
 let mainEl = document.getElementsByTagName("main")[0];
 let startBtn = document.getElementById("start");
-let endingEl = document.getElementById("endingContainer")
+let endingEl = document.getElementById("endingContainer");
 
 let startingPosition = "r6-c6";
 let playerPosition = startingPosition;
@@ -592,7 +592,7 @@ function dropBoulder(enemyIndex) {
 
   selectedTile.append(boulderShadow);
   selectedTile.append(boulder);
-  playSoundEffect("drop")
+  playSoundEffect("drop");
   setTimeout(() => {
     if (selectedPosition === playerPosition) {
       return loseGame(enemyIndex);
@@ -708,10 +708,6 @@ function loseGame(enemyIndex) {
   setTimeout(() => {
     lossPause = false;
   }, 2000);
-}
-
-function winGame() {
-  gameOver = true;
 }
 
 function displayRound() {
@@ -1055,14 +1051,15 @@ function swingSword() {
     });
   }
 
-
   let bossTargeted = document.querySelector(".bossImg");
-
 
   if (bossTargeted) {
     let bossPosition = bossTargeted.classList[1];
-  
-    if (bossPosition === affectedTile) {
+
+    if (bossTargeted && bossPosition === affectedTile) {
+      if (bossEnemyPositions[0].isMoving === true) {
+        return;
+      }
       bossEnemyPositions = bossEnemyPositions.map((item) => {
         bossHealth = item.hitsRemaining - 1;
         if (item.enemyClass === "bossImg" && item.hitsRemaining - 1 > 0) {
@@ -1084,7 +1081,6 @@ function swingSword() {
             }, 500);
           }, 1000);
           bossPosition = "r3-c6";
-          placeBoss();
           return {
             ...item,
             isAlive: true,
@@ -1105,8 +1101,6 @@ function swingSword() {
             bossDeathImg.remove();
           });
 
-          startEnding()
-
           return {
             ...item,
             position: null,
@@ -1116,7 +1110,9 @@ function swingSword() {
         } else {
           return item;
         }
-      });     
+      });
+
+      bossEnemyPositions[0].isAlive ? placeBoss(bossHealth) : startEnding();
     }
   }
 
@@ -1512,7 +1508,6 @@ function fireEnemyBeam(enemyImg, enemyIndex) {
 // ------------start enemy movement------------------
 
 function startEnemyMovement(enemyClass, enemyImgPath, enemyIndex, enemyType) {
-
   const foundEnemy = enemyPositions.find(
     (item) => item.enemyClass === enemyClass.substring(1)
   );
@@ -2025,7 +2020,7 @@ function startBoss() {
   ];
   createTiles();
   placePlayer1();
-  placeBoss();
+  placeBoss(3);
 
   musicCount = 1; // Index of the boss song
   audio.src = musicArray[musicCount].song; // Change the audio source to boss song
@@ -2035,18 +2030,27 @@ function startBoss() {
   }
 }
 
-function placeBoss() {
+function placeBoss(hitsRemaining) {
   let selectedTile = document.querySelector("." + bossPosition);
   let bossImg = document.createElement("img");
   bossImg.src = "./image/samuraiDoge.png";
   bossImg.className =
     "bossImg" + " " + bossEnemyPositions[0].position + " " + "dogeBoss";
   selectedTile.append(bossImg);
-  if (bossHealth === 3) {
+  if (gameOver) {
+    return;
+  }
+  if (hitsRemaining === 3) {
     canMove = false;
     introduceBoss(selectedTile);
   } else {
-    startBossMovement(".bossImg", "./image/samuraiDoge.png", 0, "dogeBoss", bossHealth);
+    startBossMovement(
+      ".bossImg",
+      "./image/samuraiDoge.png",
+      0,
+      "dogeBoss",
+      hitsRemaining
+    );
   }
 }
 
@@ -2095,14 +2099,32 @@ function startBossFight(selectedTile) {
         2,
         "dogeClone"
       );
-      startBossMovement(".bossImg", "./image/samuraiDoge.png", 0, "dogeBoss", bossHealth);
+      startBossMovement(
+        ".bossImg",
+        "./image/samuraiDoge.png",
+        0,
+        "dogeBoss",
+        3
+      );
       playingBossDialogue = false;
       canMove = true;
     });
   }, 2000);
 }
 
-function startBossMovement(enemyClass, enemyImgPath, enemyIndex, enemyType, hitsRemaining) {
+function startBossMovement(
+  enemyClass,
+  enemyImgPath,
+  enemyIndex,
+  enemyType,
+  hitsRemaining
+) {
+  if (hitsRemaining && hitsRemaining !== bossHealth) {
+    return;
+  }
+  // if(bossEnemyPositions[enemyIndex].hitsRemaining === 0) {
+  //   return
+  // }
   const foundEnemy = bossEnemyPositions.find(
     (item) => item.enemyClass === enemyClass.substring(1)
   );
@@ -2151,22 +2173,55 @@ function startBossMovement(enemyClass, enemyImgPath, enemyIndex, enemyType, hits
         return;
       }
       if (directionSelected === "up") {
-        bossEnemyMoveUp(enemyClass, enemyImgPath, enemyIndex, enemyType, hitsRemaining);
+        bossEnemyMoveUp(
+          enemyClass,
+          enemyImgPath,
+          enemyIndex,
+          enemyType,
+          hitsRemaining
+        );
       } else if (directionSelected === "down") {
-        bossEnemyMoveDown(enemyClass, enemyImgPath, enemyIndex, enemyType, hitsRemaining);
+        bossEnemyMoveDown(
+          enemyClass,
+          enemyImgPath,
+          enemyIndex,
+          enemyType,
+          hitsRemaining
+        );
       } else if (directionSelected === "left") {
-        bossEnemyMoveLeft(enemyClass, enemyImgPath, enemyIndex, enemyType, hitsRemaining);
+        bossEnemyMoveLeft(
+          enemyClass,
+          enemyImgPath,
+          enemyIndex,
+          enemyType,
+          hitsRemaining
+        );
       } else if (directionSelected === "right") {
-        bossEnemyMoveRight(enemyClass, enemyImgPath, enemyIndex, enemyType, hitsRemaining);
+        bossEnemyMoveRight(
+          enemyClass,
+          enemyImgPath,
+          enemyIndex,
+          enemyType,
+          hitsRemaining
+        );
       }
     }
     if (gameOver) {
       return;
     }
-    startBossMovement(enemyClass, enemyImgPath, enemyIndex, enemyType, hitsRemaining);
+    startBossMovement(
+      enemyClass,
+      enemyImgPath,
+      enemyIndex,
+      enemyType,
+      hitsRemaining
+    );
   }, enemyDelay);
 }
 function fireBigBeam(enemyClass, enemyType) {
+  if (gameOver) {
+    return;
+  }
   const foundEnemy = bossEnemyPositions.find(
     (item) => item.enemyClass === enemyClass.substring(1)
   );
@@ -2490,9 +2545,18 @@ function fireBigBeam(enemyClass, enemyType) {
   }
 }
 
-function bossEnemyMoveUp(enemyClass, enemyImgPath, enemyIndex, enemyType, hitsRemaining) {
-  if(hitsRemaining && hitsRemaining !== bossHealth) {
-    return
+function bossEnemyMoveUp(
+  enemyClass,
+  enemyImgPath,
+  enemyIndex,
+  enemyType,
+  hitsRemaining
+) {
+  if (gameOver) {
+    return;
+  }
+  if (hitsRemaining && hitsRemaining !== bossHealth) {
+    return;
   }
   const foundEnemy = bossEnemyPositions.find(
     (item) => item.enemyClass === enemyClass.substring(1)
@@ -2550,9 +2614,18 @@ function bossEnemyMoveUp(enemyClass, enemyImgPath, enemyIndex, enemyType, hitsRe
   }
 }
 
-function bossEnemyMoveDown(enemyClass, enemyImgPath, enemyIndex, enemyType, hitsRemaining) {
-  if(hitsRemaining && hitsRemaining !== bossHealth) {
-    return
+function bossEnemyMoveDown(
+  enemyClass,
+  enemyImgPath,
+  enemyIndex,
+  enemyType,
+  hitsRemaining
+) {
+  if (gameOver) {
+    return;
+  }
+  if (hitsRemaining && hitsRemaining !== bossHealth) {
+    return;
   }
   const foundEnemy = bossEnemyPositions.find(
     (item) => item.enemyClass === enemyClass.substring(1)
@@ -2611,9 +2684,18 @@ function bossEnemyMoveDown(enemyClass, enemyImgPath, enemyIndex, enemyType, hits
   }
 }
 
-function bossEnemyMoveLeft(enemyClass, enemyImgPath, enemyIndex, enemyType, hitsRemaining) {
-  if(hitsRemaining && hitsRemaining !== bossHealth) {
-    return
+function bossEnemyMoveLeft(
+  enemyClass,
+  enemyImgPath,
+  enemyIndex,
+  enemyType,
+  hitsRemaining
+) {
+  if (gameOver) {
+    return;
+  }
+  if (hitsRemaining && hitsRemaining !== bossHealth) {
+    return;
   }
   const foundEnemy = bossEnemyPositions.find(
     (item) => item.enemyClass === enemyClass.substring(1)
@@ -2672,9 +2754,18 @@ function bossEnemyMoveLeft(enemyClass, enemyImgPath, enemyIndex, enemyType, hits
   }
 }
 
-function bossEnemyMoveRight(enemyClass, enemyImgPath, enemyIndex, enemyType, hitsRemaining) {
-  if(hitsRemaining && hitsRemaining !== bossHealth) {
-    return
+function bossEnemyMoveRight(
+  enemyClass,
+  enemyImgPath,
+  enemyIndex,
+  enemyType,
+  hitsRemaining
+) {
+  if (gameOver) {
+    return;
+  }
+  if (hitsRemaining && hitsRemaining !== bossHealth) {
+    return;
   }
   const foundEnemy = bossEnemyPositions.find(
     (item) => item.enemyClass === enemyClass.substring(1)
@@ -3055,6 +3146,9 @@ function damageBigBeamTiles(affectedTiles, directionSelected) {
 // ----------Octo-Slash------------------
 
 function performOctoSlash(enemyClass, enemyType) {
+  if (gameOver) {
+    return;
+  }
   const foundEnemy = bossEnemyPositions.find(
     (item) => item.enemyClass === enemyClass.substring(1)
   );
@@ -3233,13 +3327,13 @@ function performOctoSlash(enemyClass, enemyType) {
 }
 // --------------end boss-----------
 
-function startEnding () {
-  endingEl.style.display = "flex"
+function startEnding() {
+  gameOver = true;
+  endingEl.style.display = "flex";
 }
 
 // ------------start ending ---------
 // ------------end ending ---------
-
 
 // TODO add boss stage after round 10
 // TODO add ending
