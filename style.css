@@ -1062,6 +1062,7 @@ header > p:first-child {
   background-color: black;
   opacity: 0;
   display: none;
+  z-index: 12;
   animation: fadeIn 1s ease-in-out .5s forwards;
 }
 
@@ -1072,6 +1073,7 @@ header > p:first-child {
   top: 50%;
   background-color: black;
   transform: translateY(-50%);
+  z-index: 13;
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2), 0 0 0 6px rgba(255, 215, 0, 0.8);
 }
 
@@ -1101,28 +1103,39 @@ header > p:first-child {
   background-color: white;
   border-radius: 50%;
   opacity: 0.8;
+  /* Multiple stars will be created and animated for a seamless effect */
   animation: moveStars 10s linear infinite;
 }
 
 @keyframes moveStars {
   0% {
-    transform: translateX(100vw); 
+    transform: translateX(100vw); /* Start from the right side of the viewport */
   }
   100% {
-    transform: translateX(-100vw);
+    transform: translateX(-100vw); /* Move to the left side of the viewport */
   }
 }
 
-/* .endHeader {
+/* Adding a layer of stars to enhance the effect */
+.star-layer {
+  position: absolute;
+  width: 100vw;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  animation: moveStars 10s linear infinite;
+}
+
+.endingHeader {
   font-family: "DungeonCrawler";
   position: absolute;
   font-size: 44px;
   left: 50%;
-  top: -20%;
+  top: 20%;
   color: #f3f3f3;
   transform: translate(-50%, -50%);
   z-index: 20;
-} */
+}
 
 
 /* ------------end ending ------------- */
