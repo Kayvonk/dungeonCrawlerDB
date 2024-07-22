@@ -13,6 +13,7 @@ body {
   align-items: center;
   min-height: 100vh;
   position: relative;
+  overflow: hidden;
 }
 
 /* head { display: block; } */
@@ -1063,6 +1064,65 @@ header > p:first-child {
   display: none;
   animation: fadeIn 1s ease-in-out .5s forwards;
 }
+
+.endingSceneContainer {
+  position: absolute;
+  width: 100vw;
+  height: 40vh;
+  top: 50%;
+  background-color: black;
+  transform: translateY(-50%);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2), 0 0 0 6px rgba(255, 215, 0, 0.8);
+}
+
+.cardboardCat {
+  position: absolute;
+  width: 7vw;
+  height: 12vh;
+  left: 40%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  animation: flyThroughSpace 3s ease-in-out infinite; 
+}
+
+@keyframes flyThroughSpace {
+  0%, 100% {
+    transform: translate(-50%, -20%);
+  }
+  50% {
+    transform: translate(-50%, -70%);
+  }
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background-color: white;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: moveStars 10s linear infinite;
+}
+
+@keyframes moveStars {
+  0% {
+    transform: translateX(100vw); 
+  }
+  100% {
+    transform: translateX(-100vw);
+  }
+}
+
+/* .endHeader {
+  font-family: "DungeonCrawler";
+  position: absolute;
+  font-size: 44px;
+  left: 50%;
+  top: -20%;
+  color: #f3f3f3;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+} */
 
 
 /* ------------end ending ------------- */

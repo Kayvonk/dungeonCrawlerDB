@@ -608,17 +608,21 @@ function enterTower() {
   playerPosition = startingPosition;
   boulderPositions = [];
   treePositions = [];
-  createTiles();
-  startTower();
-  placePlayer1();
+  // createTiles();
+  // startTower();
+  // placePlayer1();
+  startEnding()
 }
 
 function startTower() {
-  const currentRound = round;
   secondsTimer = setInterval(() => {
     if (gameOver) {
       clearInterval(secondsTimer);
-      return calculateScore();
+      if (bossEnemyPositions[0].isAlive) {
+        return calculateScore();
+      } else {
+        return;
+      }
     }
     seconds++;
   }, 1000);
@@ -650,7 +654,12 @@ function restartRound() {
   secondsTimer = setInterval(() => {
     if (gameOver) {
       clearInterval(secondsTimer);
-      return calculateScore();
+
+      if (bossEnemyPositions[0].isAlive) {
+        return calculateScore();
+      } else {
+        return;
+      }
     }
     seconds++;
   }, 1000);
@@ -726,8 +735,8 @@ function displayRound() {
 
 function endRound() {
   // skip to boss
-  // if (round + 1 === 10) {
-  if (round + 1 === 1) {
+  if (round + 1 === 10) {
+  // if (round + 1 === 1) {
     return startBoss();
   }
   playSoundEffect("teleport");
@@ -1850,7 +1859,7 @@ function checkKeyPressed(evt) {
 
 // ----------end key press logic-----------
 
-/* ----------music logic------------- */
+/* ----------start music logic------------- */
 
 let musicArray = [
   {
@@ -1875,6 +1884,8 @@ let musicToggleStatus = false;
 
 let audio = new Audio(musicArray[musicCount].song);
 
+audio.volume = 0.25;
+
 let toggleMusic = () => {
   if (musicToggleStatus) {
     audio.pause();
@@ -1896,6 +1907,8 @@ let updateVolume = (event) => {
 window.addEventListener("load", () => {
   let audioButton = document.getElementById("audioButton");
   let volumeSlider = document.getElementById("volumeSlider");
+
+  volumeSlider.value = 0.25;
 
   audioButton.textContent = musicToggleStatus ? "🔇" : "🔊";
 
@@ -3427,6 +3440,52 @@ function startEnding() {
   });
   endingEl.style.display = "flex";
   mainEl.classList.add("fadeOut");
+
+  musicCount = 2; // Index of the boss song
+  audio.src = musicArray[musicCount].song; // Change the audio source to boss song
+
+  if (musicToggleStatus) {
+    audio.play();
+  }
+
+  let endingSceneContainer = document.createElement("div");
+  endingSceneContainer.className = "endingSceneContainer";
+
+
+let cardboardCat = document.createElement("img");
+cardboardCat.src = "./image/cardboardCat.png"
+cardboardCat.className = "cardboardCat"
+
+// let endHeader = document.createElement("div");
+// endHeader.textContent = "The End"
+// endHeader.className = "endingHeader"
+// endingSceneContainer.append(endHeader)
+
+
+endingSceneContainer.append(cardboardCat);
+endingEl.append(endingSceneContainer);
+
+
+  function createStar() {
+    const star = document.createElement('div');
+    star.className = 'star';
+    // Set random positions and sizes for the stars
+    star.style.left = Math.random() * 100 + 'vw';
+    star.style.top = Math.random() * 40 + 'vh';
+    star.style.width = Math.random() * 2 + 'px';
+    star.style.height = star.style.width;
+    return star;
+  }
+
+  function addStars(numStars) {
+    for (let i = 0; i < numStars; i++) {
+      const star = createStar();
+      endingSceneContainer.appendChild(star);
+    }
+  }
+
+  addStars(100);  // Adjust the number of stars as needed
+
 }
 
 // ------------start ending ---------
