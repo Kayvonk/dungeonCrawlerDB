@@ -571,11 +571,18 @@ function limitMovement() {
   const currentRound = round;
   canMove = false;
   let limitMovementTimer = setTimeout(() => {
-    if (playingBossDialogue || currentRound !== round) {
+    if (playingBossDialogue) {
       clearTimeout(limitMovementTimer);
       return
+    } 
+    else if(currentRound !== round) {
+      clearTimeout(limitMovementTimer);
+      canMove = true;
+      return
     }
-    canMove = true;
+    else {
+      canMove = true;
+    }
   }, 100);
 }
 
