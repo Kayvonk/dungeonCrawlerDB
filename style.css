@@ -899,6 +899,13 @@ header > p:first-child {
   position: relative;
 }
 
+.logImg {
+  width: 6vw;
+  height: 12vh;
+  z-index: 2;
+  position: absolute;
+}
+
 .shadowCloneDog1-animate,
 .shadowCloneDog2-animate {
   width: 6vw;
@@ -1044,3 +1051,19 @@ header > p:first-child {
     transform: translate(-50%, -50%) scale(1.5); /* End with opacity fading out and scale */
   }
 }
+
+/* ------------start ending ------------- */
+
+#endingContainer {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  opacity: 0;
+  display: none;
+  animation: fadeIn 1s ease-in-out .5s forwards;
+}
+
+
+/* ------------end ending ------------- */
+
