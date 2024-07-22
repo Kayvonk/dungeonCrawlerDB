@@ -3453,35 +3453,49 @@ let cardboardCat = document.createElement("img");
 cardboardCat.src = "./image/cardboardCat.png"
 cardboardCat.className = "cardboardCat"
 
-// let endHeader = document.createElement("div");
-// endHeader.textContent = "The End"
-// endHeader.className = "endingHeader"
-// endingSceneContainer.append(endHeader)
+let endHeader = document.createElement("div");
+endHeader.textContent = "The End"
+endHeader.className = "endingHeader"
+endingEl.append(endHeader)
 
 
 endingSceneContainer.append(cardboardCat);
 endingEl.append(endingSceneContainer);
 
 
-  function createStar() {
-    const star = document.createElement('div');
-    star.className = 'star';
-    // Set random positions and sizes for the stars
-    star.style.left = Math.random() * 100 + 'vw';
-    star.style.top = Math.random() * 40 + 'vh';
-    star.style.width = Math.random() * 2 + 'px';
-    star.style.height = star.style.width;
-    return star;
-  }
+function createStar() {
+  const star = document.createElement('div');
+  star.className = 'star';
+  // Set random positions and sizes for the stars
+  star.style.left = Math.random() * 100 + 'vw';
+  star.style.top = Math.random() * 100 + 'vh';
+  star.style.width = Math.random() * 4 + 'px';
+  star.style.height = star.style.width;
+  return star;
+}
 
-  function addStars(numStars) {
-    for (let i = 0; i < numStars; i++) {
-      const star = createStar();
-      endingSceneContainer.appendChild(star);
-    }
+function addStars(numStars) {
+  const stars = [];
+  for (let i = 0; i < numStars; i++) {
+    stars.push(createStar());
   }
+  return stars;
+}
 
-  addStars(100);  // Adjust the number of stars as needed
+function createStarLayers(numLayers) {
+  for (let i = 0; i < numLayers; i++) {
+    const starLayer = document.createElement('div');
+    starLayer.className = 'star-layer';
+    starLayer.style.animationDelay = `-${i * 3}s`;  // Stagger the animation for each layer
+
+    const stars = addStars(100);  // Adjust the number of stars as needed
+    stars.forEach(star => starLayer.appendChild(star));  // Add all stars to the layer
+
+    endingSceneContainer.appendChild(starLayer);
+  }
+}
+
+createStarLayers(3);  // Adjust the number of layers as needed for a continuous effect
 
 }
 
