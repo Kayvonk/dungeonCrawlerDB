@@ -594,7 +594,7 @@ function dropBoulder(enemyIndex) {
   selectedTile.append(boulder);
   playSoundEffect("drop");
   setTimeout(() => {
-    if (selectedPosition === playerPosition) {
+    if (selectedPosition === playerPosition && !gameOver) {
       return loseGame(enemyIndex);
     }
   }, 1000);
@@ -1496,7 +1496,7 @@ function fireEnemyBeam(enemyImg, enemyIndex) {
           }
           damageTile.style.backgroundColor = originalColor; // Revert back to original color
 
-          if (affectedTiles[j] === playerPosition) {
+          if (affectedTiles[j] === playerPosition && !gameOver) {
             loseGame(enemyIndex);
           }
         }, 500); // Revert back to original color after 500ms
@@ -1598,7 +1598,7 @@ function enemyMoveUp(enemyClass, enemyImgPath, enemyIndex, enemyType) {
       }
     });
 
-    if (playerPosition === newPosition) {
+    if (playerPosition === newPosition && !gameOver) {
       loseGame(enemyIndex);
     }
     enemyImg.classList.add("moveUp");
@@ -1652,7 +1652,7 @@ function enemyMoveDown(enemyClass, enemyImgPath, enemyIndex, enemyType) {
       }
     });
 
-    if (playerPosition === newPosition) {
+    if (playerPosition === newPosition && !gameOver) {
       loseGame(enemyIndex);
     }
     enemyImg.classList.add("moveDown");
@@ -1707,7 +1707,7 @@ function enemyMoveLeft(enemyClass, enemyImgPath, enemyIndex, enemyType) {
       }
     });
 
-    if (playerPosition === newPosition) {
+    if (playerPosition === newPosition && !gameOver) {
       loseGame(enemyIndex);
     }
     enemyImg.classList.add("moveLeft");
@@ -1762,7 +1762,7 @@ function enemyMoveRight(enemyClass, enemyImgPath, enemyIndex, enemyType) {
       }
     });
 
-    if (playerPosition === newPosition) {
+    if (playerPosition === newPosition && !gameOver) {
       loseGame(enemyIndex);
     }
     enemyImg.classList.add("moveRight");
@@ -2119,12 +2119,13 @@ function startBossMovement(
   enemyType,
   hitsRemaining
 ) {
-  if (hitsRemaining && hitsRemaining !== bossHealth) {
+  if (
+    (hitsRemaining && hitsRemaining !== bossHealth) ||
+    bossEnemyPositions[enemyIndex].hitsRemaining === 0
+  ) {
     return;
   }
-  // if(bossEnemyPositions[enemyIndex].hitsRemaining === 0) {
-  //   return
-  // }
+
   const foundEnemy = bossEnemyPositions.find(
     (item) => item.enemyClass === enemyClass.substring(1)
   );
@@ -2137,6 +2138,13 @@ function startBossMovement(
 
   let isAttacking = Math.random() < 0.5;
   let enemyTimer = setTimeout(() => {
+    if (
+      bossEnemyPositions[enemyIndex]?.isAlive === false ||
+      (hitsRemaining && hitsRemaining !== bossHealth)
+    ) {
+      clearTimeout(enemyTimer);
+      return;
+    }
     let enemyImg = document.querySelector(enemyClass);
     if (!enemyImg) {
       return;
@@ -2147,12 +2155,12 @@ function startBossMovement(
         enemyImg.src = isBoss
           ? "./image/samuraiDoge.png"
           : "./image/shadowSamuraiDoge.png";
-        fireBigBeam(enemyClass, enemyType);
+        fireBigBeam(enemyClass, enemyIndex, enemyType);
       } else {
         enemyImg.src = isBoss
           ? "./image/samuraiDoge.png"
           : "./image/shadowSamuraiDoge.png";
-        performOctoSlash(enemyClass, enemyType);
+        performOctoSlash(enemyClass, enemyIndex, enemyType);
       }
     } else {
       if (foundEnemy) {
@@ -2218,8 +2226,11 @@ function startBossMovement(
     );
   }, enemyDelay);
 }
-function fireBigBeam(enemyClass, enemyType) {
+function fireBigBeam(enemyClass, enemyIndex, enemyType) {
   if (gameOver) {
+    return;
+  }
+  if (bossEnemyPositions[enemyIndex]?.isAlive === false) {
     return;
   }
   const foundEnemy = bossEnemyPositions.find(
@@ -2585,7 +2596,7 @@ function bossEnemyMoveUp(
       }
     });
 
-    if (playerPosition === newPosition) {
+    if (playerPosition === newPosition && !gameOver) {
       loseGame(enemyIndex);
     }
     enemyImg.classList.add("moveUp");
@@ -2597,7 +2608,10 @@ function bossEnemyMoveUp(
         ? "./image/dogeAttack.png"
         : enemyImgPath;
     let nextTile = document.querySelector("." + newPosition);
-    setTimeout(() => {
+    let bossMovementTimer = setTimeout(() => {
+      if (gameOver || (hitsRemaining && hitsRemaining !== bossHealth)) {
+        clearTimeout(bossMovementTimer);
+      }
       bossEnemyPositions = bossEnemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
           return {
@@ -2654,7 +2668,7 @@ function bossEnemyMoveDown(
       }
     });
 
-    if (playerPosition === newPosition) {
+    if (playerPosition === newPosition && !gameOver) {
       loseGame(enemyIndex);
     }
     enemyImg.classList.add("moveDown");
@@ -2667,7 +2681,10 @@ function bossEnemyMoveDown(
         ? "./image/dogeAttack.png"
         : enemyImgPath;
     let nextTile = document.querySelector("." + newPosition);
-    setTimeout(() => {
+    let bossMovementTimer = setTimeout(() => {
+      if (gameOver || (hitsRemaining && hitsRemaining !== bossHealth)) {
+        clearTimeout(bossMovementTimer);
+      }
       bossEnemyPositions = bossEnemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
           return {
@@ -2724,7 +2741,7 @@ function bossEnemyMoveLeft(
       }
     });
 
-    if (playerPosition === newPosition) {
+    if (playerPosition === newPosition && !gameOver) {
       loseGame(enemyIndex);
     }
     enemyImg.classList.add("moveLeft");
@@ -2737,7 +2754,10 @@ function bossEnemyMoveLeft(
         ? "./image/dogeAttack.png"
         : enemyImgPath;
     let nextTile = document.querySelector("." + newPosition);
-    setTimeout(() => {
+    let bossMovementTimer = setTimeout(() => {
+      if (gameOver || (hitsRemaining && hitsRemaining !== bossHealth)) {
+        clearTimeout(bossMovementTimer);
+      }
       bossEnemyPositions = bossEnemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
           return {
@@ -2794,7 +2814,7 @@ function bossEnemyMoveRight(
       }
     });
 
-    if (playerPosition === newPosition) {
+    if (playerPosition === newPosition && !gameOver) {
       loseGame(enemyIndex);
     }
     enemyImg.classList.add("moveRight");
@@ -2807,7 +2827,10 @@ function bossEnemyMoveRight(
         ? "./image/dogeAttack.png"
         : enemyImgPath;
     let nextTile = document.querySelector("." + newPosition);
-    setTimeout(() => {
+    let bossMovementTimer = setTimeout(() => {
+      if (gameOver || (hitsRemaining && hitsRemaining !== bossHealth)) {
+        clearTimeout(bossMovementTimer);
+      }
       bossEnemyPositions = bossEnemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
           return {
@@ -2920,6 +2943,9 @@ function fireBigBeamUp(newEnemyTile) {
   let affectedTiles = [];
   if (newEnemyTile === "r5-c2") {
     let enemyBeamTimer = setTimeout(() => {
+      if (gameOver) {
+        clearTimeout(enemyBeamTimer);
+      }
       let startRow = parseInt(newEnemyTile.charAt(1));
       let endRow = parseInt(1);
       let column = parseInt(newEnemyTile.substring(4));
@@ -2933,6 +2959,9 @@ function fireBigBeamUp(newEnemyTile) {
     }, 500); // Initial delay of 500ms before executing the code
   } else if (newEnemyTile === "r5-c5") {
     let enemyBeamTimer = setTimeout(() => {
+      if (gameOver) {
+        clearTimeout(enemyBeamTimer);
+      }
       let startRow = parseInt(newEnemyTile.charAt(1));
       let endRow = parseInt(1);
       let column = parseInt(newEnemyTile.substring(4));
@@ -2946,6 +2975,9 @@ function fireBigBeamUp(newEnemyTile) {
     }, 500); // Initial delay of 500ms before executing the code
   } else if (newEnemyTile === "r5-c8") {
     let enemyBeamTimer = setTimeout(() => {
+      if (gameOver) {
+        clearTimeout(enemyBeamTimer);
+      }
       let startRow = parseInt(newEnemyTile.charAt(1));
       let endRow = parseInt(1);
       let column = parseInt(newEnemyTile.substring(4));
@@ -2959,6 +2991,9 @@ function fireBigBeamUp(newEnemyTile) {
     }, 500); // Initial delay of 500ms before executing the code
   } else if (newEnemyTile === "r5-c11") {
     let enemyBeamTimer = setTimeout(() => {
+      if (gameOver) {
+        clearTimeout(enemyBeamTimer);
+      }
       let startRow = parseInt(newEnemyTile.charAt(1));
       let endRow = parseInt(1);
       let column = parseInt(newEnemyTile.substring(4));
@@ -2977,6 +3012,9 @@ function fireBigBeamDown(newEnemyTile) {
 
   if (newEnemyTile === "r2-c2") {
     let enemyBeamTimer = setTimeout(() => {
+      if (gameOver) {
+        clearTimeout(enemyBeamTimer);
+      }
       let startRow = parseInt(newEnemyTile.charAt(1));
       let endRow = parseInt(6);
       let column = parseInt(newEnemyTile.substring(4));
@@ -2990,6 +3028,9 @@ function fireBigBeamDown(newEnemyTile) {
     }, 500); // Initial delay of 500ms before executing the code
   } else if (newEnemyTile === "r2-c5") {
     let enemyBeamTimer = setTimeout(() => {
+      if (gameOver) {
+        clearTimeout(enemyBeamTimer);
+      }
       let startRow = parseInt(newEnemyTile.charAt(1));
       let endRow = parseInt(6);
       let column = parseInt(newEnemyTile.substring(4));
@@ -3016,6 +3057,9 @@ function fireBigBeamDown(newEnemyTile) {
     }, 500); // Initial delay of 500ms before executing the code
   } else if (newEnemyTile === "r2-c11") {
     let enemyBeamTimer = setTimeout(() => {
+      if (gameOver) {
+        clearTimeout(enemyBeamTimer);
+      }
       let startRow = parseInt(newEnemyTile.charAt(1));
       let endRow = parseInt(6);
       let column = parseInt(newEnemyTile.substring(4));
@@ -3135,7 +3179,7 @@ function damageBigBeamTiles(affectedTiles, directionSelected) {
         }
         damageTile.style.backgroundColor = originalColor; // Revert back to original color
 
-        if (affectedTiles[j] === playerPosition) {
+        if (affectedTiles[j] === playerPosition && !gameOver) {
           loseGame(-1);
         }
       }, 500); // Revert back to original color after 500ms
@@ -3145,7 +3189,7 @@ function damageBigBeamTiles(affectedTiles, directionSelected) {
 
 // ----------Octo-Slash------------------
 
-function performOctoSlash(enemyClass, enemyType) {
+function performOctoSlash(enemyClass, enemyIndex, enemyType) {
   if (gameOver) {
     return;
   }
@@ -3254,13 +3298,22 @@ function performOctoSlash(enemyClass, enemyType) {
 
   // Loop for main axis tiles
   for (let j = 0; j < mainAxisTiles.length; j++) {
-    setTimeout(() => {
+    let delayTimer = setTimeout(() => {
+      if (bossEnemyPositions[enemyIndex]?.isAlive === false) {
+        clearTimeout(delayTimer);
+        return;
+      }
+
       let damageTile = document.querySelector("." + mainAxisTiles[j]);
       let originalColor = "#008b8a";
 
       damageTile.style.backgroundColor = "lightsalmon";
 
-      setTimeout(() => {
+      let damageTileTimer = setTimeout(() => {
+        if (bossEnemyPositions[enemyIndex]?.isAlive === false) {
+          clearTimeout(damageTileTimer);
+          return;
+        }
         let swordEffectContainer = document.createElement("div");
         swordEffectContainer.className = "swordEffectContainer";
 
@@ -3282,7 +3335,7 @@ function performOctoSlash(enemyClass, enemyType) {
           swordEffectContainer.remove();
         });
 
-        if (mainAxisTiles[j] === playerPosition) {
+        if (mainAxisTiles[j] === playerPosition && !gameOver) {
           loseGame(-1);
         }
       }, 500);
@@ -3291,12 +3344,20 @@ function performOctoSlash(enemyClass, enemyType) {
 
   // Loop for off-axis tiles
   for (let k = 0; k < offAxisTiles.length; k++) {
-    setTimeout(() => {
+    let delayTimer = setTimeout(() => {
+      if (bossEnemyPositions[enemyIndex]?.isAlive === false) {
+        clearTimeout(delayTimer);
+        return;
+      }
       let damageTile = document.querySelector("." + offAxisTiles[k]);
       let originalColor = "#008b8a";
 
       damageTile.style.backgroundColor = "lightsalmon";
-      setTimeout(() => {
+      let damageTileTimer = setTimeout(() => {
+        if (bossEnemyPositions[enemyIndex]?.isAlive === false) {
+          clearTimeout(damageTileTimer);
+          return;
+        }
         let swordEffectContainer = document.createElement("div");
         swordEffectContainer.className = "swordEffectContainer";
 
@@ -3318,7 +3379,7 @@ function performOctoSlash(enemyClass, enemyType) {
           swordEffectContainer.remove();
         });
 
-        if (offAxisTiles[k] === playerPosition) {
+        if (offAxisTiles[k] === playerPosition && !gameOver) {
           loseGame(-1);
         }
       }, 500);
@@ -3329,7 +3390,43 @@ function performOctoSlash(enemyClass, enemyType) {
 
 function startEnding() {
   gameOver = true;
+  let shadowClonesTargeted = document.querySelectorAll("img.dogeClone");
+  shadowClonesTargeted.forEach((shadowClone) => {
+    let shadowClonePosition = shadowClone.classList[1];
+    let shadowCloneClass = shadowClone.classList[0];
+    let enemyPositionTile = document.querySelector("." + shadowClonePosition);
+
+    let allShadowCloneClass = document.querySelectorAll("." + shadowCloneClass);
+
+    allShadowCloneClass.forEach((img) => {
+      img.remove();
+    });
+
+    bossEnemyPositions = bossEnemyPositions.map((item) => {
+      if (item.enemyClass === shadowCloneClass) {
+        return {
+          ...item,
+          position: null,
+          isAlive: false,
+          hitsRemaining: 0,
+        };
+      } else {
+        return item;
+      }
+    });
+
+    let shadowCloneDeathImg = document.createElement("img");
+    shadowCloneDeathImg.className = shadowCloneClass;
+    shadowCloneDeathImg.src = "./image/smoke.png";
+
+    enemyPositionTile.append(shadowCloneDeathImg);
+
+    setTimeout(() => {
+      shadowCloneDeathImg.remove();
+    }, 750);
+  });
   endingEl.style.display = "flex";
+  mainEl.classList.add("fadeOut");
 }
 
 // ------------start ending ---------
