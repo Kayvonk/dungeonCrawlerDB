@@ -739,7 +739,8 @@ function displayRound() {
 }
 
 function endRound() {
-  if (round + 1 === 10) {
+  // if (round + 1 === 10) {
+  if (round + 1 === 1) {
     return startBoss();
   }
   playSoundEffect("teleport");
@@ -1075,8 +1076,9 @@ function swingSword() {
       if (bossEnemyPositions[0].isMoving === true) {
         return;
       }
+      bossHealth = bossHealth - 1;
+      console.log("bossHealth:", bossHealth);
       bossEnemyPositions = bossEnemyPositions.map((item) => {
-        bossHealth = item.hitsRemaining - 1;
         if (item.enemyClass === "bossImg" && item.hitsRemaining - 1 > 0) {
           bossTargeted.remove();
           let bossDeathImg = document.createElement("img");
@@ -2009,6 +2011,7 @@ function startBoss() {
   playerPosition = startingPosition;
   exitTilePosition = null;
   isBossRound = true;
+  bossHealth = 3;
   playingBossDialogue = true;
   mainEl.innerHTML = "";
   enemyPositions = [];
@@ -2140,19 +2143,16 @@ function startBossMovement(
   enemyType,
   hitsRemaining
 ) {
-  if (gameOver) {
-    return;
-  }
+  const foundEnemy = bossEnemyPositions.find(
+    (item) => item.enemyClass === enemyClass.substring(1)
+  );
   if (
-    (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) ||
+    gameOver || (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) ||
     bossEnemyPositions[enemyIndex].hitsRemaining === 0
   ) {
     return;
   }
 
-  const foundEnemy = bossEnemyPositions.find(
-    (item) => item.enemyClass === enemyClass.substring(1)
-  );
   if (foundEnemy && foundEnemy.isAlive === false) {
     return;
   }
@@ -2174,6 +2174,18 @@ function startBossMovement(
       return;
     }
     if (isAttacking) {
+      if (foundEnemy) {
+        bossEnemyPositions = bossEnemyPositions.map((item) => {
+          if (item.enemyClass === enemyClass.substring(1)) {
+            return {
+              ...item,
+              isMoving: true,
+            };
+          } else {
+            return item;
+          }
+        });
+      }
       if (Math.random() < 0.5) {
         // change to eyes attack animation
         enemyImg.src = isBoss
@@ -2256,14 +2268,15 @@ function startBossMovement(
     ) {
       return;
     }
-
-    startBossMovement(
-      enemyClass,
-      enemyImgPath,
-      enemyIndex,
-      enemyType,
-      hitsRemaining
-    );
+    else{      
+      startBossMovement(
+        enemyClass,
+        enemyImgPath,
+        enemyIndex,
+        enemyType,
+        hitsRemaining
+      );
+    }
   }, enemyDelay);
 }
 function fireBigBeam(enemyClass, enemyIndex, enemyType, hitsRemaining) {
@@ -2618,10 +2631,7 @@ function bossEnemyMoveUp(
   const foundEnemy = bossEnemyPositions.find(
     (item) => item.enemyClass === enemyClass.substring(1)
   );
-  if (gameOver) {
-    return;
-  }
-  if (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) {
+  if (gameOver || (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth)) {
     return;
   }
   let enemyImg = document.querySelector(enemyClass);
@@ -2668,6 +2678,8 @@ function bossEnemyMoveUp(
       ) {
         clearTimeout(bossMovementTimer);
       }
+      enemyImg.remove();
+      nextTile.append(newEnemyImg);
       bossEnemyPositions = bossEnemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
           return {
@@ -2678,8 +2690,7 @@ function bossEnemyMoveUp(
           return item;
         }
       });
-      enemyImg.remove();
-      nextTile.append(newEnemyImg);
+
     }, 100);
   }
 }
@@ -2745,6 +2756,8 @@ function bossEnemyMoveDown(
       ) {
         clearTimeout(bossMovementTimer);
       }
+      enemyImg.remove();
+      nextTile.append(newEnemyImg);
       bossEnemyPositions = bossEnemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
           return {
@@ -2755,8 +2768,7 @@ function bossEnemyMoveDown(
           return item;
         }
       });
-      enemyImg.remove();
-      nextTile.append(newEnemyImg);
+
     }, 100);
   }
 }
@@ -2822,6 +2834,8 @@ function bossEnemyMoveLeft(
       ) {
         clearTimeout(bossMovementTimer);
       }
+      enemyImg.remove();
+      nextTile.append(newEnemyImg);
       bossEnemyPositions = bossEnemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
           return {
@@ -2832,8 +2846,6 @@ function bossEnemyMoveLeft(
           return item;
         }
       });
-      enemyImg.remove();
-      nextTile.append(newEnemyImg);
     }, 100);
   }
 }
@@ -2899,6 +2911,8 @@ function bossEnemyMoveRight(
       ) {
         clearTimeout(bossMovementTimer);
       }
+      enemyImg.remove();
+      nextTile.append(newEnemyImg);
       bossEnemyPositions = bossEnemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
           return {
@@ -2909,8 +2923,7 @@ function bossEnemyMoveRight(
           return item;
         }
       });
-      enemyImg.remove();
-      nextTile.append(newEnemyImg);
+   
     }, 100);
   }
 }
@@ -3465,6 +3478,7 @@ function performOctoSlash(enemyClass, enemyIndex, enemyType, hitsRemaining) {
 }
 // --------------end boss-----------
 
+// ------------start ending --------
 function startEnding() {
   gameOver = true;
   let shadowClonesTargeted = document.querySelectorAll("img.dogeClone");
@@ -3562,9 +3576,7 @@ function startEnding() {
   createStarLayers(3); // Adjust the number of layers as needed for a continuous effect
 }
 
-// ------------start ending ---------
+
 // ------------end ending ---------
 
-// TODO add boss stage after round 10
-// TODO add ending
-// TODO calculate score better (probably lives left plus time inverted bonus)
+// TODO finish ending

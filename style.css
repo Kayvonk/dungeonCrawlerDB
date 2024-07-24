@@ -846,7 +846,7 @@ header > p:first-child {
   border-radius: 10px; /* Slight border radius */
   padding: 20px;
   width: 30vw;
-  height: 10vh;
+  min-height: 15vh;
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2), 0 0 0 6px rgba(255, 215, 0, 0.8);
   text-align: start;
   overflow: hidden; /* Ensures content does not overflow the border radius */
@@ -861,7 +861,7 @@ header > p:first-child {
 
 .dialogue-content {
   margin: 0;
-  font-size: 1.6em;
+  font-size: 1.5em;
   margin-bottom: 20px;
 }
 
