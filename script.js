@@ -573,14 +573,12 @@ function limitMovement() {
   let limitMovementTimer = setTimeout(() => {
     if (playingBossDialogue) {
       clearTimeout(limitMovementTimer);
-      return
-    } 
-    else if(currentRound !== round) {
+      return;
+    } else if (currentRound !== round) {
       clearTimeout(limitMovementTimer);
       canMove = true;
-      return
-    }
-    else {
+      return;
+    } else {
       canMove = true;
     }
   }, 100);
@@ -742,6 +740,7 @@ function displayRound() {
 
 function endRound() {
   if (round + 1 === 10) {
+  // if (round + 1 === 1) {
     return startBoss();
   }
   playSoundEffect("teleport");
@@ -958,8 +957,8 @@ function placePlayer1() {
 }
 
 function swingSword() {
-  if(playingBossDialogue) {
-    return
+  if (playingBossDialogue) {
+    return;
   }
   let row = playerPosition.split("-")[0].substring(1);
   let column = playerPosition.split("-")[1].substring(1);
@@ -1077,8 +1076,9 @@ function swingSword() {
       if (bossEnemyPositions[0].isMoving === true) {
         return;
       }
+      bossHealth = bossHealth - 1;
+      console.log("bossHealth:", bossHealth);
       bossEnemyPositions = bossEnemyPositions.map((item) => {
-        bossHealth = item.hitsRemaining - 1;
         if (item.enemyClass === "bossImg" && item.hitsRemaining - 1 > 0) {
           bossTargeted.remove();
           let bossDeathImg = document.createElement("img");
@@ -2011,6 +2011,7 @@ function startBoss() {
   playerPosition = startingPosition;
   exitTilePosition = null;
   isBossRound = true;
+  bossHealth = 3;
   playingBossDialogue = true;
   mainEl.innerHTML = "";
   enemyPositions = [];
@@ -2142,16 +2143,16 @@ function startBossMovement(
   enemyType,
   hitsRemaining
 ) {
+  const foundEnemy = bossEnemyPositions.find(
+    (item) => item.enemyClass === enemyClass.substring(1)
+  );
   if (
-    (hitsRemaining && hitsRemaining !== bossHealth) ||
+    gameOver || (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) ||
     bossEnemyPositions[enemyIndex].hitsRemaining === 0
   ) {
     return;
   }
 
-  const foundEnemy = bossEnemyPositions.find(
-    (item) => item.enemyClass === enemyClass.substring(1)
-  );
   if (foundEnemy && foundEnemy.isAlive === false) {
     return;
   }
@@ -2163,7 +2164,7 @@ function startBossMovement(
   let enemyTimer = setTimeout(() => {
     if (
       bossEnemyPositions[enemyIndex]?.isAlive === false ||
-      (hitsRemaining && hitsRemaining !== bossHealth)
+      (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth)
     ) {
       clearTimeout(enemyTimer);
       return;
@@ -2173,17 +2174,29 @@ function startBossMovement(
       return;
     }
     if (isAttacking) {
+      if (foundEnemy) {
+        bossEnemyPositions = bossEnemyPositions.map((item) => {
+          if (item.enemyClass === enemyClass.substring(1)) {
+            return {
+              ...item,
+              isMoving: true,
+            };
+          } else {
+            return item;
+          }
+        });
+      }
       if (Math.random() < 0.5) {
         // change to eyes attack animation
         enemyImg.src = isBoss
           ? "./image/samuraiDoge.png"
           : "./image/shadowSamuraiDoge.png";
-        fireBigBeam(enemyClass, enemyIndex, enemyType);
+        fireBigBeam(enemyClass, enemyIndex, enemyType, hitsRemaining);
       } else {
         enemyImg.src = isBoss
           ? "./image/samuraiDoge.png"
           : "./image/shadowSamuraiDoge.png";
-        performOctoSlash(enemyClass, enemyIndex, enemyType);
+        performOctoSlash(enemyClass, enemyIndex, enemyType, hitsRemaining);
       }
     } else {
       if (foundEnemy) {
@@ -2201,6 +2214,15 @@ function startBossMovement(
       let directions = ["up", "down", "left", "right"];
       let directionSelected = directions[Math.floor(Math.random() * 4)];
       if (gameOver) {
+        return;
+      }
+      if (
+        (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) ||
+        bossEnemyPositions[enemyIndex].hitsRemaining === 0
+      ) {
+        return;
+      }
+      if (foundEnemy && foundEnemy.isAlive === false) {
         return;
       }
       if (directionSelected === "up") {
@@ -2240,25 +2262,45 @@ function startBossMovement(
     if (gameOver) {
       return;
     }
-    startBossMovement(
-      enemyClass,
-      enemyImgPath,
-      enemyIndex,
-      enemyType,
-      hitsRemaining
-    );
+    if (
+      (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) ||
+      bossEnemyPositions[enemyIndex].hitsRemaining === 0
+    ) {
+      return;
+    }
+    else{      
+      startBossMovement(
+        enemyClass,
+        enemyImgPath,
+        enemyIndex,
+        enemyType,
+        hitsRemaining
+      );
+    }
   }, enemyDelay);
 }
-function fireBigBeam(enemyClass, enemyIndex, enemyType) {
-  if (gameOver) {
-    return;
-  }
-  if (bossEnemyPositions[enemyIndex]?.isAlive === false) {
-    return;
-  }
+function fireBigBeam(enemyClass, enemyIndex, enemyType, hitsRemaining) {
   const foundEnemy = bossEnemyPositions.find(
     (item) => item.enemyClass === enemyClass.substring(1)
   );
+  if (gameOver) {
+    return;
+  }
+  if (
+    (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) ||
+    bossEnemyPositions[enemyIndex].hitsRemaining === 0
+  ) {
+    return;
+  }
+  if (
+    (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) ||
+    bossEnemyPositions[enemyIndex].hitsRemaining === 0
+  ) {
+    return;
+  }
+  if (foundEnemy && foundEnemy.isAlive === false) {
+    return;
+  }
   if (Math.random() < 0.2) {
     if (
       quadrant1.includes(playerPosition) ||
@@ -2586,15 +2628,12 @@ function bossEnemyMoveUp(
   enemyType,
   hitsRemaining
 ) {
-  if (gameOver) {
-    return;
-  }
-  if (hitsRemaining && hitsRemaining !== bossHealth) {
-    return;
-  }
   const foundEnemy = bossEnemyPositions.find(
     (item) => item.enemyClass === enemyClass.substring(1)
   );
+  if (gameOver || (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth)) {
+    return;
+  }
   let enemyImg = document.querySelector(enemyClass);
   if (!enemyImg) {
     return;
@@ -2632,9 +2671,15 @@ function bossEnemyMoveUp(
         : enemyImgPath;
     let nextTile = document.querySelector("." + newPosition);
     let bossMovementTimer = setTimeout(() => {
-      if (gameOver || (hitsRemaining && hitsRemaining !== bossHealth)) {
+      if (
+        gameOver ||
+        (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) ||
+        (foundEnemy && foundEnemy.isAlive === false)
+      ) {
         clearTimeout(bossMovementTimer);
       }
+      enemyImg.remove();
+      nextTile.append(newEnemyImg);
       bossEnemyPositions = bossEnemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
           return {
@@ -2645,8 +2690,7 @@ function bossEnemyMoveUp(
           return item;
         }
       });
-      enemyImg.remove();
-      nextTile.append(newEnemyImg);
+
     }, 100);
   }
 }
@@ -2661,7 +2705,7 @@ function bossEnemyMoveDown(
   if (gameOver) {
     return;
   }
-  if (hitsRemaining && hitsRemaining !== bossHealth) {
+  if (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) {
     return;
   }
   const foundEnemy = bossEnemyPositions.find(
@@ -2705,9 +2749,15 @@ function bossEnemyMoveDown(
         : enemyImgPath;
     let nextTile = document.querySelector("." + newPosition);
     let bossMovementTimer = setTimeout(() => {
-      if (gameOver || (hitsRemaining && hitsRemaining !== bossHealth)) {
+      if (
+        gameOver ||
+        (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) ||
+        (foundEnemy && foundEnemy.isAlive === false)
+      ) {
         clearTimeout(bossMovementTimer);
       }
+      enemyImg.remove();
+      nextTile.append(newEnemyImg);
       bossEnemyPositions = bossEnemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
           return {
@@ -2718,8 +2768,7 @@ function bossEnemyMoveDown(
           return item;
         }
       });
-      enemyImg.remove();
-      nextTile.append(newEnemyImg);
+
     }, 100);
   }
 }
@@ -2734,7 +2783,7 @@ function bossEnemyMoveLeft(
   if (gameOver) {
     return;
   }
-  if (hitsRemaining && hitsRemaining !== bossHealth) {
+  if (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) {
     return;
   }
   const foundEnemy = bossEnemyPositions.find(
@@ -2778,9 +2827,15 @@ function bossEnemyMoveLeft(
         : enemyImgPath;
     let nextTile = document.querySelector("." + newPosition);
     let bossMovementTimer = setTimeout(() => {
-      if (gameOver || (hitsRemaining && hitsRemaining !== bossHealth)) {
+      if (
+        gameOver ||
+        (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) ||
+        (foundEnemy && foundEnemy.isAlive === false)
+      ) {
         clearTimeout(bossMovementTimer);
       }
+      enemyImg.remove();
+      nextTile.append(newEnemyImg);
       bossEnemyPositions = bossEnemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
           return {
@@ -2791,8 +2846,6 @@ function bossEnemyMoveLeft(
           return item;
         }
       });
-      enemyImg.remove();
-      nextTile.append(newEnemyImg);
     }, 100);
   }
 }
@@ -2807,7 +2860,7 @@ function bossEnemyMoveRight(
   if (gameOver) {
     return;
   }
-  if (hitsRemaining && hitsRemaining !== bossHealth) {
+  if (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) {
     return;
   }
   const foundEnemy = bossEnemyPositions.find(
@@ -2851,9 +2904,15 @@ function bossEnemyMoveRight(
         : enemyImgPath;
     let nextTile = document.querySelector("." + newPosition);
     let bossMovementTimer = setTimeout(() => {
-      if (gameOver || (hitsRemaining && hitsRemaining !== bossHealth)) {
+      if (
+        gameOver ||
+        (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) ||
+        (foundEnemy && foundEnemy.isAlive === false)
+      ) {
         clearTimeout(bossMovementTimer);
       }
+      enemyImg.remove();
+      nextTile.append(newEnemyImg);
       bossEnemyPositions = bossEnemyPositions.map((item) => {
         if (item.enemyClass === enemyClass.substring(1)) {
           return {
@@ -2864,8 +2923,7 @@ function bossEnemyMoveRight(
           return item;
         }
       });
-      enemyImg.remove();
-      nextTile.append(newEnemyImg);
+   
     }, 100);
   }
 }
@@ -3212,13 +3270,22 @@ function damageBigBeamTiles(affectedTiles, directionSelected) {
 
 // ----------Octo-Slash------------------
 
-function performOctoSlash(enemyClass, enemyIndex, enemyType) {
-  if (gameOver) {
-    return;
-  }
+function performOctoSlash(enemyClass, enemyIndex, enemyType, hitsRemaining) {
   const foundEnemy = bossEnemyPositions.find(
     (item) => item.enemyClass === enemyClass.substring(1)
   );
+  if (gameOver) {
+    return;
+  }
+  if (
+    (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) ||
+    bossEnemyPositions[enemyIndex].hitsRemaining === 0
+  ) {
+    return;
+  }
+  if (foundEnemy && foundEnemy.isAlive === false) {
+    return;
+  }
 
   possibleStartPositions = ["r3-c4", "r3-c6", "r3-c8"];
 
@@ -3411,6 +3478,7 @@ function performOctoSlash(enemyClass, enemyIndex, enemyType) {
 }
 // --------------end boss-----------
 
+// ------------start ending --------
 function startEnding() {
   gameOver = true;
   let shadowClonesTargeted = document.querySelectorAll("img.dogeClone");
@@ -3461,60 +3529,54 @@ function startEnding() {
   let endingSceneContainer = document.createElement("div");
   endingSceneContainer.className = "endingSceneContainer";
 
+  let cardboardCat = document.createElement("img");
+  cardboardCat.src = "./image/cardboardCat.png";
+  cardboardCat.className = "cardboardCat";
 
-let cardboardCat = document.createElement("img");
-cardboardCat.src = "./image/cardboardCat.png"
-cardboardCat.className = "cardboardCat"
+  let endHeader = document.createElement("div");
+  endHeader.textContent = "The End";
+  endHeader.className = "endingHeader";
+  endingEl.append(endHeader);
 
-let endHeader = document.createElement("div");
-endHeader.textContent = "The End"
-endHeader.className = "endingHeader"
-endingEl.append(endHeader)
+  endingSceneContainer.append(cardboardCat);
+  endingEl.append(endingSceneContainer);
 
-
-endingSceneContainer.append(cardboardCat);
-endingEl.append(endingSceneContainer);
-
-
-function createStar() {
-  const star = document.createElement('div');
-  star.className = 'star';
-  // Set random positions and sizes for the stars
-  star.style.left = Math.random() * 100 + 'vw';
-  star.style.top = Math.random() * 100 + 'vh';
-  star.style.width = Math.random() * 4 + 'px';
-  star.style.height = star.style.width;
-  return star;
-}
-
-function addStars(numStars) {
-  const stars = [];
-  for (let i = 0; i < numStars; i++) {
-    stars.push(createStar());
+  function createStar() {
+    const star = document.createElement("div");
+    star.className = "star";
+    // Set random positions and sizes for the stars
+    star.style.left = Math.random() * 100 + "vw";
+    star.style.top = Math.random() * 100 + "vh";
+    star.style.width = Math.random() * 4 + "px";
+    star.style.height = star.style.width;
+    return star;
   }
-  return stars;
-}
 
-function createStarLayers(numLayers) {
-  for (let i = 0; i < numLayers; i++) {
-    const starLayer = document.createElement('div');
-    starLayer.className = 'star-layer';
-    starLayer.style.animationDelay = `-${i * 3}s`;  // Stagger the animation for each layer
-
-    const stars = addStars(100);  // Adjust the number of stars as needed
-    stars.forEach(star => starLayer.appendChild(star));  // Add all stars to the layer
-
-    endingSceneContainer.appendChild(starLayer);
+  function addStars(numStars) {
+    const stars = [];
+    for (let i = 0; i < numStars; i++) {
+      stars.push(createStar());
+    }
+    return stars;
   }
+
+  function createStarLayers(numLayers) {
+    for (let i = 0; i < numLayers; i++) {
+      const starLayer = document.createElement("div");
+      starLayer.className = "star-layer";
+      starLayer.style.animationDelay = `-${i * 3}s`; // Stagger the animation for each layer
+
+      const stars = addStars(100); // Adjust the number of stars as needed
+      stars.forEach((star) => starLayer.appendChild(star)); // Add all stars to the layer
+
+      endingSceneContainer.appendChild(starLayer);
+    }
+  }
+
+  createStarLayers(3); // Adjust the number of layers as needed for a continuous effect
 }
 
-createStarLayers(3);  // Adjust the number of layers as needed for a continuous effect
 
-}
-
-// ------------start ending ---------
 // ------------end ending ---------
 
-// TODO add boss stage after round 10
-// TODO add ending
-// TODO calculate score better (probably lives left plus time inverted bonus)
+// TODO finish ending
