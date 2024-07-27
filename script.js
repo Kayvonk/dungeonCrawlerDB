@@ -1824,8 +1824,11 @@ function checkKeyPressed(evt) {
     startPrologue();
   } else if (gameStarted && swordAcquired && !gameOver && evt.keyCode === 32) {
     swingSword();
-  } else if (gameStarted && gameOver && evt.keyCode === 32 && !lossPause) {
+  } else if (gameStarted && gameOver && bossHealth !== 0 && evt.keyCode === 32 && !lossPause) {
     lives > 0 ? restartRound() : restartGame();
+  }
+  else if(bossHealth === 0) {
+    return
   }
   if (gameOver) {
     return;
