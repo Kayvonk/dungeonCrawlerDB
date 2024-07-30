@@ -3582,4 +3582,14 @@ function startEnding() {
 
 // ------------end ending ---------
 
+
+// ----------------start database logic-------------
+
+function getHighscores(){
+  fetch("http://localhost:3003/api/highscores").then((res)=> res.json()).then((data) => console.log(data))
+}
+
+getHighscores()
+// ----------------end database logic---------------
+
 // TODO finish ending

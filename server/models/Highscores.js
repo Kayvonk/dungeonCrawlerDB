@@ -1,9 +1,9 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-class Product extends Model {}
+class Highscores extends Model {}
 
-Product.init(
+Highscores.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -11,32 +11,13 @@ Product.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    product_name: {
+    userName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    price: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
-      validate: {
-        isDecimal: true,
-      },
-    },
-    stock: {
+    score: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 10,
-      validate: {
-        isNumeric: true,
-      },
-    },
-    category_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'category',
-        key: 'id',
-      },
     },
   },
   {
@@ -48,4 +29,4 @@ Product.init(
   }
 );
 
-module.exports = Product;
+module.exports = Highscores;

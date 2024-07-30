@@ -11,10 +11,10 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const scoreData = await Highscores.create(req.body)    .catch((err) => {
+  const scoreData = await Highscores.create(req.body).catch((err) => {
     console.log(err);
     res.status(500).json(err);
-  });;
+  });
 
   return res.json(scoreData);
 });
