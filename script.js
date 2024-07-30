@@ -62,6 +62,9 @@ let bossEnemyPositions = [
   },
 ];
 
+let lowestHighscore;
+let highscoresCount;
+
 startBtn.addEventListener("click", startPrologue);
 
 // ------------------start prologue --------------------------
@@ -623,10 +626,13 @@ function startTower() {
   secondsTimer = setInterval(() => {
     if (gameOver) {
       clearInterval(secondsTimer);
-      if (bossEnemyPositions[0].isAlive) {
-        return calculateScore();
-      } else {
-        return;
+      if (gameOver) {
+        clearInterval(secondsTimer);
+        if (bossEnemyPositions[0].isAlive) {
+          return displayRestartMenu();
+        } else {
+          return;
+        }
       }
     }
     seconds++;
@@ -659,9 +665,8 @@ function restartRound() {
   secondsTimer = setInterval(() => {
     if (gameOver) {
       clearInterval(secondsTimer);
-
       if (bossEnemyPositions[0].isAlive) {
-        return calculateScore();
+        return displayRestartMenu();
       } else {
         return;
       }
@@ -677,24 +682,16 @@ function restartRound() {
   endRound();
 }
 
-function calculateScore() {
-  let baseScore = (round + 1) * 1000;
-
-  let timeScore = Math.ceil((1 / seconds) * 10000) + 100;
-
-  let finalScore = baseScore + timeScore;
-  if (isFinite(finalScore) && finalScore > highScore) {
-    highScore = finalScore;
-    localStorage.setItem("highscore", finalScore);
-  }
-
+function displayRestartMenu() {
   let scoreDiv = document.getElementById("results");
   scoreDiv.style.display = "flex";
   scoreDiv.style.fontFamily = "Arial";
   scoreDiv.innerHTML = `
- <h2>${typeof attackingEnemyIndex === "number" ? "Game Over" : "You win"} </h2>
- <p>Lives remaining: ${lives}</p>
-`;
+   <h2>${
+     typeof attackingEnemyIndex === "number" ? "Game Over" : "You win"
+   } </h2>
+   <p>Lives remaining: ${lives}</p>
+  `;
   if (lives > 0) {
     let continueBtn = document.createElement("button");
     continueBtn.setAttribute("id", "continue");
@@ -708,6 +705,57 @@ function calculateScore() {
     scoreDiv.append(restartBtn);
     restartBtn.addEventListener("click", restartGame);
   }
+}
+
+function calculateScore() {
+  let baseScore = 10000;
+
+  let livesBonus = lives * 1000;
+
+  let timeScore = Math.ceil((1 / seconds) * 100000) + 100;
+
+  let finalScore = baseScore + timeScore + livesBonus;
+
+  if (isFinite(finalScore) && finalScore > highScore) {
+    highScore = finalScore;
+    // localStorage.setItem("highscore", finalScore);
+  }
+
+  if (highScore > lowestHighscore.score) {
+    let newHighscore = {
+      userName: "AAA",
+      score: highScore,
+      lowestHighscoreId: lowestHighscore.id,
+      count: highscoresCount,
+    };
+
+    console.log(newHighscore);
+    fetch("http://localhost:3003/api/highscores", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newHighscore),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  } else {
+    console.log("nope");
+  }
+
+  console.log("livesBonus:", livesBonus);
+  console.log("timeScore:", timeScore);
+  console.log("finalScore:", finalScore);
 }
 
 function restartGame() {
@@ -739,8 +787,8 @@ function displayRound() {
 }
 
 function endRound() {
-  if (round + 1 === 10) {
-  // if (round + 1 === 1) {
+  // if (round + 1 === 10) {
+  if (round + 1 === 1) {
     return startBoss();
   }
   playSoundEffect("teleport");
@@ -1824,11 +1872,16 @@ function checkKeyPressed(evt) {
     startPrologue();
   } else if (gameStarted && swordAcquired && !gameOver && evt.keyCode === 32) {
     swingSword();
-  } else if (gameStarted && gameOver && bossHealth !== 0 && evt.keyCode === 32 && !lossPause) {
+  } else if (
+    gameStarted &&
+    gameOver &&
+    bossHealth !== 0 &&
+    evt.keyCode === 32 &&
+    !lossPause
+  ) {
     lives > 0 ? restartRound() : restartGame();
-  }
-  else if(bossHealth === 0) {
-    return
+  } else if (bossHealth === 0) {
+    return;
   }
   if (gameOver) {
     return;
@@ -2150,7 +2203,8 @@ function startBossMovement(
     (item) => item.enemyClass === enemyClass.substring(1)
   );
   if (
-    gameOver || (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) ||
+    gameOver ||
+    (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth) ||
     bossEnemyPositions[enemyIndex].hitsRemaining === 0
   ) {
     return;
@@ -2270,8 +2324,7 @@ function startBossMovement(
       bossEnemyPositions[enemyIndex].hitsRemaining === 0
     ) {
       return;
-    }
-    else{      
+    } else {
       startBossMovement(
         enemyClass,
         enemyImgPath,
@@ -2634,7 +2687,10 @@ function bossEnemyMoveUp(
   const foundEnemy = bossEnemyPositions.find(
     (item) => item.enemyClass === enemyClass.substring(1)
   );
-  if (gameOver || (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth)) {
+  if (
+    gameOver ||
+    (enemyIndex === 0 && hitsRemaining && hitsRemaining !== bossHealth)
+  ) {
     return;
   }
   let enemyImg = document.querySelector(enemyClass);
@@ -2693,7 +2749,6 @@ function bossEnemyMoveUp(
           return item;
         }
       });
-
     }, 100);
   }
 }
@@ -2771,7 +2826,6 @@ function bossEnemyMoveDown(
           return item;
         }
       });
-
     }, 100);
   }
 }
@@ -2926,7 +2980,6 @@ function bossEnemyMoveRight(
           return item;
         }
       });
-   
     }, 100);
   }
 }
@@ -3484,6 +3537,7 @@ function performOctoSlash(enemyClass, enemyIndex, enemyType, hitsRemaining) {
 // ------------start ending --------
 function startEnding() {
   gameOver = true;
+  calculateScore();
   let shadowClonesTargeted = document.querySelectorAll("img.dogeClone");
   shadowClonesTargeted.forEach((shadowClone) => {
     let shadowClonePosition = shadowClone.classList[1];
@@ -3579,17 +3633,26 @@ function startEnding() {
   createStarLayers(3); // Adjust the number of layers as needed for a continuous effect
 }
 
-
 // ------------end ending ---------
-
 
 // ----------------start database logic-------------
 
-function getHighscores(){
-  fetch("http://localhost:3003/api/highscores").then((res)=> res.json()).then((data) => console.log(data))
+function getHighscores() {
+  fetch("http://localhost:3003/api/highscores")
+    .then((res) => res.json())
+    .then((data) => {
+      lowestHighscore = data[data.length - 1];
+      highscoresCount = data.length;
+      console.log(data);
+      console.log(lowestHighscore);
+    });
 }
 
-getHighscores()
+getHighscores();
 // ----------------end database logic---------------
 
 // TODO finish ending
+// change post request to trim beyond 100 scores
+// prompt user if new highscore (slide from top)
+//prompt user with score and input to type username (slide from bottom)
+// add highscores button on bottom right to view top 100 scores

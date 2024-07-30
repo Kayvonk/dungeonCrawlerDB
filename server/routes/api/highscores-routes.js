@@ -1,8 +1,11 @@
 const router = require("express").Router();
 const { Highscores } = require("../../models");
+// const { sequelize } = require("../../config/connection.js");
 
 router.get("/", (req, res) => {
-  Highscores.findAll({})
+  Highscores.findAll({
+    order: [["score", "DESC"]],
+  })
     .then((scores) => res.json(scores))
     .catch((err) => {
       console.log(err);
@@ -11,12 +14,23 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const scoreData = await Highscores.create(req.body).catch((err) => {
+  const { userName, score, lowestHighscoreId, count } = req.body;
+
+  try {
+    const newScore = await Highscores.create({ userName, score });
+
+    if (count >= 100 && lowestHighscoreId) {
+      await Highscores.destroy({
+        where: {
+          id: lowestHighscoreId,
+        },
+      });
+    }
+    res.status(201).json(newScore);
+  } catch (err) {
     console.log(err);
     res.status(500).json(err);
-  });
-
-  return res.json(scoreData);
+  }
 });
 
 module.exports = router;
