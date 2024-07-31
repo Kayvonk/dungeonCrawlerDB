@@ -1,6 +1,7 @@
 let mainEl = document.getElementsByTagName("main")[0];
 let startBtn = document.getElementById("start");
 let endingEl = document.getElementById("endingContainer");
+let highscoresEl = document.getElementById("highscoresIcon");
 
 let startingPosition = "r6-c6";
 let playerPosition = startingPosition;
@@ -64,6 +65,8 @@ let bossEnemyPositions = [
 
 let lowestHighscore;
 let highscoresCount;
+let showHighscoresBoard = false;
+let highscoresData;
 
 startBtn.addEventListener("click", startPrologue);
 
@@ -71,6 +74,10 @@ startBtn.addEventListener("click", startPrologue);
 
 function startPrologue() {
   gameStarted = true;
+  highscoresEl.style.opacity = 0;
+  setTimeout(() => {
+    highscoresEl.style.display = "none";
+  }, 500);
   playSoundEffect("gameStart");
   let audioBtn = document.getElementById("audioButton");
   audioBtn.classList.add("faded");
@@ -719,7 +726,7 @@ function calculateScore() {
   if (isFinite(finalScore) && finalScore > highScore) {
     highScore = finalScore;
   }
-  if (highScore > lowestHighscore.score) {
+  if (highScore > lowestHighscore.score || highscoresCount < 100) {
     let highscoresInputDiv = document.createElement("div");
     highscoresInputDiv.className = "highscoresInputDiv";
 
@@ -752,24 +759,43 @@ function calculateScore() {
 
     let highscoresRightNameValue = document.createElement("input");
     highscoresRightNameValue.className = "highscoresRightNameValue";
+    highscoresRightNameValue.setAttribute("maxlength", "8");
+
+    highscoresRightNameValue.type = "text";
+    highscoresRightNameValue.placeholder = "Enter your name";
+
+    let highscoresRightNameButton = document.createElement("button");
+    highscoresRightNameButton.className = "highscoresRightNameButton";
+    highscoresRightNameButton.textContent = "OK";
+
+    highscoresRightNameButton.addEventListener("click", sendHighscore);
 
     highscoresRightContainer.append(highscoresRightNameLabel);
     highscoresRightContainer.append(highscoresRightNameValue);
+    highscoresRightContainer.append(highscoresRightNameButton);
     highscoresInputContainer.append(highscoresRightContainer);
     // ----------------
+    let newHighscoreToast = document.createElement("div");
+    newHighscoreToast.className = "newHighscoreToast";
+    newHighscoreToast.textContent = "New Highscore!";
 
+    highscoresInputDiv.append(newHighscoreToast);
     highscoresInputDiv.append(highscoresInputContainer);
 
     endingEl.append(highscoresInputDiv);
   } else {
-    console.log("nope");
+    highscoresEl.style.display = "block";
+    highscoresEl.style.opacity = 1;
   }
 }
 
 function sendHighscore() {
-  if (highScore > lowestHighscore.score) {
+    let newUserName = document.querySelector(".highscoresRightNameValue").value;
+    if (newUserName === "") {
+      newUserName = "AAA";
+    }
     let newHighscore = {
-      userName: "AAA",
+      userName: newUserName,
       score: highScore,
       lowestHighscoreId: lowestHighscore.id,
       count: highscoresCount,
@@ -790,17 +816,17 @@ function sendHighscore() {
         return response.json();
       })
       .then((data) => {
+        let highscoresInputDiv = document.querySelector(".highscoresInputDiv");
+        highscoresInputDiv.style.display = "none";
+        highscoresEl.style.display = "block";
+        highscoresEl.style.opacity = 1;
+        getHighscores();
         console.log("Success:", data);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-  } else {
-    console.log("nope");
-  }
 }
-
-function displayFinalScore() {}
 
 function restartGame() {
   location.reload();
@@ -831,8 +857,7 @@ function displayRound() {
 }
 
 function endRound() {
-  // if (round + 1 === 10) {
-  if (round + 1 === 1) {
+  if (round + 1 === 10) {
     return startBoss();
   }
   playSoundEffect("teleport");
@@ -3679,21 +3704,71 @@ function startEnding() {
 
 // ------------end ending ---------
 
-// ----------------start database logic-------------
+// ----------------start highscores logic-------------
+
+function createHighscoresBoard() {
+  let highscoresBoard = document.createElement("div");
+  highscoresBoard.className = "highscoresBoard";
+  document.body.appendChild(highscoresBoard);
+}
+
+createHighscoresBoard();
 
 function getHighscores() {
   fetch("http://localhost:3003/api/highscores")
     .then((res) => res.json())
     .then((data) => {
-      lowestHighscore = data[data.length - 1];
+      highscoresData = data;
+      lowestHighscore = data[data.length - 1] || 0;
       highscoresCount = data.length;
+      displayHighscores(data);
     });
 }
 
 getHighscores();
-// ----------------end database logic---------------
+
+function displayHighscoresIcon() {
+  let highscoresIconImg = document.createElement("img");
+  highscoresIconImg.className = "highscoresIconImg";
+  highscoresIconImg.src = "./image/highscores.png";
+
+  highscoresEl.append(highscoresIconImg);
+}
+
+displayHighscoresIcon();
+
+highscoresEl.addEventListener("click", displayHighscoresBoard);
+
+function displayHighscoresBoard() {
+  let highscoresBoard = document.querySelector(".highscoresBoard");
+  if (showHighscoresBoard) {
+    highscoresBoard.style.display = "none";
+    showHighscoresBoard = false;
+  } else {
+    highscoresBoard.style.display = "block";
+    showHighscoresBoard = true;
+    // getHighscores();
+  }
+}
+
+function displayHighscores(highscores) {
+  let highscoresBoard = document.querySelector(".highscoresBoard");
+  highscoresBoard.innerHTML = "";
+
+  let topScoresLabel = document.createElement("div")
+  topScoresLabel.className = "topScoresLabel"
+  topScoresLabel.textContent = "Top 100"
+
+  highscoresBoard.append(topScoresLabel)
+  
+  highscores.forEach((element, index) => {
+    let scoreRow = document.createElement("div");
+    scoreRow.className = "scoreRow";
+    scoreRow.textContent =
+      index + 1 + ". " + element.userName + " " + element.score;
+    highscoresBoard.append(scoreRow);
+  });
+}
+// ----------------end highscores logic---------------
 
 // TODO finish ending
-// prompt user if new highscore (slide from top)
-//prompt user with score and input to type username (slide from bottom)
-// add highscores button on bottom right to view top 100 scores

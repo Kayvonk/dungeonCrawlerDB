@@ -1145,12 +1145,13 @@ header > p:first-child {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50vw;
+  width: 60vw;
   height: 20vh;
   left: 50%;
-  top: 80%;
+  top: 85%;
   background-color: #2b2b2b2b;
   transform: translate(-50%, -50%);
+  border-radius: 12pt;
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2), 0 0 0 6px rgba(255, 215, 0, 0.8);
 }
 
@@ -1158,7 +1159,8 @@ header > p:first-child {
   display: flex;
   width: 90%;
   height: 90%;
-  justify-content: space-around;
+  justify-content: space-between;
+  font-size: 24px;
 }
 /* -------Left Container---------- */
 
@@ -1166,6 +1168,7 @@ header > p:first-child {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 30vw;
 }
 
 .highscoresLeftScoreLabel {
@@ -1173,6 +1176,7 @@ header > p:first-child {
 }
 
 .highscoresLeftScoreValue {
+  margin-left: 15px;
   color: #f3f3f3;
 }
 
@@ -1182,6 +1186,7 @@ header > p:first-child {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 30vw;
 }
 
 .highscoresRightNameLabel {
@@ -1189,5 +1194,83 @@ header > p:first-child {
 }
 
 .highscoresRightNameValue {
+  margin-left: 15px;
+  background-color: transparent;
+  border-color: #f3f3f3;
+  padding: 15px 20px;
   color: #f3f3f3;
+  border-radius: 12pt 0 0 12pt;
+}
+
+.highscoresRightNameButton {
+  background-color: rgba(255, 215, 0, 0.8);
+  padding: 15px 20px;
+  border-radius: 0 12pt 12pt 0;
+  border: 2px solid #f3f3f3;
+}
+
+/* --------------- */
+
+.newHighscoreToast {
+  position: absolute;
+  font-size: 20px;
+  color: rgba(255, 215, 0, 0.8);
+  left: 50%;
+  top: 15%;
+  transform: translate(-50%, -50%);
+}
+
+/* ---------------------------------- */
+
+#highscoresIcon {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  display: flex;
+  align-items: center;
+  z-index: 21;
+  width: 60px;
+  height: 60px;
+  background-color: #333;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+#highscoresIcon:hover {
+  background-color: #3d3d3d;
+}
+
+.highscoresIconImg {
+  width: 100%;
+}
+
+/* ------------------ */
+
+.highscoresBoard {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  height: 70vh;
+  background-color: #333;
+  z-index: 23;
+  display: none;
+  opacity: 0.95;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2), 0 0 0 6px rgba(255, 215, 0, 0.8);
+  overflow-y: auto;
+}
+
+.topScoresLabel {
+  color: #f3f3f3;
+  margin: 35px 0px;
+  font-size: 32px;
+}
+
+.scoreRow {
+  color: #f3f3f3;
+  margin: 25px 0px;
+  font-size: 24px;
 }

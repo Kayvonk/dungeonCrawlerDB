@@ -31,11 +31,11 @@ for (let i = 0; i < 100; i++) {
     "Y",
     "Z",
   ];
-  let userName = "";
+  let userName = "CPU";
   let score;
-  for (let j = 0; j < 3; j++) {
-    userName += letters[Math.floor(Math.random() * letters.length)];
-  }
+  // for (let j = 0; j < 3; j++) {
+  //   userName += letters[Math.floor(Math.random() * letters.length)];
+  // }
   score = Math.floor(Math.random() * 1000);
 
   let highscore = {
