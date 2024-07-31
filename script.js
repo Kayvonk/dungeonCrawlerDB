@@ -759,7 +759,7 @@ function calculateScore() {
 
     let highscoresRightNameValue = document.createElement("input");
     highscoresRightNameValue.className = "highscoresRightNameValue";
-    highscoresRightNameValue.setAttribute("maxlength", "8");
+    highscoresRightNameValue.setAttribute("maxlength", "3");
 
     highscoresRightNameValue.type = "text";
     highscoresRightNameValue.placeholder = "Enter your name";
@@ -3760,7 +3760,7 @@ function displayHighscores(highscores) {
   topScoresLabel.textContent = "Top 100"
 
   highscoresBoard.append(topScoresLabel)
-  
+
   highscores.forEach((element, index) => {
     let scoreRow = document.createElement("div");
     scoreRow.className = "scoreRow";
