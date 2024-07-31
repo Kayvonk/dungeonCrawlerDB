@@ -971,7 +971,6 @@ header > p:first-child {
   opacity: 1;
 }
 
-
 /* ---------Octo Slash----------- */
 
 /* General styles for the sword slash effect container */
@@ -991,7 +990,6 @@ header > p:first-child {
   opacity: 0;
   animation: swordSwing 0.5s ease-out forwards;
 }
-
 
 /* Horizontal sword slash effect line */
 .horizontalSlashEffectLine {
@@ -1063,7 +1061,7 @@ header > p:first-child {
   opacity: 0;
   display: none;
   z-index: 12;
-  animation: fadeIn 1s ease-in-out .5s forwards;
+  animation: fadeIn 1s ease-in-out 0.5s forwards;
 }
 
 .endingSceneContainer {
@@ -1084,11 +1082,12 @@ header > p:first-child {
   left: 40%;
   top: 45%;
   transform: translate(-50%, -50%);
-  animation: flyThroughSpace 3s ease-in-out infinite; 
+  animation: flyThroughSpace 3s ease-in-out infinite;
 }
 
 @keyframes flyThroughSpace {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(-50%, -20%);
   }
   50% {
@@ -1109,7 +1108,9 @@ header > p:first-child {
 
 @keyframes moveStars {
   0% {
-    transform: translateX(100vw); /* Start from the right side of the viewport */
+    transform: translateX(
+      100vw
+    ); /* Start from the right side of the viewport */
   }
   100% {
     transform: translateX(-100vw); /* Move to the left side of the viewport */
@@ -1137,6 +1138,56 @@ header > p:first-child {
   z-index: 20;
 }
 
-
 /* ------------end ending ------------- */
 
+.highscoresInputDiv {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50vw;
+  height: 20vh;
+  left: 50%;
+  top: 80%;
+  background-color: #2b2b2b2b;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2), 0 0 0 6px rgba(255, 215, 0, 0.8);
+}
+
+.highscoresInputContainer {
+  display: flex;
+  width: 90%;
+  height: 90%;
+  justify-content: space-around;
+}
+/* -------Left Container---------- */
+
+.highscoresLeftContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.highscoresLeftScoreLabel {
+  color: rgba(255, 215, 0, 0.8);
+}
+
+.highscoresLeftScoreValue {
+  color: #f3f3f3;
+}
+
+/* -------Right Container---------- */
+
+.highscoresRightContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.highscoresRightNameLabel {
+  color: rgba(255, 215, 0, 0.8);
+}
+
+.highscoresRightNameValue {
+  color: #f3f3f3;
+}

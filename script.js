@@ -718,9 +718,55 @@ function calculateScore() {
 
   if (isFinite(finalScore) && finalScore > highScore) {
     highScore = finalScore;
-    // localStorage.setItem("highscore", finalScore);
   }
+  if (highScore > lowestHighscore.score) {
+    let highscoresInputDiv = document.createElement("div");
+    highscoresInputDiv.className = "highscoresInputDiv";
 
+    let highscoresInputContainer = document.createElement("div");
+    highscoresInputContainer.className = "highscoresInputContainer";
+
+    let highscoresLeftContainer = document.createElement("div");
+    highscoresLeftContainer.className = "highscoresLeftContainer";
+
+    let highscoresRightContainer = document.createElement("div");
+    highscoresRightContainer.className = "highscoresRightContainer";
+    // ------------------
+    let highscoresLeftScoreLabel = document.createElement("div");
+    highscoresLeftScoreLabel.className = "highscoresLeftScoreLabel";
+    highscoresLeftScoreLabel.textContent = "Score: ";
+
+    let highscoresLeftScoreValue = document.createElement("div");
+    highscoresLeftScoreValue.className = "highscoresLeftScoreValue";
+    highscoresLeftScoreValue.textContent = highScore;
+
+    highscoresLeftContainer.append(highscoresLeftScoreLabel);
+    highscoresLeftContainer.append(highscoresLeftScoreValue);
+    highscoresInputContainer.append(highscoresLeftContainer);
+
+    // ------------------
+
+    let highscoresRightNameLabel = document.createElement("div");
+    highscoresRightNameLabel.className = "highscoresRightNameLabel";
+    highscoresRightNameLabel.textContent = "Name: ";
+
+    let highscoresRightNameValue = document.createElement("input");
+    highscoresRightNameValue.className = "highscoresRightNameValue";
+
+    highscoresRightContainer.append(highscoresRightNameLabel);
+    highscoresRightContainer.append(highscoresRightNameValue);
+    highscoresInputContainer.append(highscoresRightContainer);
+    // ----------------
+
+    highscoresInputDiv.append(highscoresInputContainer);
+
+    endingEl.append(highscoresInputDiv);
+  } else {
+    console.log("nope");
+  }
+}
+
+function sendHighscore() {
   if (highScore > lowestHighscore.score) {
     let newHighscore = {
       userName: "AAA",
@@ -752,11 +798,9 @@ function calculateScore() {
   } else {
     console.log("nope");
   }
-
-  console.log("livesBonus:", livesBonus);
-  console.log("timeScore:", timeScore);
-  console.log("finalScore:", finalScore);
 }
+
+function displayFinalScore() {}
 
 function restartGame() {
   location.reload();
@@ -3643,8 +3687,6 @@ function getHighscores() {
     .then((data) => {
       lowestHighscore = data[data.length - 1];
       highscoresCount = data.length;
-      console.log(data);
-      console.log(lowestHighscore);
     });
 }
 
@@ -3652,7 +3694,6 @@ getHighscores();
 // ----------------end database logic---------------
 
 // TODO finish ending
-// change post request to trim beyond 100 scores
 // prompt user if new highscore (slide from top)
 //prompt user with score and input to type username (slide from bottom)
 // add highscores button on bottom right to view top 100 scores
