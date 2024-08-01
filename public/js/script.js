@@ -67,19 +67,7 @@ let lowestHighscore;
 let highscoresCount;
 let showHighscoresBoard = false;
 let highscoresData;
-let bossSpawnPositions = [
-  "r2-c2",
-  "r2-c5",
-  "r2-c8",
-  "r2-c11",
-  "r5-c2",
-  "r5-c11",
-  "r3-c3",
-  "r3-c6",
-  "r3-c9",
-  "r5-c5",
-  "r5-c8",
-];
+let bossSpawnPositions = ["r2-c2", "r5-c2", "r2-c11", "r5-c11"];
 
 startBtn.addEventListener("click", startPrologue);
 
@@ -679,7 +667,7 @@ function restartRound() {
   lives--;
   playerPosition = startingPosition;
   gameStarted = true;
-
+  bossPosition = "r3-c6";
   clearInterval(boulderTimer);
   clearInterval(secondsTimer);
 
@@ -875,8 +863,8 @@ function displayRound() {
 }
 
 function endRound() {
-  if (round + 1 === 10) {
-    // if (round + 1 === 1) {
+  // if (round + 1 === 10) {
+  if (round + 1 === 1) {
     return startBoss();
   }
   playSoundEffect("teleport");
@@ -1206,9 +1194,9 @@ function swingSword() {
   let bossTargeted = document.querySelector(".bossImg");
 
   if (bossTargeted) {
-    let bossPosition = bossTargeted.classList[1];
+    let currentBossPosition = bossTargeted.classList[1];
 
-    if (bossTargeted && bossPosition === affectedTile) {
+    if (bossTargeted && currentBossPosition === affectedTile) {
       if (bossEnemyPositions[0].isMoving === true) {
         return;
       }
@@ -1232,20 +1220,21 @@ function swingSword() {
               logImg.remove();
             }, 500);
           }, 1000);
-          let newBossPosition;
-          if (bossHealth === 2) {
-            newBossPosition =
-              bossSpawnPositions[
-                Math.floor(Math.random() * (bossSpawnPositions.length - 5))
-              ];
-          } else {
-            newBossPosition =
-              bossSpawnPositions[
-                Math.floor(Math.random() * bossSpawnPositions.length)
-              ];
-          }
+          let newBossPosition =
+            bossSpawnPositions[
+              Math.floor(Math.random() * bossSpawnPositions.length)
+            ];
+
+          bossSpawnPositions.filter((position) => position !== newBossPosition);
 
           bossPosition = newBossPosition;
+          if (bossHealth > 0) {
+            setTimeout(() => {
+              placeBoss(bossHealth, newBossPosition);
+            }, 500);
+          } else {
+            startEnding();
+          }
           return {
             ...item,
             position: newBossPosition,
@@ -1266,7 +1255,9 @@ function swingSword() {
           bossDeathImg.addEventListener("animationend", () => {
             bossDeathImg.remove();
           });
-
+          if (bossHealth === 0) {
+            startEnding();
+          }
           return {
             ...item,
             position: null,
@@ -1277,10 +1268,6 @@ function swingSword() {
           return item;
         }
       });
-
-      setTimeout(() => {
-        bossEnemyPositions[0].isAlive ? placeBoss(bossHealth) : startEnding();  
-      }, 500); 
     }
   }
 
@@ -2211,7 +2198,7 @@ function startBoss() {
   ];
   createTiles();
   placePlayer1();
-  placeBoss(3);
+  placeBoss(3, bossPosition);
 
   musicCount = 1; // Index of the boss song
   audio.src = musicArray[musicCount].song; // Change the audio source to boss song
@@ -2221,12 +2208,11 @@ function startBoss() {
   }
 }
 
-function placeBoss(hitsRemaining) {
-  let selectedTile = document.querySelector("." + bossPosition);
+function placeBoss(hitsRemaining, position) {
+  let selectedTile = document.querySelector("." + position);
   let bossImg = document.createElement("img");
   bossImg.src = "./image/samuraiDoge.png";
-  bossImg.className =
-    "bossImg" + " " + bossEnemyPositions[0].position + " " + "dogeBoss";
+  bossImg.className = "bossImg" + " " + position + " " + "dogeBoss";
   selectedTile.append(bossImg);
   if (gameOver) {
     return;
@@ -2298,7 +2284,9 @@ function startBossFight(selectedTile) {
         3
       );
       playingBossDialogue = false;
-      canMove = true;
+      setTimeout(() => {
+        canMove = true;
+      }, 1250);
     });
   }, 2000);
 }
@@ -2326,9 +2314,9 @@ function startBossMovement(
   }
   let isBoss = foundEnemy.enemyClass === "bossImg";
 
-  let enemyDelay = 1500;
+  let enemyDelay = 1000 + 250 * bossHealth;
 
-  let isAttacking = Math.random() < 0.5;
+  let isAttacking = Math.random() < 0.75;
   let enemyTimer = setTimeout(() => {
     if (
       bossEnemyPositions[enemyIndex]?.isAlive === false ||
