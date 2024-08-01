@@ -563,6 +563,7 @@ function createOutdoorScene2Tiles() {
 function exitOutDoorScene2() {
   isOutdoor1 = true;
   isOutdoor2 = false;
+  treePositions = [];
   mainEl.innerHTML = "";
   startingPosition = "r3-c1";
   createOutdoorScene1Tiles();
@@ -806,11 +807,7 @@ function sendHighscore() {
     count: highscoresCount,
   };
 
-  console.log(newHighscore);
-
-  // const baseUrl = "http://localhost:3003"
-  const baseUrl = "https://dungeoncrawler.onrender.com";
-  fetch(baseUrl + "/api/highscores", {
+  fetch("/api/highscores", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -1202,7 +1199,6 @@ function swingSword() {
         return;
       }
       bossHealth = bossHealth - 1;
-      console.log("bossHealth:", bossHealth);
       bossEnemyPositions = bossEnemyPositions.map((item) => {
         if (item.enemyClass === "bossImg" && item.hitsRemaining - 1 > 0) {
           bossTargeted.remove();
@@ -3723,9 +3719,7 @@ function createHighscoresBoard() {
 createHighscoresBoard();
 
 function getHighscores() {
-  //  const baseUrl = "http://localhost:3003"
-  const baseUrl = "https://dungeoncrawler.onrender.com";
-  fetch(baseUrl + "/api/highscores")
+  fetch("/api/highscores")
     .then((res) => res.json())
     .then((data) => {
       highscoresData = data;
@@ -3772,7 +3766,7 @@ function displayHighscores(highscores) {
 
   highscores.forEach((element, index) => {
     let scoreRow = document.createElement("div");
-    scoreRow.className = "scoreRow";    
+    scoreRow.className = "scoreRow";
 
     let indexDiv = document.createElement("div");
     indexDiv.className = "scoreIndex";
@@ -3789,7 +3783,7 @@ function displayHighscores(highscores) {
     scoreDiv.textContent = element.score;
     scoreDiv.style.flex = "1";
 
-    scoreRow.append(indexDiv, userNameDiv, scoreDiv);    
+    scoreRow.append(indexDiv, userNameDiv, scoreDiv);
 
     highscoresBoard.append(scoreRow);
   });
