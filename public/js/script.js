@@ -726,7 +726,7 @@ function calculateScore() {
   if (isFinite(finalScore) && finalScore > highScore) {
     highScore = finalScore;
   }
-  
+
   if (highScore > lowestHighscore.score || highscoresCount < 100) {
     let highscoresInputDiv = document.createElement("div");
     highscoresInputDiv.className = "highscoresInputDiv";
@@ -795,42 +795,45 @@ function calculateScore() {
 }
 
 function sendHighscore() {
-    let newUserName = document.querySelector(".highscoresRightNameValue").value;
-    if (newUserName === "") {
-      newUserName = "AAA";
-    }
-    let newHighscore = {
-      userName: newUserName,
-      score: highScore,
-      lowestHighscoreId: lowestHighscore.id,
-      count: highscoresCount,
-    };
+  let newUserName = document.querySelector(".highscoresRightNameValue").value;
+  if (newUserName === "") {
+    newUserName = "AAA";
+  }
+  let newHighscore = {
+    userName: newUserName,
+    score: highScore,
+    lowestHighscoreId: lowestHighscore.id,
+    count: highscoresCount,
+  };
 
-    console.log(newHighscore);
-    fetch("http://localhost:3003/api/highscores", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newHighscore),
+  console.log(newHighscore);
+
+  // const baseUrl = "http://localhost:3003"
+  const baseUrl = "https://dungeoncrawler.onrender.com";
+  fetch(baseUrl + "/api/highscores", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newHighscore),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        let highscoresInputDiv = document.querySelector(".highscoresInputDiv");
-        highscoresInputDiv.style.display = "none";
-        highscoresEl.style.display = "block";
-        highscoresEl.style.opacity = 1;
-        getHighscores();
-        console.log("Success:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    .then((data) => {
+      let highscoresInputDiv = document.querySelector(".highscoresInputDiv");
+      highscoresInputDiv.style.display = "none";
+      highscoresEl.style.display = "block";
+      highscoresEl.style.opacity = 1;
+      getHighscores();
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 function restartGame() {
@@ -3720,7 +3723,9 @@ function createHighscoresBoard() {
 createHighscoresBoard();
 
 function getHighscores() {
-  fetch("http://localhost:3003/api/highscores")
+  //  const baseUrl = "http://localhost:3003"
+  const baseUrl = "https://dungeoncrawler.onrender.com";
+  fetch(baseUrl + "/api/highscores")
     .then((res) => res.json())
     .then((data) => {
       highscoresData = data;
@@ -3760,11 +3765,11 @@ function displayHighscores(highscores) {
   let highscoresBoard = document.querySelector(".highscoresBoard");
   highscoresBoard.innerHTML = "";
 
-  let topScoresLabel = document.createElement("div")
-  topScoresLabel.className = "topScoresLabel"
-  topScoresLabel.textContent = "Top 100"
+  let topScoresLabel = document.createElement("div");
+  topScoresLabel.className = "topScoresLabel";
+  topScoresLabel.textContent = "Top 100";
 
-  highscoresBoard.append(topScoresLabel)
+  highscoresBoard.append(topScoresLabel);
 
   highscores.forEach((element, index) => {
     let scoreRow = document.createElement("div");
