@@ -3538,6 +3538,7 @@ function performOctoSlash(enemyClass, enemyIndex, enemyType, hitsRemaining) {
 
       let damageTileTimer = setTimeout(() => {
         if (bossEnemyPositions[enemyIndex]?.isAlive === false) {
+          damageTile.style.backgroundColor = originalColor;
           clearTimeout(damageTileTimer);
           return;
         }
@@ -3582,6 +3583,7 @@ function performOctoSlash(enemyClass, enemyIndex, enemyType, hitsRemaining) {
       damageTile.style.backgroundColor = "lightsalmon";
       let damageTileTimer = setTimeout(() => {
         if (bossEnemyPositions[enemyIndex]?.isAlive === false) {
+          damageTile.style.backgroundColor = originalColor;
           clearTimeout(damageTileTimer);
           return;
         }
