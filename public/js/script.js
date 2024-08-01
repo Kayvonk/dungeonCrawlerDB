@@ -726,6 +726,7 @@ function calculateScore() {
   if (isFinite(finalScore) && finalScore > highScore) {
     highScore = finalScore;
   }
+  
   if (highScore > lowestHighscore.score || highscoresCount < 100) {
     let highscoresInputDiv = document.createElement("div");
     highscoresInputDiv.className = "highscoresInputDiv";
@@ -738,7 +739,9 @@ function calculateScore() {
 
     let highscoresRightContainer = document.createElement("div");
     highscoresRightContainer.className = "highscoresRightContainer";
+
     // ------------------
+
     let highscoresLeftScoreLabel = document.createElement("div");
     highscoresLeftScoreLabel.className = "highscoresLeftScoreLabel";
     highscoresLeftScoreLabel.textContent = "Score: ";
@@ -774,7 +777,9 @@ function calculateScore() {
     highscoresRightContainer.append(highscoresRightNameValue);
     highscoresRightContainer.append(highscoresRightNameButton);
     highscoresInputContainer.append(highscoresRightContainer);
+
     // ----------------
+
     let newHighscoreToast = document.createElement("div");
     newHighscoreToast.className = "newHighscoreToast";
     newHighscoreToast.textContent = "New Highscore!";

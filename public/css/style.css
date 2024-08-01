@@ -213,7 +213,7 @@ header > p:first-child {
   align-items: center;
   position: relative;
   box-sizing: border-box;
-  background-image: url("./image/grass.png");
+  background-image: url("../image/grass.png");
 }
 
 .dirtTile {
@@ -224,7 +224,7 @@ header > p:first-child {
   align-items: center;
   position: relative;
   box-sizing: border-box;
-  background-image: url("./image/dirt.jpg");
+  background-image: url("../image/dirt.jpg");
 }
 
 .stoneTile {
@@ -235,7 +235,7 @@ header > p:first-child {
   align-items: center;
   position: relative;
   box-sizing: border-box;
-  background-image: url("./image/stone.jpg");
+  background-image: url("../image/stone.jpg");
 }
 
 .tree {
@@ -270,7 +270,7 @@ header > p:first-child {
 .caveWall {
   width: 5vw;
   height: 10vh;
-  background-image: url("./image/caveTile.png");
+  background-image: url("../image/caveTile.png");
 }
 
 .caveExit,
@@ -284,13 +284,13 @@ header > p:first-child {
 .outdoorWall {
   width: 5vw;
   height: 10vh;
-  background-image: url("./image/grass.png");
+  background-image: url("../image/grass.png");
 }
 
 .outdoorDirtPath {
   width: 5vw;
   height: 10vh;
-  background-image: url("./image/dirt.jpg");
+  background-image: url("../image/dirt.jpg");
 }
 
 .wallTop {
