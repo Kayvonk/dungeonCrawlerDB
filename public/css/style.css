@@ -1,6 +1,6 @@
 @font-face {
   font-family: "DungeonCrawler";
-  src: url("./fonts/DungeonCrawler.ttf") format("truetype");
+  src: url("../fonts/DungeonCrawler.ttf") format("truetype");
 }
 
 body {

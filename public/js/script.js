@@ -67,6 +67,19 @@ let lowestHighscore;
 let highscoresCount;
 let showHighscoresBoard = false;
 let highscoresData;
+let bossSpawnPositions = [
+  "r2-c2",
+  "r2-c5",
+  "r2-c8",
+  "r2-c11",
+  "r5-c2",
+  "r5-c11",
+  "r3-c3",
+  "r3-c6",
+  "r3-c9",
+  "r5-c5",
+  "r5-c8",
+];
 
 startBtn.addEventListener("click", startPrologue);
 
@@ -863,6 +876,7 @@ function displayRound() {
 
 function endRound() {
   if (round + 1 === 10) {
+    // if (round + 1 === 1) {
     return startBoss();
   }
   playSoundEffect("teleport");
@@ -1218,9 +1232,23 @@ function swingSword() {
               logImg.remove();
             }, 500);
           }, 1000);
-          bossPosition = "r3-c6";
+          let newBossPosition;
+          if (bossHealth === 2) {
+            newBossPosition =
+              bossSpawnPositions[
+                Math.floor(Math.random() * (bossSpawnPositions.length - 5))
+              ];
+          } else {
+            newBossPosition =
+              bossSpawnPositions[
+                Math.floor(Math.random() * bossSpawnPositions.length)
+              ];
+          }
+
+          bossPosition = newBossPosition;
           return {
             ...item,
+            position: newBossPosition,
             isAlive: true,
             hitsRemaining: item.hitsRemaining - 1,
           };
@@ -1250,7 +1278,9 @@ function swingSword() {
         }
       });
 
-      bossEnemyPositions[0].isAlive ? placeBoss(bossHealth) : startEnding();
+      setTimeout(() => {
+        bossEnemyPositions[0].isAlive ? placeBoss(bossHealth) : startEnding();  
+      }, 500); 
     }
   }
 
