@@ -808,8 +808,8 @@ function sendHighscore() {
 
   console.log(newHighscore);
 
-  // const baseUrl = "http://localhost:3003"
-  const baseUrl = "https://dungeoncrawler.onrender.com";
+  const baseUrl = "http://localhost:3003"
+  // const baseUrl = "https://dungeoncrawler.onrender.com";
   fetch(baseUrl + "/api/highscores", {
     method: "POST",
     headers: {
@@ -3723,8 +3723,8 @@ function createHighscoresBoard() {
 createHighscoresBoard();
 
 function getHighscores() {
-  //  const baseUrl = "http://localhost:3003"
-  const baseUrl = "https://dungeoncrawler.onrender.com";
+   const baseUrl = "http://localhost:3003"
+  // const baseUrl = "https://dungeoncrawler.onrender.com";
   fetch(baseUrl + "/api/highscores")
     .then((res) => res.json())
     .then((data) => {
@@ -3757,7 +3757,6 @@ function displayHighscoresBoard() {
   } else {
     highscoresBoard.style.display = "block";
     showHighscoresBoard = true;
-    // getHighscores();
   }
 }
 
