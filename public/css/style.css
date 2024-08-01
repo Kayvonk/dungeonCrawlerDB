@@ -1200,6 +1200,7 @@ header > p:first-child {
   padding: 15px 20px;
   color: #f3f3f3;
   border-radius: 12pt 0 0 12pt;
+  width: 100px;
 }
 
 .highscoresRightNameButton {

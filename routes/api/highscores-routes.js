@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const { Highscores } = require("../../models");
-// const { sequelize } = require("../../config/connection.js");
 
 router.get("/", (req, res) => {
   Highscores.findAll({
