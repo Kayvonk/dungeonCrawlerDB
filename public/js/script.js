@@ -808,8 +808,8 @@ function sendHighscore() {
 
   console.log(newHighscore);
 
-  const baseUrl = "http://localhost:3003"
-  // const baseUrl = "https://dungeoncrawler.onrender.com";
+  // const baseUrl = "http://localhost:3003"
+  const baseUrl = "https://dungeoncrawler.onrender.com";
   fetch(baseUrl + "/api/highscores", {
     method: "POST",
     headers: {
@@ -3723,8 +3723,8 @@ function createHighscoresBoard() {
 createHighscoresBoard();
 
 function getHighscores() {
-   const baseUrl = "http://localhost:3003"
-  // const baseUrl = "https://dungeoncrawler.onrender.com";
+  //  const baseUrl = "http://localhost:3003"
+  const baseUrl = "https://dungeoncrawler.onrender.com";
   fetch(baseUrl + "/api/highscores")
     .then((res) => res.json())
     .then((data) => {
@@ -3772,9 +3772,25 @@ function displayHighscores(highscores) {
 
   highscores.forEach((element, index) => {
     let scoreRow = document.createElement("div");
-    scoreRow.className = "scoreRow";
-    scoreRow.textContent =
-      index + 1 + ". " + element.userName + " " + element.score;
+    scoreRow.className = "scoreRow";    
+
+    let indexDiv = document.createElement("div");
+    indexDiv.className = "scoreIndex";
+    indexDiv.textContent = index + 1 + ".";
+    indexDiv.style.flex = "1";
+
+    let userNameDiv = document.createElement("div");
+    userNameDiv.className = "scoreUserName";
+    userNameDiv.textContent = element.userName;
+    userNameDiv.style.flex = "2";
+
+    let scoreDiv = document.createElement("div");
+    scoreDiv.className = "scoreScore";
+    scoreDiv.textContent = element.score;
+    scoreDiv.style.flex = "1";
+
+    scoreRow.append(indexDiv, userNameDiv, scoreDiv);    
+
     highscoresBoard.append(scoreRow);
   });
 }

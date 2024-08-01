@@ -1270,7 +1270,19 @@ header > p:first-child {
 }
 
 .scoreRow {
+  display: flex;
+  justify-content: space-between;
   color: #f3f3f3;
   margin: 25px 0px;
   font-size: 24px;
+}
+
+.scoreIndex {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.scoreScore {
+  display: flex;
+  justify-content: flex-start;
 }
