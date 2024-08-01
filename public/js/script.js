@@ -1316,7 +1316,9 @@ function moveUp() {
     if (
       enemyPositions.some((element) => element.position === newPosition) ||
       boulderPositions.includes(newPosition) ||
-      treePositions.includes(newPosition)
+      treePositions.includes(newPosition) ||
+      (isBossRound &&
+        bossEnemyPositions.some((element) => element.position === newPosition))
     ) {
       return;
     }
@@ -1358,7 +1360,9 @@ function moveDown() {
     if (
       enemyPositions.some((element) => element.position === newPosition) ||
       boulderPositions.includes(newPosition) ||
-      treePositions.includes(newPosition)
+      treePositions.includes(newPosition) ||
+      (isBossRound &&
+        bossEnemyPositions.some((element) => element.position === newPosition))
     ) {
       return;
     }
@@ -1398,7 +1402,9 @@ function moveLeft() {
     if (
       enemyPositions.some((element) => element.position === newPosition) ||
       boulderPositions.includes(newPosition) ||
-      treePositions.includes(newPosition)
+      treePositions.includes(newPosition) ||
+      (isBossRound &&
+        bossEnemyPositions.some((element) => element.position === newPosition))
     ) {
       return;
     }
@@ -1439,7 +1445,9 @@ function moveRight() {
     if (
       enemyPositions.some((element) => element.position === newPosition) ||
       boulderPositions.includes(newPosition) ||
-      treePositions.includes(newPosition)
+      treePositions.includes(newPosition) ||
+      (isBossRound &&
+        bossEnemyPositions.some((element) => element.position === newPosition))
     ) {
       return;
     }
