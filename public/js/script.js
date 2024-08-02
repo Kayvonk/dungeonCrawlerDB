@@ -1219,12 +1219,20 @@ function swingSword() {
               logImg.remove();
             }, 500);
           }, 1000);
-          let newBossPosition =
-            bossSpawnPositions[
-              Math.floor(Math.random() * bossSpawnPositions.length)
-            ];
-
-          bossSpawnPositions.filter((position) => position !== newBossPosition);
+          let newBossPosition;
+          let column = parseInt(currentBossPosition.substring(4));
+          console.log(column);
+          if (bossHealth === 2) {
+            newBossPosition =
+              bossSpawnPositions[
+                Math.floor(Math.random() * bossSpawnPositions.length)
+              ];
+          } else if (column > 7) {
+            newBossPosition = bossSpawnPositions[Math.floor(Math.random() * 2)];
+          } else {
+            newBossPosition =
+              bossSpawnPositions[Math.floor(Math.random() * 2) + 2];
+          }
 
           bossPosition = newBossPosition;
           if (bossHealth > 0) {
