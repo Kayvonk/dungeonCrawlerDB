@@ -214,6 +214,7 @@ header > p:first-child {
   position: relative;
   box-sizing: border-box;
   background-image: url("../image/grass.png");
+  background-size: cover;
 }
 
 .dirtTile {
@@ -225,6 +226,7 @@ header > p:first-child {
   position: relative;
   box-sizing: border-box;
   background-image: url("../image/dirt.jpg");
+  background-size: cover;
 }
 
 .stoneTile {
@@ -285,12 +287,14 @@ header > p:first-child {
   width: 5vw;
   height: 10vh;
   background-image: url("../image/grass.png");
+  background-size: cover;
 }
 
 .outdoorDirtPath {
   width: 5vw;
   height: 10vh;
   background-image: url("../image/dirt.jpg");
+  background-size: cover;
 }
 
 .wallTop {
