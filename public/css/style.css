@@ -1140,6 +1140,8 @@ header > p:first-child {
   color: #f3f3f3;
   transform: translate(-50%, -50%);
   z-index: 20;
+  opacity: 0;
+  animation: fadeIn 2s ease forwards;
 }
 
 .attributeText {
@@ -1151,8 +1153,6 @@ header > p:first-child {
   transform: translate(-50%, -50%);
   z-index: 20;
 }
-
-
 
 /* ------------end ending ------------- */
 
@@ -1317,9 +1317,9 @@ header > p:first-child {
   }
   25% {
     opacity: 1;
-  } 
+  }
   75% {
-    opacity: 1
+    opacity: 1;
   }
   87.5% {
     opacity: 0;
@@ -1328,4 +1328,3 @@ header > p:first-child {
     opacity: 0;
   }
 }
-

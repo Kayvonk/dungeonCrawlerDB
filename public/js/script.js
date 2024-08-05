@@ -121,7 +121,7 @@ const attributions = [
     text: "Log image from pngaaa.com",
     link: "https://www.pngaaa.com/detail/3495",
   },
-  { text: "Thanks for playing!"},
+  { text: "Thanks for playing!" },
 ];
 
 let lowestHighscore;
@@ -888,7 +888,6 @@ function sendHighscore() {
       highscoresEl.style.display = "block";
       highscoresEl.style.opacity = 1;
       getHighscores();
-      console.log("Success:", data);
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -1285,7 +1284,6 @@ function swingSword() {
           }, 1000);
           let newBossPosition;
           let column = parseInt(currentBossPosition.substring(4));
-          console.log(column);
           if (bossHealth === 2) {
             newBossPosition =
               bossSpawnPositions[
@@ -3798,7 +3796,7 @@ function startEnding() {
   }
 
   createStarLayers(3); // Adjust the number of layers as needed for a continuous effect
-  setTimeout(() => {    
+  setTimeout(() => {
     displayAttributions();
   }, 1000);
 }
@@ -3904,7 +3902,7 @@ function displayAttributions() {
     attributeLink.append(attributeText);
     endingEl.append(attributeLink);
   } else {
-    attributeText.classList.add("fadeInAndOut")
+    attributeText.classList.add("fadeInAndOut");
     endingEl.append(attributeText);
   }
 
@@ -3915,8 +3913,6 @@ function displayAttributions() {
       currentAttributionIndex > 0 &&
       currentAttributionIndex < attributions.length
     ) {
-      console.log("currentAttributionIndex:", currentAttributionIndex);
-
       let previousAttribution = document.querySelector(".attributeText");
       previousAttribution.remove();
 
@@ -3932,19 +3928,18 @@ function displayAttributions() {
         attributeLink.className = "fadeInAndOut";
         endingEl.append(attributeLink);
       } else {
-        attributeText.classList.add("fadeInAndOut")
+        attributeText.classList.add("fadeInAndOut");
         endingEl.append(attributeText);
       }
-      
+
       if (currentAttributionIndex === attributions.length - 1) {
-        console.log("show the end");
         setTimeout(() => {
           let previousAttribution = document.querySelector(".attributeText");
           previousAttribution.remove();
           let endHeader = document.createElement("div");
           endHeader.textContent = "The End";
-          endHeader.className = "endingHeader";
-          endingEl.append(endHeader);          
+          endHeader.className = "endingHeader fadeIn";
+          endingEl.append(endHeader);
           clearInterval(attributionTimer);
         }, 5000);
       }
