@@ -64,64 +64,51 @@ let bossEnemyPositions = [
 ];
 
 const attributions = [
-  {
-    text: "Music by Komiku",
-    link: "https://www.chosic.com/free-music/all/?keyword=Komiku&artist",
+  { text: "Highscore Icon by Karyative",
+    link: "https://www.flaticon.com/free-icons/high-score" 
   },
-  {
-    text: "Dungeon Crawler CB font by Sadboy",
-    link: "https://www.dafont.com/dungeon-crawler-cb.font",
+  { text: "Cardboard Box by Vecteezy",
+    link: "https://www.vecteezy.com/free-png/cardboard" 
   },
-  {
-    text: "Highscore Icon by Karyative",
-    link: "https://www.flaticon.com/free-icons/high-score",
+  { text: "Dungeon Crawler CB font by Sadboy", 
+    link: "https://www.dafont.com/dungeon-crawler-cb.font" 
   },
-  {
-    text: "Cardboard Box by Vecteezy",
-    link: "https://www.vecteezy.com/free-png/cardboard",
+  { text: "Music by Komiku", 
+    link: "https://www.chosic.com/free-music/all/?keyword=Komiku&artist" 
   },
-  {
-    text: "Doge image from FreePNGImg.com",
-    link: "https://freepngimg.com/png/97583-meme-picture-doge-download-free-image",
+  { text: "Doge image from FreePNGImg.com", 
+    link: "https://freepngimg.com/png/97583-meme-picture-doge-download-free-image" 
   },
-  {
-    text: "Buff Doge image from pngall.com",
-    link: "https://www.pngall.com/doge-head-png/download/62187",
+  { text: "Buff Doge image from pngall.com", 
+    link: "https://www.pngall.com/doge-head-png/download/62187" 
   },
-  {
-    text: "Boulder art by TdeLeeuw on DeviantART",
-    link: "https://www.deviantart.com/tdeleeuw/art/Boulder-pixel-art-427731885",
+  { text: "Boulder art by TdeLeeuw on DeviantART", 
+    link: "https://www.deviantart.com/tdeleeuw/art/Boulder-pixel-art-427731885" 
   },
-  {
-    text: "Super Saiyan Aura art by Rojal",
-    link: "https://www.pngall.com/super-saiyan-aura-png/download/137668",
+  { text: "Super Saiyan Aura art by Rojal", 
+    link: "https://www.pngall.com/super-saiyan-aura-png/download/137668" 
   },
-  {
-    text: "Beard image from pngtree.com",
-    link: "https://pngtree.com/freepng/merry-christmas-santa-beard_5665564.html",
+  { text: "Beard image from pngtree.com", 
+    link: "https://pngtree.com/freepng/merry-christmas-santa-beard_5665564.html" 
   },
-  {
-    text: "Tree image from pngtree.com",
-    link: "https://pngtree.com/freepng/pixel-art-green-tree_7325401.html",
+  { text: "Tree image from pngtree.com", 
+    link: "https://pngtree.com/freepng/pixel-art-green-tree_7325401.html" 
   },
-  {
-    text: "Cave tile art by Kyrio on deviant art",
-    link: "https://www.deviantart.com/kyrio/art/Pixel-Cave-Interior-Tile-131032682",
+  { text: "Cave tile art by Kyrio on deviant art", 
+    link: "https://www.deviantart.com/kyrio/art/Pixel-Cave-Interior-Tile-131032682" 
   },
-  {
-    text: "Fire image from toppng.com",
-    link: "https://toppng.com/show_download/172951/amazing-online-background-colour-change-of-photo-piq-pixel-fire",
+  { text: "Fire image from toppng.com", 
+    link: "https://toppng.com/show_download/172951/amazing-online-background-colour-change-of-photo-piq-pixel-fire" 
   },
-  { text: "Bongo cat image by bongocat", link: "https://x.com/itsbongocat" },
-  {
-    text: "Smoke image from pngaaa.com",
-    link: "https://www.pngaaa.com/detail/947337",
+  { text: "Bongo cat image by bongocat", 
+    link: "https://x.com/itsbongocat" 
   },
-  {
-    text: "Log image from pngaaa.com",
-    link: "https://www.pngaaa.com/detail/3495",
+  { text: "Smoke image from pngaaa.com", 
+    link: "https://www.pngaaa.com/detail/947337" 
   },
-  { text: "Thanks for playing!" },
+  { text: "Log image from pngaaa.com", 
+    link: "https://www.pngaaa.com/detail/3495" 
+  },
 ];
 
 let lowestHighscore;
@@ -888,6 +875,7 @@ function sendHighscore() {
       highscoresEl.style.display = "block";
       highscoresEl.style.opacity = 1;
       getHighscores();
+      console.log("Success:", data);
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -1284,6 +1272,7 @@ function swingSword() {
           }, 1000);
           let newBossPosition;
           let column = parseInt(currentBossPosition.substring(4));
+          console.log(column);
           if (bossHealth === 2) {
             newBossPosition =
               bossSpawnPositions[
@@ -3760,6 +3749,11 @@ function startEnding() {
   cardboardCat.src = "./image/cardboardCat.png";
   cardboardCat.className = "cardboardCat";
 
+  let endHeader = document.createElement("div");
+  endHeader.textContent = "The End";
+  endHeader.className = "endingHeader";
+  endingEl.append(endHeader);
+
   endingSceneContainer.append(cardboardCat);
   endingEl.append(endingSceneContainer);
 
@@ -3796,9 +3790,6 @@ function startEnding() {
   }
 
   createStarLayers(3); // Adjust the number of layers as needed for a continuous effect
-  setTimeout(() => {
-    displayAttributions();
-  }, 1000);
 }
 
 // ------------end ending ---------
@@ -3884,70 +3875,5 @@ function displayHighscores(highscores) {
   });
 }
 // ----------------end highscores logic---------------
-
-// -------------credits-------------------
-function displayAttributions() {
-  let currentAttributionIndex = 0;
-
-  let attributeLink = document.createElement("a");
-
-  let attributeText = document.createElement("div");
-  attributeText.textContent = attributions[currentAttributionIndex].text;
-  attributeText.className = "attributeText";
-
-  if (attributions[currentAttributionIndex].link) {
-    attributeLink.href = attributions[currentAttributionIndex].link;
-    attributeLink.target = "_blank";
-    attributeLink.className = "fadeInAndOut";
-    attributeLink.append(attributeText);
-    endingEl.append(attributeLink);
-  } else {
-    attributeText.classList.add("fadeInAndOut");
-    endingEl.append(attributeText);
-  }
-
-  currentAttributionIndex++;
-
-  let attributionTimer = setInterval(() => {
-    if (
-      currentAttributionIndex > 0 &&
-      currentAttributionIndex < attributions.length
-    ) {
-      let previousAttribution = document.querySelector(".attributeText");
-      previousAttribution.remove();
-
-      let attributeLink = document.createElement("a");
-
-      let attributeText = document.createElement("div");
-      attributeText.textContent = attributions[currentAttributionIndex].text;
-      attributeText.className = "attributeText";
-      if (attributions[currentAttributionIndex].link) {
-        attributeLink.href = attributions[currentAttributionIndex].link;
-        attributeLink.target = "_blank";
-        attributeLink.append(attributeText);
-        attributeLink.className = "fadeInAndOut";
-        endingEl.append(attributeLink);
-      } else {
-        attributeText.classList.add("fadeInAndOut");
-        endingEl.append(attributeText);
-      }
-
-      if (currentAttributionIndex === attributions.length - 1) {
-        setTimeout(() => {
-          let previousAttribution = document.querySelector(".attributeText");
-          previousAttribution.remove();
-          let endHeader = document.createElement("div");
-          endHeader.textContent = "The End";
-          endHeader.className = "endingHeader fadeIn";
-          endingEl.append(endHeader);
-          clearInterval(attributionTimer);
-        }, 5000);
-      }
-      currentAttributionIndex++;
-    }
-  }, 5000);
-}
-
-// --------------------------------
 
 // TODO finish ending

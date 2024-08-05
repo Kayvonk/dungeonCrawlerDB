@@ -214,6 +214,7 @@ header > p:first-child {
   position: relative;
   box-sizing: border-box;
   background-image: url("../image/grass.png");
+  background-size: cover;
 }
 
 .dirtTile {
@@ -225,6 +226,7 @@ header > p:first-child {
   position: relative;
   box-sizing: border-box;
   background-image: url("../image/dirt.jpg");
+  background-size: cover;
 }
 
 .stoneTile {
@@ -285,12 +287,14 @@ header > p:first-child {
   width: 5vw;
   height: 10vh;
   background-image: url("../image/grass.png");
+  background-size: cover;
 }
 
 .outdoorDirtPath {
   width: 5vw;
   height: 10vh;
   background-image: url("../image/dirt.jpg");
+  background-size: cover;
 }
 
 .wallTop {
@@ -1136,6 +1140,18 @@ header > p:first-child {
   color: #f3f3f3;
   transform: translate(-50%, -50%);
   z-index: 20;
+  opacity: 0;
+  animation: fadeIn 2s ease forwards;
+}
+
+.attributeText {
+  position: absolute;
+  font-size: 36px;
+  left: 50%;
+  top: 20%;
+  color: #f3f3f3;
+  transform: translate(-50%, -50%);
+  z-index: 20;
 }
 
 /* ------------end ending ------------- */
@@ -1286,4 +1302,29 @@ header > p:first-child {
 .scoreScore {
   display: flex;
   justify-content: flex-start;
+}
+
+.fadeInAndOut {
+  animation: fadeInAndOut 5s ease-in-out;
+}
+
+@keyframes fadeInAndOut {
+  0% {
+    opacity: 0;
+  }
+  12.5% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  87.5% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
 }
