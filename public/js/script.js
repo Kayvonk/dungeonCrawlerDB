@@ -923,12 +923,12 @@ function displayRound() {
 }
 
 function endRound() {
-  // if (round + 1 === 10) {
-  //   return startBoss();
-  // }
-  if (round + 1 === 1) {
-    return startEnding();
+  if (round + 1 === 10) {
+    return startBoss();
   }
+  // if (round + 1 === 1) {
+  //   return startEnding();
+  // }
   playSoundEffect("teleport");
   mainEl.innerHTML = "";
   enemyPositions = [];
