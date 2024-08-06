@@ -4086,9 +4086,6 @@ function startEnding() {
 }
 
 function playDialogue(index, delay) {
-  console.log('====================================');
-  console.log("endingDialogueIndex:", endingDialogueIndex);
-  console.log('====================================');
   let endingDialogueText = document.querySelector(".endingDialogueText");
   endingDialogueText.innerHTML = "";
   let characterCounter = 0;
@@ -4129,7 +4126,10 @@ function playDialogue(index, delay) {
           endingDialogueIndex++;
           setTimeout(() => {
             playDialogue(endingDialogueIndex, 0);
-          }, 3000);
+          }, 3000);  
+        }
+        else if(endingDialogueIndex === 5) {
+          endingDialogueIndex++;
           setTimeout(() => {
             let swordCatContainer = document.querySelector(".swordCatContainer")
             let sweatDropImage = document.createElement("img")
@@ -4137,16 +4137,16 @@ function playDialogue(index, delay) {
             sweatDropImage.className = "sweatDropImage"
             swordCatContainer.append(sweatDropImage)
             setTimeout(() => {
-              playDialogue(endingDialogueIndex, 0);
-              setTimeout(() => {
-                
-                playSoundEffect("death");
-              }, 500);
+              playDialogue(endingDialogueIndex, 3000);      
+          
             }, 3000);
-          }, 6000);       
+          }, 6000);           
         }
-        else if(endingDialogueIndex === 5) {
-          endingDialogueIndex++;
+        else if(endingDialogueIndex === 6) {
+          // endingDialogueIndex++;
+          setTimeout(() => {                
+            playSoundEffect("death");
+          }, 500);
         }
         clearInterval(characterTimer);
       }
@@ -4223,9 +4223,9 @@ function playEndingScene4 () {
  setTimeout(() => {  
    setTimeout(() => {
      swordCatBack.src = "../image/swordCat.png";   
-    }, 1500);
+    }, 2500);
     playDialogue(endingDialogueIndex, 3000)   
-  }, 3000);
+  }, 5000);
 
 }
 // TODO finish ending
