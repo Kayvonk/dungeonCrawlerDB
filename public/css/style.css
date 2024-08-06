@@ -1366,20 +1366,20 @@ header > p:first-child {
 
 @keyframes slideLeft {
   from {
-transform: translateX(0);
+    transform: translateX(0);
   }
-to {
-  transform: translateX(-50vw);
-}
+  to {
+    transform: translateX(-50vw);
+  }
 }
 
 @keyframes slideRight {
   from {
-transform: translateX(0);
+    transform: translateX(0);
   }
-to {
-  transform: translateX(50vw);
-}
+  to {
+    transform: translateX(50vw);
+  }
 }
 
 .endingDialogueContainer {
@@ -1429,13 +1429,77 @@ to {
   width: 30vw;
   height: auto;
   z-index: 14;
+  animation: grow 1s 3s ease-in-out forwards,
+    slideBottomRight 1s 3s ease-in-out forwards;
 }
 
-.endingScene4SwordCatBack {
+.swordCatContainer {
   position: absolute;
   left: 55%;
   top: 15%;
+  z-index: 15;
   width: 45vw;
   height: auto;
-  z-index: 15;
+  animation: shrink 1s 3s ease-in-out forwards,
+  slideTopLeft 1s 3s ease-in-out forwards;
+}
+
+.endingScene4SwordCatBack{
+  width: 100%;
+  height: auto;
+}
+
+@keyframes slideBottomRight {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(40vw, 6vh);
+  }
+}
+
+@keyframes slideTopLeft {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(-40vw, -6vh);
+  }
+}
+
+@keyframes grow {
+  from {
+    width: 30vw;
+  }
+  to {
+    width: 40vw;
+  }
+}
+
+@keyframes shrink {
+  from {
+    width: 40vw;
+  }
+  to {
+    width: 25vw;
+  }
+}
+
+.sweatDropImage{
+  position: absolute;
+  z-index: 16;
+  width: 5vw;
+  height: auto;
+  top: 5vh;
+  left: 4.5vw;
+  animation: moveSweatDropDown 1s linear forwards;
+}
+
+@keyframes moveSweatDropDown {
+  from {
+    top: 5vh;
+  }
+  to {
+    top: 7vh;
+  }
 }

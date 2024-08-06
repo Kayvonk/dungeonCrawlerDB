@@ -121,6 +121,10 @@ const attributions = [
     text: "Log image from pngaaa.com",
     link: "https://www.pngaaa.com/detail/3495",
   },
+  {
+    text: "Minecraft Death Sound from orangefreesounds.com",
+    link: "https://orangefreesounds.com/minecraft-death-sound/",
+  },
   { text: "Thanks for playing!" },
 ];
 
@@ -147,7 +151,7 @@ let endingDialogue1 = [
   },
   {
     speaker: "Nyan",
-    text: "Nya",
+    text: "Nya.",
   },
   {
     speaker: "Nyan",
@@ -159,7 +163,7 @@ let endingDialogue1 = [
   },
   {
     speaker: "Boss",
-    text: "...GYYAAAH!",
+    text: "...OUH!",
   },
 ];
 
@@ -2203,6 +2207,7 @@ const soundEffects = {
   swing: new Audio("./audio/se/swing.mp3"),
   teleport: new Audio("./audio/se/teleport.mp3"),
   drop: new Audio("./audio/se/drop.mp3"),
+  death: new Audio("./audio/se/death.mp3"),
 };
 
 Object.values(soundEffects).forEach((effect) => (effect.volume = 0.1));
@@ -4078,16 +4083,12 @@ function startEnding() {
 
   playDialogue(endingDialogueIndex, 5000);
 
-  // setTimeout(() => {
-  //   playDialogue(1)
-  // }, 5000);
-
-  // ---------close up of Doge---------------
-
-  // ---------close up of Cat---------------
 }
 
 function playDialogue(index, delay) {
+  console.log('====================================');
+  console.log("endingDialogueIndex:", endingDialogueIndex);
+  console.log('====================================');
   let endingDialogueText = document.querySelector(".endingDialogueText");
   endingDialogueText.innerHTML = "";
   let characterCounter = 0;
@@ -4123,6 +4124,29 @@ function playDialogue(index, delay) {
           setTimeout(() => {
             playEndingScene4()            
           }, 3000);
+        }
+        else if(endingDialogueIndex === 4) {
+          endingDialogueIndex++;
+          setTimeout(() => {
+            playDialogue(endingDialogueIndex, 0);
+          }, 3000);
+          setTimeout(() => {
+            let swordCatContainer = document.querySelector(".swordCatContainer")
+            let sweatDropImage = document.createElement("img")
+            sweatDropImage.src="../image/sweatDrop.png"
+            sweatDropImage.className = "sweatDropImage"
+            swordCatContainer.append(sweatDropImage)
+            setTimeout(() => {
+              playDialogue(endingDialogueIndex, 0);
+              setTimeout(() => {
+                
+                playSoundEffect("death");
+              }, 500);
+            }, 3000);
+          }, 6000);       
+        }
+        else if(endingDialogueIndex === 5) {
+          endingDialogueIndex++;
         }
         clearInterval(characterTimer);
       }
@@ -4170,6 +4194,8 @@ function playEndingScene3() {
 }
 
 function playEndingScene4 () {
+  let endingDialogueText = document.querySelector(".endingDialogueText");
+  endingDialogueText.innerHTML = "";
   let endingSceneContainer = document.querySelector(".endingSceneContainer");
   endingSceneContainer. innerHTML = ""
 
@@ -4179,15 +4205,28 @@ function playEndingScene4 () {
   endingSceneBackground.className = "endingSceneBackground";
   endingSceneContainer.append(endingSceneBackground);
 
-  let swordCatBack = document.createElement("img");
-  swordCatBack.src = "../image/swordCatBack.png";
-  swordCatBack.className = "endingScene4SwordCatBack";
-  endingSceneContainer.append(swordCatBack);
-
   let samuraiDoge = document.createElement("img");
   samuraiDoge.src = "../image/samuraiDoge.png";
   samuraiDoge.className = "endingScene4SamuraiDoge";
   endingSceneContainer.append(samuraiDoge);
+
+
+  let swordCatContainer = document.createElement("div")
+  swordCatContainer.className = "swordCatContainer"
+  let swordCatBack = document.createElement("img");
+  swordCatBack.src = "../image/swordCatBack.png";
+  swordCatBack.className = "endingScene4SwordCatBack";
+  swordCatContainer.append(swordCatBack)
+  endingSceneContainer.append(swordCatContainer);
+
+
+ setTimeout(() => {  
+   setTimeout(() => {
+     swordCatBack.src = "../image/swordCat.png";   
+    }, 1500);
+    playDialogue(endingDialogueIndex, 3000)   
+  }, 3000);
+
 }
 // TODO finish ending
 
