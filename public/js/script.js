@@ -864,7 +864,7 @@ function displayRestartMenu() {
 }
 
 function calculateScore() {
-  let baseScore = 10000;
+  let baseScore = 15000;
 
   let livesBonus = lives * 1000;
 
