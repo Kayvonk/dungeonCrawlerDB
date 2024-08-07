@@ -68,6 +68,30 @@ const attributions = [
     link: "https://www.chosic.com/free-music/all/?keyword=Komiku&artist",
   },
   {
+    text: "Minecraft Death Sound from orangefreesounds.com",
+    link: "https://orangefreesounds.com/minecraft-death-sound/",
+  },
+  {
+    text: "Game Start sound effect by Pixabay",
+    link: "https://pixabay.com/sound-effects/game-start-6104/",
+  },
+  {
+    text: "Game Over sound effect by Epic Stock Media",
+    link: "https://uppbeat.io/sfx/game-over-retro-arcade-1/6581/21829",
+  },
+  {
+    text: "Slash sound effect by David Dumais",
+    link: "https://pixabay.com/users/daviddumaisaudio-41768500/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=185432",
+  },
+  {
+    text: "Fast Swing sound effect by Pixabay",
+    link: "https://pixabay.com/sound-effects/clean-fast-swooshaiff-14784/",
+  },
+  {
+    text: "Teleport sound effect by SmartSound FX",
+    link: "https://uppbeat.io/sfx/arcade-game-retro-8-bit-teleport/914/1603",
+  },
+  {
     text: "Dungeon Crawler CB font by Sadboy",
     link: "https://www.dafont.com/dungeon-crawler-cb.font",
   },
@@ -88,24 +112,12 @@ const attributions = [
     link: "https://www.pngall.com/doge-head-png/download/62187",
   },
   {
-    text: "Boulder art by TdeLeeuw on DeviantART",
-    link: "https://www.deviantart.com/tdeleeuw/art/Boulder-pixel-art-427731885",
-  },
-  {
-    text: "Super Saiyan Aura art by Rojal",
-    link: "https://www.pngall.com/super-saiyan-aura-png/download/137668",
-  },
-  {
     text: "Beard image from pngtree.com",
     link: "https://pngtree.com/freepng/merry-christmas-santa-beard_5665564.html",
   },
   {
     text: "Tree image from pngtree.com",
     link: "https://pngtree.com/freepng/pixel-art-green-tree_7325401.html",
-  },
-  {
-    text: "Cave tile art by Kyrio on deviant art",
-    link: "https://www.deviantart.com/kyrio/art/Pixel-Cave-Interior-Tile-131032682",
   },
   {
     text: "Fire image from toppng.com",
@@ -121,12 +133,16 @@ const attributions = [
     link: "https://www.pngaaa.com/detail/3495",
   },
   {
-    text: "Minecraft Death Sound from orangefreesounds.com",
-    link: "https://orangefreesounds.com/minecraft-death-sound/",
+    text: "Boulder art by TdeLeeuw on DeviantART",
+    link: "https://www.deviantart.com/tdeleeuw/art/Boulder-pixel-art-427731885",
   },
   {
-    text: "Sword slash effect by David Dumais",
-    link: "https://pixabay.com/users/daviddumaisaudio-41768500/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=185432",
+    text: "Super Saiyan Aura art by Rojal",
+    link: "https://www.pngall.com/super-saiyan-aura-png/download/137668",
+  },
+  {
+    text: "Cave tile art by Kyrio on deviant art",
+    link: "https://www.deviantart.com/kyrio/art/Pixel-Cave-Interior-Tile-131032682",
   },
   { text: "Thanks for playing!" },
 ];
