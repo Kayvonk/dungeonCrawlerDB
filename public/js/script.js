@@ -701,6 +701,7 @@ function limitMovement() {
 }
 
 function dropBoulder(enemyIndex) {
+  const currentRound = round;
   let selectedPosition = playerPosition;
   boulderPositions.push(selectedPosition);
   let selectedTile = document.querySelector("." + selectedPosition);
@@ -715,7 +716,11 @@ function dropBoulder(enemyIndex) {
   selectedTile.append(boulderShadow);
   selectedTile.append(boulder);
   playSoundEffect("drop");
-  setTimeout(() => {
+  let boulderTimer = setTimeout(() => {
+    if (currentRound !== round) {
+      clearTimeout(boulderTimer);
+      return;
+    }
     if (selectedPosition === playerPosition && !gameOver) {
       return loseGame(enemyIndex);
     }
