@@ -825,7 +825,7 @@ header > p:first-child {
 }
 
 .animateDeath {
-  animation: deathAnimation 1s linear;
+  animation: deathAnimation 1s linear forwards;
 }
 
 @keyframes deathAnimation {
@@ -1077,6 +1077,7 @@ header > p:first-child {
   transform: translateY(-50%);
   z-index: 13;
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2), 0 0 0 6px rgba(255, 215, 0, 0.8);
+  overflow: hidden;
 }
 
 .cardboardCat {
@@ -1327,4 +1328,223 @@ header > p:first-child {
   100% {
     opacity: 0;
   }
+}
+
+/* -------------------------------- */
+
+.endingSamuraiDoge {
+  position: absolute;
+  left: 70%;
+  top: 0%;
+  width: 30vw;
+  height: auto;
+  z-index: 14;
+}
+
+.endingSwordCatBack {
+  position: absolute;
+  left: 10%;
+  top: 15%;
+  width: 45vw;
+  height: auto;
+  z-index: 15;
+}
+
+.endingSceneBackground {
+  object-fit: fill;
+  width: 100%;
+  height: 100%;
+}
+
+.slideLeft {
+  animation: slideLeft 5s 1s linear forwards;
+}
+
+.slideRight {
+  animation: slideRight 5s 1s linear forwards;
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50vw);
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(50vw);
+  }
+}
+
+.endingDialogueContainer {
+  position: absolute;
+  left: 50%;
+  bottom: 20vh;
+  transform: translate(-50%, 50%);
+  background-color: transparent;
+  color: #fff; /* White text */
+  border-radius: 10px; /* Slight border radius */
+  padding: 20px;
+  width: 50vw;
+  height: 15vh;
+  text-align: start;
+  overflow: hidden; /* Ensures content does not overflow the border radius */
+  z-index: 15; /* Ensures the dialogue box appears on top */
+}
+
+.endingDialogueText {
+  font-size: 1.5em;
+}
+
+.endingCloseUpSamuraiDoge {
+  position: absolute;
+  left: 60%;
+  top: 90%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: auto;
+  z-index: 14;
+}
+
+.endingCloseUpSwordCat {
+  position: absolute;
+  left: 50%;
+  top: 90%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: auto;
+  z-index: 14;
+}
+.samuraiDogeContainer {
+  position: absolute;
+  left: 20%;
+  top: 0%;
+  width: 30vw;
+  height: auto;
+  z-index: 14;
+  animation: grow 1s 3s ease-in-out forwards,
+    slideBottomRight 1s 3s ease-in-out forwards;
+}
+
+.endingScene4SamuraiDoge {
+  width: 100%;
+  height: auto;
+}
+
+.swordCatContainer {
+  position: absolute;
+  left: 55%;
+  top: 15%;
+  z-index: 15;
+  width: 45vw;
+  height: auto;
+  animation: shrink 1s 3s ease-in-out forwards,
+    slideTopLeft 1s 3s ease-in-out forwards;
+}
+
+.endingScene4SwordCatBack {
+  width: 100%;
+  height: auto;
+}
+
+@keyframes slideBottomRight {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(40vw, 6vh);
+  }
+}
+
+@keyframes slideTopLeft {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(-40vw, -6vh);
+  }
+}
+
+@keyframes grow {
+  from {
+    width: 30vw;
+  }
+  to {
+    width: 40vw;
+  }
+}
+
+@keyframes shrink {
+  from {
+    width: 40vw;
+  }
+  to {
+    width: 25vw;
+  }
+}
+
+.sweatDropImage {
+  position: absolute;
+  z-index: 16;
+  width: 5vw;
+  height: auto;
+  top: 5vh;
+  left: 4.5vw;
+  animation: moveSweatDropDown 1s linear forwards;
+}
+
+@keyframes moveSweatDropDown {
+  from {
+    top: 5vh;
+  }
+  to {
+    top: 7vh;
+  }
+}
+
+.endingContainerOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #ffffff00 0%, #ffffff 50%, #ffffff00 100%);
+  opacity: 0;
+}
+
+.overlayFadeInAndOut {
+  animation: overlayFadeInAndOut 1s ease-in-out;
+}
+
+@keyframes overlayFadeInAndOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.endingContainerOverlay2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  opacity: 0;
+  z-index: 20;
+}
+
+.showEndingContainerOverlay2 {
+  animation: fadeIn 2s ease-in-out forwards;
 }

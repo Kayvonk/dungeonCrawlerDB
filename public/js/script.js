@@ -121,6 +121,10 @@ const attributions = [
     text: "Log image from pngaaa.com",
     link: "https://www.pngaaa.com/detail/3495",
   },
+  {
+    text: "Minecraft Death Sound from orangefreesounds.com",
+    link: "https://orangefreesounds.com/minecraft-death-sound/",
+  },
   { text: "Thanks for playing!" },
 ];
 
@@ -129,6 +133,45 @@ let highscoresCount;
 let showHighscoresBoard = false;
 let highscoresData;
 let bossSpawnPositions = ["r2-c2", "r5-c2", "r2-c11", "r5-c11"];
+
+let endingDialogueIndex = 0;
+
+let endingDialogue1 = [
+  {
+    speaker: "Boss",
+    text: "This fight will be decided in the next move.",
+  },
+  {
+    speaker: "Nyan",
+    text: "It doesn't have to end this like this. Nya.",
+  },
+  {
+    speaker: "Boss",
+    text: "It's too late for words. Prepare yourself!",
+  },
+  {
+    speaker: "Nyan",
+    text: "Nya.",
+  },
+  {
+    speaker: "Nyan",
+    text: "...are you okay?",
+  },
+  {
+    speaker: "Boss",
+    text: "Yeah, I'm fine...",
+  },
+  {
+    speaker: "Boss",
+    text: "...OUH!",
+  },
+  {
+    speaker: "Narrator",
+    text: "And so the Doge Army was dispersed, and peace was restored throughout the land.",
+  },
+];
+
+let playingCredits = false;
 
 startBtn.addEventListener("click", startPrologue);
 
@@ -926,9 +969,6 @@ function endRound() {
   if (round + 1 === 10) {
     return startBoss();
   }
-  // if (round + 1 === 1) {
-  //   return startEnding();
-  // }
   playSoundEffect("teleport");
   mainEl.innerHTML = "";
   enemyPositions = [];
@@ -2030,12 +2070,12 @@ function enemyMoveRight(enemyClass, enemyImgPath, enemyIndex, enemyType) {
 
 // ----------------end enemy logic----------------
 
-// ----------start key press logic-------------
+// ----------start keypress logic-------------
 
 window.addEventListener("keydown", checkKeyPressed);
 
 function checkKeyPressed(evt) {
-  if (!gameStarted && evt.keyCode === 32) {
+  if (!gameStarted && (evt.keyCode === 32 || evt.keyCode === 13)) {
     startPrologue();
   } else if (gameStarted && swordAcquired && !gameOver && evt.keyCode === 32) {
     swingSword();
@@ -2047,10 +2087,10 @@ function checkKeyPressed(evt) {
     !lossPause
   ) {
     lives > 0 ? restartRound() : restartGame();
-  } else if (bossHealth === 0) {
-    return;
-  }
-  if (gameOver) {
+  } else if (bossHealth === 0 && evt.keyCode === 13 && !playingCredits) {
+    playingCredits = true;
+    skipToCredits();
+  } else if (gameOver) {
     return;
   }
 
@@ -2088,7 +2128,7 @@ function checkKeyPressed(evt) {
   }
 }
 
-// ----------end key press logic-----------
+// ----------end keypress logic-----------
 
 /* ----------start music logic------------- */
 
@@ -2106,6 +2146,11 @@ let musicArray = [
   {
     name: "ending",
     song: "./audio/bgm/ending.mp3",
+    duration: "242000",
+  },
+  {
+    name: "credits",
+    song: "./audio/bgm/credits.mp3",
     duration: "242000",
   },
 ];
@@ -2156,6 +2201,7 @@ const soundEffects = {
   swing: new Audio("./audio/se/swing.mp3"),
   teleport: new Audio("./audio/se/teleport.mp3"),
   drop: new Audio("./audio/se/drop.mp3"),
+  death: new Audio("./audio/se/death.mp3"),
 };
 
 Object.values(soundEffects).forEach((effect) => (effect.volume = 0.1));
@@ -3705,63 +3751,25 @@ function performOctoSlash(enemyClass, enemyIndex, enemyType, hitsRemaining) {
 // --------------end boss-----------
 
 // ------------start ending --------
-function startEnding() {
+function startCredits() {
+  let endingSceneContainer = document.querySelector(".endingSceneContainer");
+  endingSceneContainer.innerHTML = "";
+
   gameOver = true;
   calculateScore();
-  let shadowClonesTargeted = document.querySelectorAll("img.dogeClone");
-  shadowClonesTargeted.forEach((shadowClone) => {
-    let shadowClonePosition = shadowClone.classList[1];
-    let shadowCloneClass = shadowClone.classList[0];
-    let enemyPositionTile = document.querySelector("." + shadowClonePosition);
 
-    let allShadowCloneClass = document.querySelectorAll("." + shadowCloneClass);
-
-    allShadowCloneClass.forEach((img) => {
-      img.remove();
-    });
-
-    bossEnemyPositions = bossEnemyPositions.map((item) => {
-      if (item.enemyClass === shadowCloneClass) {
-        return {
-          ...item,
-          position: null,
-          isAlive: false,
-          hitsRemaining: 0,
-        };
-      } else {
-        return item;
-      }
-    });
-
-    let shadowCloneDeathImg = document.createElement("img");
-    shadowCloneDeathImg.className = shadowCloneClass;
-    shadowCloneDeathImg.src = "./image/smoke.png";
-
-    enemyPositionTile.append(shadowCloneDeathImg);
-
-    setTimeout(() => {
-      shadowCloneDeathImg.remove();
-    }, 750);
-  });
-  endingEl.style.display = "flex";
-  mainEl.classList.add("fadeOut");
-
-  musicCount = 2; // Index of the boss song
+  musicCount = 3; // Index of the boss song
   audio.src = musicArray[musicCount].song; // Change the audio source to boss song
 
   if (musicToggleStatus) {
     audio.play();
   }
 
-  let endingSceneContainer = document.createElement("div");
-  endingSceneContainer.className = "endingSceneContainer";
-
   let cardboardCat = document.createElement("img");
   cardboardCat.src = "./image/cardboardCat.png";
   cardboardCat.className = "cardboardCat";
 
   endingSceneContainer.append(cardboardCat);
-  endingEl.append(endingSceneContainer);
 
   function createStar() {
     const star = document.createElement("div");
@@ -3950,4 +3958,271 @@ function displayAttributions() {
 
 // --------------------------------
 
-// TODO finish ending
+function startEnding() {
+  gameOver = true;
+  let shadowClonesTargeted = document.querySelectorAll("img.dogeClone");
+  shadowClonesTargeted.forEach((shadowClone) => {
+    let shadowClonePosition = shadowClone.classList[1];
+    let shadowCloneClass = shadowClone.classList[0];
+    let enemyPositionTile = document.querySelector("." + shadowClonePosition);
+
+    let allShadowCloneClass = document.querySelectorAll("." + shadowCloneClass);
+
+    allShadowCloneClass.forEach((img) => {
+      img.remove();
+    });
+
+    bossEnemyPositions = bossEnemyPositions.map((item) => {
+      if (item.enemyClass === shadowCloneClass) {
+        return {
+          ...item,
+          position: null,
+          isAlive: false,
+          hitsRemaining: 0,
+        };
+      } else {
+        return item;
+      }
+    });
+
+    let shadowCloneDeathImg = document.createElement("img");
+    shadowCloneDeathImg.className = shadowCloneClass;
+    shadowCloneDeathImg.src = "./image/smoke.png";
+
+    enemyPositionTile.append(shadowCloneDeathImg);
+
+    setTimeout(() => {
+      shadowCloneDeathImg.remove();
+    }, 750);
+  });
+  endingEl.style.display = "flex";
+  mainEl.classList.add("fadeOut");
+
+  musicCount = 2; // Index of the boss song
+  audio.src = musicArray[musicCount].song; // Change the audio source to boss song
+
+  if (musicToggleStatus) {
+    audio.play();
+  }
+
+  let endingSceneContainer = document.createElement("div");
+  endingSceneContainer.className = "endingSceneContainer";
+
+  endingEl.append(endingSceneContainer);
+
+  let endingSceneBackground = document.createElement("img");
+  endingSceneBackground.src = "../image/dungeonTiles3dImage.png";
+  endingSceneBackground.className = "endingSceneBackground";
+  endingSceneContainer.append(endingSceneBackground);
+
+  let swordCatBack = document.createElement("img");
+  swordCatBack.src = "../image/swordCatBack.png";
+  swordCatBack.className = "endingSwordCatBack slideRight";
+  endingSceneContainer.append(swordCatBack);
+
+  let samuraiDoge = document.createElement("img");
+  samuraiDoge.src = "../image/samuraiDoge.png";
+  samuraiDoge.className = "endingSamuraiDoge slideLeft";
+  endingSceneContainer.append(samuraiDoge);
+
+  const endingDialogueContainer = document.createElement("div");
+  endingDialogueContainer.className = "endingDialogueContainer";
+
+  const endingDialogueText = document.createElement("p");
+  endingDialogueText.className = "endingDialogueText";
+
+  endingDialogueContainer.appendChild(endingDialogueText);
+
+  endingEl.appendChild(endingDialogueContainer);
+
+  playDialogue(endingDialogueIndex, 5000);
+}
+
+function playDialogue(index, delay) {
+  if (playingCredits) {
+    return;
+  }
+  let endingDialogueText = document.querySelector(".endingDialogueText");
+  endingDialogueText.innerHTML = "";
+  let characterCounter = 0;
+  setTimeout(() => {
+    endingDialogueText.textContent += endingDialogue1[index].speaker + ": ";
+    let characterTimer = setInterval(() => {
+      const character = endingDialogue1[index].text[characterCounter];
+      if (characterCounter < endingDialogue1[index].text.length) {
+        endingDialogueText.textContent += character;
+        characterCounter++;
+      } else {
+        if (endingDialogueIndex === 0) {
+          endingDialogueIndex++;
+
+          setTimeout(() => {
+            playDialogue(endingDialogueIndex, 0);
+          }, 3000);
+        } else if (endingDialogueIndex === 1) {
+          endingDialogueIndex++;
+          setTimeout(() => {
+            playEndingScene2();
+          }, 3000);
+        } else if (endingDialogueIndex === 2) {
+          endingDialogueIndex++;
+          setTimeout(() => {
+            playEndingScene3();
+          }, 3000);
+        } else if (endingDialogueIndex === 3) {
+          endingDialogueIndex++;
+          setTimeout(() => {
+            playEndingScene4();
+          }, 3000);
+        } else if (endingDialogueIndex === 4) {
+          endingDialogueIndex++;
+          setTimeout(() => {
+            playDialogue(endingDialogueIndex, 0);
+          }, 3000);
+        } else if (endingDialogueIndex === 5) {
+          endingDialogueIndex++;
+          setTimeout(() => {
+            let swordCatContainer =
+              document.querySelector(".swordCatContainer");
+            let sweatDropImage = document.createElement("img");
+            sweatDropImage.src = "../image/sweatDrop.png";
+            sweatDropImage.className = "sweatDropImage";
+            swordCatContainer.append(sweatDropImage);
+            setTimeout(() => {
+              playDialogue(endingDialogueIndex, 3000);
+            }, 3000);
+          }, 3000);
+        } else if (endingDialogueIndex === 6) {
+          endingDialogueIndex++;
+          setTimeout(() => {
+            let endingScene4SamuraiDoge = document.querySelector(
+              ".endingScene4SamuraiDoge"
+            );
+            endingScene4SamuraiDoge.src = "../image/samuraiDogeRed.png";
+            endingScene4SamuraiDoge.classList.add("animateDeath");
+            playSoundEffect("death");
+            setTimeout(() => {
+              playDialogue(endingDialogueIndex, 2000);
+            }, 3000);
+          }, 500);
+        } else if (endingDialogueIndex === 7) {
+          setTimeout(() => {
+            let endingContainerOverlay2 = document.querySelector(
+              ".endingContainerOverlay2"
+            );
+            endingContainerOverlay2.classList.add(
+              "showEndingContainerOverlay2"
+            );
+          }, 6000);
+          setTimeout(() => {
+            let endingDialogueContainer = document.querySelector(
+              ".endingDialogueContainer"
+            );
+            endingDialogueContainer.remove();
+            startCredits();
+          }, 8000);
+        }
+        clearInterval(characterTimer);
+      }
+    }, 50);
+  }, delay);
+}
+
+function playEndingScene2() {
+  if (playingCredits) {
+    return;
+  }
+  let endingSceneContainer = document.querySelector(".endingSceneContainer");
+  endingSceneContainer.innerHTML = "";
+
+  let endingSceneBackground = document.createElement("img");
+  endingSceneBackground.src = "../image/dungeonTiles3dImage.png";
+  endingSceneBackground.className = "endingSceneBackground";
+  endingSceneContainer.append(endingSceneBackground);
+
+  let closeUpBossImage = document.createElement("img");
+  closeUpBossImage.src = "../image/samuraiDoge.png";
+  closeUpBossImage.className = "endingCloseUpSamuraiDoge";
+  endingSceneContainer.append(closeUpBossImage);
+
+  playDialogue(endingDialogueIndex, 1000);
+}
+
+function playEndingScene3() {
+  if (playingCredits) {
+    return;
+  }
+  let endingSceneContainer = document.querySelector(".endingSceneContainer");
+  endingSceneContainer.innerHTML = "";
+
+  let endingSceneBackground = document.createElement("img");
+  endingSceneBackground.src = "../image/dungeonTiles3dImage.png";
+  endingSceneBackground.className = "endingSceneBackground";
+  endingSceneContainer.append(endingSceneBackground);
+
+  let closeUpSwordCat = document.createElement("img");
+  closeUpSwordCat.src = "../image/swordCat.png";
+  closeUpSwordCat.className = "endingCloseUpSwordCat";
+  endingSceneContainer.append(closeUpSwordCat);
+
+  playDialogue(endingDialogueIndex, 1000);
+}
+
+function playEndingScene4() {
+  if (playingCredits) {
+    return;
+  }
+  let endingDialogueText = document.querySelector(".endingDialogueText");
+  endingDialogueText.innerHTML = "";
+  let endingSceneContainer = document.querySelector(".endingSceneContainer");
+  endingSceneContainer.innerHTML = "";
+
+  let endingSceneBackground = document.createElement("img");
+  endingSceneBackground.src = "../image/dungeonTiles3dImage.png";
+  endingSceneBackground.className = "endingSceneBackground";
+  endingSceneContainer.append(endingSceneBackground);
+
+  let endingContainerOverlay = document.createElement("div");
+  endingContainerOverlay.className = "endingContainerOverlay";
+
+  let endingContainerOverlay2 = document.createElement("div");
+  endingContainerOverlay2.className = "endingContainerOverlay2";
+
+  endingSceneContainer.append(endingContainerOverlay);
+  endingSceneContainer.append(endingContainerOverlay2);
+
+  let samuraiDogeContainer = document.createElement("div");
+  samuraiDogeContainer.className = "samuraiDogeContainer";
+  let samuraiDoge = document.createElement("img");
+  samuraiDoge.src = "../image/samuraiDoge.png";
+  samuraiDoge.className = "endingScene4SamuraiDoge";
+  samuraiDogeContainer.append(samuraiDoge);
+  endingSceneContainer.append(samuraiDogeContainer);
+
+  let swordCatContainer = document.createElement("div");
+  swordCatContainer.className = "swordCatContainer";
+  let swordCatBack = document.createElement("img");
+  swordCatBack.src = "../image/swordCatBack.png";
+  swordCatBack.className = "endingScene4SwordCatBack";
+  swordCatContainer.append(swordCatBack);
+  endingSceneContainer.append(swordCatContainer);
+
+  setTimeout(() => {
+    endingContainerOverlay.classList.add("overlayFadeInAndOut");
+  }, 3000);
+
+  setTimeout(() => {
+    setTimeout(() => {
+      swordCatBack.src = "../image/swordCat.png";
+    }, 2500);
+    playDialogue(endingDialogueIndex, 3000);
+  }, 5000);
+}
+
+function skipToCredits() {
+  let endingDialogueContainer = document.querySelector(
+    ".endingDialogueContainer"
+  );
+  endingDialogueContainer.remove();
+  startCredits();
+}
