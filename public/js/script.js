@@ -125,6 +125,10 @@ const attributions = [
     text: "Minecraft Death Sound from orangefreesounds.com",
     link: "https://orangefreesounds.com/minecraft-death-sound/",
   },
+  {
+    text: "Sword slash effect by David Dumais",
+    link: "https://pixabay.com/users/daviddumaisaudio-41768500/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=185432",
+  },
   { text: "Thanks for playing!" },
 ];
 
@@ -2207,6 +2211,7 @@ const soundEffects = {
   teleport: new Audio("./audio/se/teleport.mp3"),
   drop: new Audio("./audio/se/drop.mp3"),
   death: new Audio("./audio/se/death.mp3"),
+  bigSlash: new Audio("./audio/se/bigSlash.mp3"),
 };
 
 Object.values(soundEffects).forEach((effect) => (effect.volume = 0.1));
@@ -4214,6 +4219,7 @@ function playEndingScene4() {
 
   setTimeout(() => {
     endingContainerOverlay.classList.add("overlayFadeInAndOut");
+    playSoundEffect("bigSlash");
   }, 3000);
 
   setTimeout(() => {
