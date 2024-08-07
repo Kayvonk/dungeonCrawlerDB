@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(routes);
 
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => {
