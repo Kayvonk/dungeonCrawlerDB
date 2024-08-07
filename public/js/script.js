@@ -13,7 +13,6 @@ let treePositions = [];
 let attackingEnemyIndex;
 let gameOver = false;
 let exitTilePosition;
-let exitDirection;
 let caveEntrancePosition = "r1-c6";
 let towerEntrancePosition = "r1-c7";
 let scene1ExitTilePosition = "r3-c1";
@@ -177,6 +176,40 @@ let endingDialogue1 = [
 
 let playingCredits = false;
 let bossRestarted = false;
+
+let r1Positions = [
+  "r1-c1",
+  "r1-c2",
+  "r1-c3",
+  "r1-c4",
+  "r1-c5",
+  "r1-c6",
+  "r1-c7",
+  "r1-c8",
+  "r1-c9",
+  "r1-c10",
+  "r1-c11",
+  "r1-c12",
+];
+
+let r6Positions = [
+  "r6-c1",
+  "r6-c2",
+  "r6-c3",
+  "r6-c4",
+  "r6-c5",
+  "r6-c6",
+  "r6-c7",
+  "r6-c8",
+  "r6-c9",
+  "r6-c10",
+  "r6-c11",
+  "r6-c12",
+];
+
+let c1Positions = ["r4-c1", "r3-c1", "r2-c1", "r1-c1"];
+
+let c12Positions = ["r4-c12", "r3-c12", "r2-c12", "r1-c12"];
 
 startBtn.addEventListener("click", startPrologue);
 
@@ -1041,27 +1074,9 @@ function createTiles() {
   } else if (playerColumn === "12") {
     playerEnterDirection = "right";
   }
-
-  let exitGroup = [];
+  let possiblePositions;
   if (playerEnterDirection === "bottom") {
-    exitGroup = ["r1", "c1", "c12"];
-  }
-  if (playerEnterDirection === "top") {
-    exitGroup = ["r6", "c1", "c12"];
-  }
-  if (playerEnterDirection === "left") {
-    exitGroup = ["r1", "r6", "c12"];
-  }
-  if (playerEnterDirection === "right") {
-    exitGroup = ["r1", "r6", "c1"];
-  }
-
-  let selectedExit;
-  let exitClass;
-  possibleEnemyPositions = [];
-  let exitGroupSelection = exitGroup[Math.floor(Math.random() * 3)];
-  if (exitGroupSelection === "r1") {
-    let possiblePositions = [
+    possiblePositions = [
       "r1-c1",
       "r1-c2",
       "r1-c3",
@@ -1074,13 +1089,14 @@ function createTiles() {
       "r1-c10",
       "r1-c11",
       "r1-c12",
+      "r2-c1",
+      "r3-c1",
+      "r2-c12",
+      "r3-c12",
     ];
-    selectedExit =
-      possiblePositions[Math.floor(Math.random() * possiblePositions.length)];
-    exitClass = "exitTop";
   }
-  if (exitGroupSelection === "r6") {
-    let possiblePositions = [
+  if (playerEnterDirection === "top") {
+    possiblePositions = [
       "r6-c1",
       "r6-c2",
       "r6-c3",
@@ -1093,23 +1109,59 @@ function createTiles() {
       "r6-c10",
       "r6-c11",
       "r6-c12",
+      "r5-c1",
+      "r4-c1",
+      "r5-c12",
+      "r4-c12",
     ];
-    selectedExit =
-      possiblePositions[Math.floor(Math.random() * possiblePositions.length)];
-    exitClass = "exitBottom";
   }
-  if (exitGroupSelection === "c1") {
-    let possiblePositions = ["r4-c1", "r3-c1", "r2-c1", "r1-c1"];
-    selectedExit =
-      possiblePositions[Math.floor(Math.random() * possiblePositions.length)];
-    exitClass = "exitLeft";
+  if (playerEnterDirection === "left") {
+    possiblePositions = [
+      "r1-c12",
+      "r2-c12",
+      "r3-c12",
+      "r4-c12",
+      "r5-c12",
+      "r6-c12",
+      "r1-c7",
+      "r1-c8",
+      "r1-c9",
+      "r1-c10",
+      "r1-c11",
+      "r1-c12",
+      "r6-c7",
+      "r6-c8",
+      "r6-c9",
+      "r6-c10",
+      "r6-c11",
+      "r6-c12",
+    ];
   }
-  if (exitGroupSelection === "c12") {
-    let possiblePositions = ["r4-c12", "r3-c12", "r2-c12", "r1-c12"];
-    selectedExit =
-      possiblePositions[Math.floor(Math.random() * possiblePositions.length)];
-    exitClass = "exitRight";
+  if (playerEnterDirection === "right") {
+    possiblePositions = [
+      "r1-c1",
+      "r2-c1",
+      "r3-c1",
+      "r4-c1",
+      "r5-c1",
+      "r6-c1",
+      "r1-c1",
+      "r1-c2",
+      "r1-c3",
+      "r1-c4",
+      "r1-c5",
+      "r1-c6",
+      "r6-c1",
+      "r6-c2",
+      "r6-c3",
+      "r6-c4",
+      "r6-c5",
+      "r6-c6",
+    ];
   }
+  let selectedExit =
+    possiblePositions[Math.floor(Math.random() * possiblePositions.length)];
+
   for (let index = 1; index <= 72; index++) {
     let tile = document.createElement("div");
 
@@ -1170,7 +1222,6 @@ function createTiles() {
     }
     if (tilePosition === selectedExit && !isBossRound) {
       exitTilePosition = tilePosition;
-      exitDirection = exitClass;
 
       let exitTile = document.createElement("img");
       exitTile.src = "./image/redSigil.png";
@@ -2257,7 +2308,7 @@ function introduceOldCat(selectedTile) {
 
 function introduceBoss(selectedTile) {
   canMove = false;
-  if (!bossRestarted) {    
+  if (!bossRestarted) {
     const dialogueBox = document.createElement("div");
     dialogueBox.className = "dialogue-box";
 
