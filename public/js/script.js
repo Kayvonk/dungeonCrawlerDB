@@ -171,6 +171,8 @@ let endingDialogue1 = [
   },
 ];
 
+let playingCredits = false;
+
 startBtn.addEventListener("click", startPrologue);
 
 // ------------------start prologue --------------------------
@@ -2068,12 +2070,12 @@ function enemyMoveRight(enemyClass, enemyImgPath, enemyIndex, enemyType) {
 
 // ----------------end enemy logic----------------
 
-// ----------start key press logic-------------
+// ----------start keypress logic-------------
 
 window.addEventListener("keydown", checkKeyPressed);
 
 function checkKeyPressed(evt) {
-  if (!gameStarted && evt.keyCode === 32) {
+  if (!gameStarted && (evt.keyCode === 32 || evt.keyCode === 13)) {
     startPrologue();
   } else if (gameStarted && swordAcquired && !gameOver && evt.keyCode === 32) {
     swingSword();
@@ -2085,10 +2087,10 @@ function checkKeyPressed(evt) {
     !lossPause
   ) {
     lives > 0 ? restartRound() : restartGame();
-  } else if (bossHealth === 0) {
-    return;
-  }
-  if (gameOver) {
+  } else if (bossHealth === 0 && evt.keyCode === 13 && !playingCredits) {
+    playingCredits = true;
+    skipToCredits();
+  } else if (gameOver) {
     return;
   }
 
@@ -2126,7 +2128,7 @@ function checkKeyPressed(evt) {
   }
 }
 
-// ----------end key press logic-----------
+// ----------end keypress logic-----------
 
 /* ----------start music logic------------- */
 
@@ -4037,6 +4039,9 @@ function startEnding() {
 }
 
 function playDialogue(index, delay) {
+  if (playingCredits) {
+    return;
+  }
   let endingDialogueText = document.querySelector(".endingDialogueText");
   endingDialogueText.innerHTML = "";
   let characterCounter = 0;
@@ -4124,6 +4129,9 @@ function playDialogue(index, delay) {
 }
 
 function playEndingScene2() {
+  if (playingCredits) {
+    return;
+  }
   let endingSceneContainer = document.querySelector(".endingSceneContainer");
   endingSceneContainer.innerHTML = "";
 
@@ -4141,6 +4149,9 @@ function playEndingScene2() {
 }
 
 function playEndingScene3() {
+  if (playingCredits) {
+    return;
+  }
   let endingSceneContainer = document.querySelector(".endingSceneContainer");
   endingSceneContainer.innerHTML = "";
 
@@ -4158,6 +4169,9 @@ function playEndingScene3() {
 }
 
 function playEndingScene4() {
+  if (playingCredits) {
+    return;
+  }
   let endingDialogueText = document.querySelector(".endingDialogueText");
   endingDialogueText.innerHTML = "";
   let endingSceneContainer = document.querySelector(".endingSceneContainer");
@@ -4204,4 +4218,11 @@ function playEndingScene4() {
     playDialogue(endingDialogueIndex, 3000);
   }, 5000);
 }
-// TODO finish ending
+
+function skipToCredits() {
+  let endingDialogueContainer = document.querySelector(
+    ".endingDialogueContainer"
+  );
+  endingDialogueContainer.remove();
+  startCredits();
+}
