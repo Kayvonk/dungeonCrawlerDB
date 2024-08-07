@@ -825,7 +825,7 @@ header > p:first-child {
 }
 
 .animateDeath {
-  animation: deathAnimation 1s linear;
+  animation: deathAnimation 1s linear forwards;
 }
 
 @keyframes deathAnimation {
@@ -1421,8 +1421,7 @@ header > p:first-child {
   height: auto;
   z-index: 14;
 }
-
-.endingScene4SamuraiDoge {
+.samuraiDogeContainer {
   position: absolute;
   left: 20%;
   top: 0%;
@@ -1431,6 +1430,11 @@ header > p:first-child {
   z-index: 14;
   animation: grow 1s 3s ease-in-out forwards,
     slideBottomRight 1s 3s ease-in-out forwards;
+}
+
+.endingScene4SamuraiDoge {
+  width: 100%;
+  height: auto;
 }
 
 .swordCatContainer {

@@ -165,6 +165,10 @@ let endingDialogue1 = [
     speaker: "Boss",
     text: "...OUH!",
   },
+  {
+    speaker: "Narrator",
+    text: "And so the Doge Army was dispersed, and peace was restored throughout the land.",
+  },
 ];
 
 startBtn.addEventListener("click", startPrologue);
@@ -963,12 +967,6 @@ function endRound() {
   if (round + 1 === 10) {
     return startBoss();
   }
-  // if (round + 1 === 1) {
-  //   return startCredits();
-  // }
-  // if (round + 1 === 10) {
-  //   return startEnding();
-  // }
   playSoundEffect("teleport");
   mainEl.innerHTML = "";
   enemyPositions = [];
@@ -1343,10 +1341,7 @@ function swingSword() {
             }, 500);
           } else {
             startEnding();
-          }
-          // } else {
-          //   startCredits();
-          // }
+          }     
           return {
             ...item,
             position: newBossPosition,
@@ -1369,10 +1364,7 @@ function swingSword() {
           });
           if (bossHealth === 0) {
             startEnding();
-          }
-          // if (bossHealth === 0) {
-          //   startCredits();
-          // }
+          }  
           return {
             ...item,
             position: null,
@@ -3758,45 +3750,11 @@ function performOctoSlash(enemyClass, enemyIndex, enemyType, hitsRemaining) {
 
 // ------------start ending --------
 function startCredits() {
+    let endingSceneContainer = document.querySelector(".endingSceneContainer");
+  endingSceneContainer. innerHTML = ""
+
   gameOver = true;
   calculateScore();
-  // let shadowClonesTargeted = document.querySelectorAll("img.dogeClone");
-  // shadowClonesTargeted.forEach((shadowClone) => {
-  //   let shadowClonePosition = shadowClone.classList[1];
-  //   let shadowCloneClass = shadowClone.classList[0];
-  //   let enemyPositionTile = document.querySelector("." + shadowClonePosition);
-
-  //   let allShadowCloneClass = document.querySelectorAll("." + shadowCloneClass);
-
-  //   allShadowCloneClass.forEach((img) => {
-  //     img.remove();
-  //   });
-
-  //   bossEnemyPositions = bossEnemyPositions.map((item) => {
-  //     if (item.enemyClass === shadowCloneClass) {
-  //       return {
-  //         ...item,
-  //         position: null,
-  //         isAlive: false,
-  //         hitsRemaining: 0,
-  //       };
-  //     } else {
-  //       return item;
-  //     }
-  //   });
-
-  //   let shadowCloneDeathImg = document.createElement("img");
-  //   shadowCloneDeathImg.className = shadowCloneClass;
-  //   shadowCloneDeathImg.src = "./image/smoke.png";
-
-  //   enemyPositionTile.append(shadowCloneDeathImg);
-
-  //   setTimeout(() => {
-  //     shadowCloneDeathImg.remove();
-  //   }, 750);
-  // });
-  // endingEl.style.display = "flex";
-  // mainEl.classList.add("fadeOut");
 
   musicCount = 3; // Index of the boss song
   audio.src = musicArray[musicCount].song; // Change the audio source to boss song
@@ -3805,17 +3763,11 @@ function startCredits() {
     audio.play();
   }
 
-  // let endingSceneContainer = document.createElement("div");
-  // endingSceneContainer.className = "endingSceneContainer";
-
-  let endingSceneContainer = document.querySelector(".endingSceneContainer");
-
   let cardboardCat = document.createElement("img");
   cardboardCat.src = "./image/cardboardCat.png";
   cardboardCat.className = "cardboardCat";
 
   endingSceneContainer.append(cardboardCat);
-  // endingEl.append(endingSceneContainer);
 
   function createStar() {
     const star = document.createElement("div");
@@ -4140,13 +4092,26 @@ function playDialogue(index, delay) {
               playDialogue(endingDialogueIndex, 3000);      
           
             }, 3000);
-          }, 6000);           
+          }, 3000);           
         }
         else if(endingDialogueIndex === 6) {
-          // endingDialogueIndex++;
-          setTimeout(() => {                
+          endingDialogueIndex++;
+          setTimeout(() => {        
+                    let endingScene4SamuraiDoge = document.querySelector(".endingScene4SamuraiDoge")
+                    endingScene4SamuraiDoge.src = "../image/samuraiDogeRed.png"
+                    endingScene4SamuraiDoge.classList.add("animateDeath")
             playSoundEffect("death");
+            setTimeout(() => {
+              playDialogue(endingDialogueIndex, 2000);                
+            }, 3000);
           }, 500);
+        }
+        else if(endingDialogueIndex === 7) { 
+          setTimeout(() => {
+            let endingDialogueContainer = document.querySelector(".endingDialogueContainer");
+            endingDialogueContainer.remove()
+            startCredits()
+          }, 8000);    
         }
         clearInterval(characterTimer);
       }
@@ -4205,11 +4170,13 @@ function playEndingScene4 () {
   endingSceneBackground.className = "endingSceneBackground";
   endingSceneContainer.append(endingSceneBackground);
 
+    let samuraiDogeContainer = document.createElement("div")
+  samuraiDogeContainer.className = "samuraiDogeContainer"
   let samuraiDoge = document.createElement("img");
   samuraiDoge.src = "../image/samuraiDoge.png";
   samuraiDoge.className = "endingScene4SamuraiDoge";
-  endingSceneContainer.append(samuraiDoge);
-
+  samuraiDogeContainer.append(samuraiDoge)
+  endingSceneContainer.append(samuraiDogeContainer);
 
   let swordCatContainer = document.createElement("div")
   swordCatContainer.className = "swordCatContainer"
