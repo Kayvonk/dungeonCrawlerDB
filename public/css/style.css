@@ -3,6 +3,11 @@
   src: url("../fonts/DungeonCrawler.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "TimesSansSerif";
+  src: url("../fonts/TimesSansSerif.ttf") format("truetype");
+}
+
 body {
   background-color: lightblue;
   margin: 0px;
@@ -154,7 +159,7 @@ header > p:first-child {
   border-radius: 12px;
   border: none;
   box-shadow: 2px 2px 5px 2px rgb(49, 49, 49);
-  font-family: "DungeonCrawler";
+  font-family: monospace;
   color: black;
   font-size: 28px;
   background-color: #84c5dbd0;
@@ -182,6 +187,7 @@ header > p:first-child {
   justify-content: center;
   align-items: center;
   font-size: 22px;
+  font-family: "TimesSansSerif";
   z-index: 4;
 }
 
@@ -864,6 +870,7 @@ header > p:first-child {
 }
 
 .dialogue-content {
+  font-family: "TimesSansSerif";
   margin: 0;
   font-size: 1.5em;
   margin-bottom: 20px;
@@ -1147,6 +1154,7 @@ header > p:first-child {
 
 .attributeText {
   position: absolute;
+  font-family: "TimesSansSerif";
   font-size: 36px;
   left: 50%;
   top: 20%;
@@ -1178,6 +1186,7 @@ header > p:first-child {
   height: 90%;
   justify-content: space-between;
   font-size: 24px;
+  font-family: "TimesSansSerif";
 }
 /* -------Left Container---------- */
 
@@ -1231,6 +1240,7 @@ header > p:first-child {
 
 .newHighscoreToast {
   position: absolute;
+  font-family: "TimesSansSerif";
   font-size: 20px;
   color: rgba(255, 215, 0, 0.8);
   left: 50%;
@@ -1285,6 +1295,7 @@ header > p:first-child {
   color: #f3f3f3;
   margin: 35px 0px;
   font-size: 32px;
+  font-family: "TimesSansSerif";
 }
 
 .scoreRow {
@@ -1293,6 +1304,7 @@ header > p:first-child {
   color: #f3f3f3;
   margin: 25px 0px;
   font-size: 24px;
+  font-family: "TimesSansSerif";
 }
 
 .scoreIndex {
@@ -1400,6 +1412,7 @@ header > p:first-child {
 
 .endingDialogueText {
   font-size: 1.5em;
+  font-family: "TimesSansSerif";
 }
 
 .endingCloseUpSamuraiDoge {
