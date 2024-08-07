@@ -176,6 +176,7 @@ let endingDialogue1 = [
 ];
 
 let playingCredits = false;
+let bossRestarted = false;
 
 startBtn.addEventListener("click", startPrologue);
 
@@ -2256,29 +2257,33 @@ function introduceOldCat(selectedTile) {
 
 function introduceBoss(selectedTile) {
   canMove = false;
-  const dialogueBox = document.createElement("div");
-  dialogueBox.className = "dialogue-box";
+  if (!bossRestarted) {    
+    const dialogueBox = document.createElement("div");
+    dialogueBox.className = "dialogue-box";
 
-  const dialogueContent = document.createElement("p");
-  dialogueContent.className = "dialogue-content";
+    const dialogueContent = document.createElement("p");
+    dialogueContent.className = "dialogue-content";
 
-  let bossDialogue =
-    "I didn't think you would make it this far... no matter. This ends here!";
-  let characterCounter = 0;
-  let characterTimer = setInterval(() => {
-    const character = bossDialogue[characterCounter];
-    if (characterCounter < bossDialogue.length) {
-      dialogueContent.textContent += character;
-      characterCounter++;
-    } else {
-      clearInterval(characterTimer);
-      startBossFight(selectedTile);
-    }
-  }, 50);
+    let bossDialogue =
+      "I didn't think you would make it this far... no matter. This ends here!";
+    let characterCounter = 0;
+    let characterTimer = setInterval(() => {
+      const character = bossDialogue[characterCounter];
+      if (characterCounter < bossDialogue.length) {
+        dialogueContent.textContent += character;
+        characterCounter++;
+      } else {
+        clearInterval(characterTimer);
+        startBossFight(selectedTile);
+      }
+    }, 50);
 
-  dialogueBox.appendChild(dialogueContent);
+    dialogueBox.appendChild(dialogueContent);
 
-  selectedTile.appendChild(dialogueBox);
+    selectedTile.appendChild(dialogueBox);
+  } else {
+    startBossFight(selectedTile);
+  }
 }
 
 // ----end dialogue logic---------
@@ -2360,8 +2365,10 @@ function startBossFight(selectedTile) {
   let dialogueBox = document.querySelector(".dialogue-box");
 
   setTimeout(() => {
-    dialogueBox.remove();
-
+    if (!bossRestarted) {
+      bossRestarted = true;
+      dialogueBox.remove();
+    }
     let shadowClone1Animation = document.createElement("img");
     shadowClone1Animation.src = "./image/shadowSamuraiDoge.png";
     shadowClone1Animation.className = "shadowCloneDog1-animate cloneLeft";
