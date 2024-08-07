@@ -1445,10 +1445,10 @@ header > p:first-child {
   width: 45vw;
   height: auto;
   animation: shrink 1s 3s ease-in-out forwards,
-  slideTopLeft 1s 3s ease-in-out forwards;
+    slideTopLeft 1s 3s ease-in-out forwards;
 }
 
-.endingScene4SwordCatBack{
+.endingScene4SwordCatBack {
   width: 100%;
   height: auto;
 }
@@ -1489,7 +1489,7 @@ header > p:first-child {
   }
 }
 
-.sweatDropImage{
+.sweatDropImage {
   position: absolute;
   z-index: 16;
   width: 5vw;
@@ -1506,4 +1506,45 @@ header > p:first-child {
   to {
     top: 7vh;
   }
+}
+
+.endingContainerOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #ffffff00 0%, #ffffff 50%, #ffffff00 100%);
+  opacity: 0;
+}
+
+.overlayFadeInAndOut {
+  animation: overlayFadeInAndOut 1s ease-in-out;
+}
+
+@keyframes overlayFadeInAndOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.endingContainerOverlay2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  opacity: 0;
+  z-index: 20;
+}
+
+.showEndingContainerOverlay2 {
+  animation: fadeIn 2s ease-in-out forwards;
 }

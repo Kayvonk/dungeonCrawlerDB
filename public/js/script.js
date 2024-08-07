@@ -1341,7 +1341,7 @@ function swingSword() {
             }, 500);
           } else {
             startEnding();
-          }     
+          }
           return {
             ...item,
             position: newBossPosition,
@@ -1364,7 +1364,7 @@ function swingSword() {
           });
           if (bossHealth === 0) {
             startEnding();
-          }  
+          }
           return {
             ...item,
             position: null,
@@ -3750,8 +3750,8 @@ function performOctoSlash(enemyClass, enemyIndex, enemyType, hitsRemaining) {
 
 // ------------start ending --------
 function startCredits() {
-    let endingSceneContainer = document.querySelector(".endingSceneContainer");
-  endingSceneContainer. innerHTML = ""
+  let endingSceneContainer = document.querySelector(".endingSceneContainer");
+  endingSceneContainer.innerHTML = "";
 
   gameOver = true;
   calculateScore();
@@ -4034,7 +4034,6 @@ function startEnding() {
   endingEl.appendChild(endingDialogueContainer);
 
   playDialogue(endingDialogueIndex, 5000);
-
 }
 
 function playDialogue(index, delay) {
@@ -4055,63 +4054,68 @@ function playDialogue(index, delay) {
           setTimeout(() => {
             playDialogue(endingDialogueIndex, 0);
           }, 3000);
-        }
-        else if(endingDialogueIndex === 1) {
+        } else if (endingDialogueIndex === 1) {
           endingDialogueIndex++;
           setTimeout(() => {
-            playEndingScene2()            
+            playEndingScene2();
           }, 3000);
-        }
-        else if(endingDialogueIndex === 2) {
+        } else if (endingDialogueIndex === 2) {
           endingDialogueIndex++;
           setTimeout(() => {
-            playEndingScene3()            
+            playEndingScene3();
           }, 3000);
-        }
-        else if(endingDialogueIndex === 3) {
+        } else if (endingDialogueIndex === 3) {
           endingDialogueIndex++;
           setTimeout(() => {
-            playEndingScene4()            
+            playEndingScene4();
           }, 3000);
-        }
-        else if(endingDialogueIndex === 4) {
+        } else if (endingDialogueIndex === 4) {
           endingDialogueIndex++;
           setTimeout(() => {
             playDialogue(endingDialogueIndex, 0);
-          }, 3000);  
-        }
-        else if(endingDialogueIndex === 5) {
+          }, 3000);
+        } else if (endingDialogueIndex === 5) {
           endingDialogueIndex++;
           setTimeout(() => {
-            let swordCatContainer = document.querySelector(".swordCatContainer")
-            let sweatDropImage = document.createElement("img")
-            sweatDropImage.src="../image/sweatDrop.png"
-            sweatDropImage.className = "sweatDropImage"
-            swordCatContainer.append(sweatDropImage)
+            let swordCatContainer =
+              document.querySelector(".swordCatContainer");
+            let sweatDropImage = document.createElement("img");
+            sweatDropImage.src = "../image/sweatDrop.png";
+            sweatDropImage.className = "sweatDropImage";
+            swordCatContainer.append(sweatDropImage);
             setTimeout(() => {
-              playDialogue(endingDialogueIndex, 3000);      
-          
+              playDialogue(endingDialogueIndex, 3000);
             }, 3000);
-          }, 3000);           
-        }
-        else if(endingDialogueIndex === 6) {
+          }, 3000);
+        } else if (endingDialogueIndex === 6) {
           endingDialogueIndex++;
-          setTimeout(() => {        
-                    let endingScene4SamuraiDoge = document.querySelector(".endingScene4SamuraiDoge")
-                    endingScene4SamuraiDoge.src = "../image/samuraiDogeRed.png"
-                    endingScene4SamuraiDoge.classList.add("animateDeath")
+          setTimeout(() => {
+            let endingScene4SamuraiDoge = document.querySelector(
+              ".endingScene4SamuraiDoge"
+            );
+            endingScene4SamuraiDoge.src = "../image/samuraiDogeRed.png";
+            endingScene4SamuraiDoge.classList.add("animateDeath");
             playSoundEffect("death");
             setTimeout(() => {
-              playDialogue(endingDialogueIndex, 2000);                
+              playDialogue(endingDialogueIndex, 2000);
             }, 3000);
           }, 500);
-        }
-        else if(endingDialogueIndex === 7) { 
+        } else if (endingDialogueIndex === 7) {
           setTimeout(() => {
-            let endingDialogueContainer = document.querySelector(".endingDialogueContainer");
-            endingDialogueContainer.remove()
-            startCredits()
-          }, 8000);    
+            let endingContainerOverlay2 = document.querySelector(
+              ".endingContainerOverlay2"
+            );
+            endingContainerOverlay2.classList.add(
+              "showEndingContainerOverlay2"
+            );
+          }, 6000);
+          setTimeout(() => {
+            let endingDialogueContainer = document.querySelector(
+              ".endingDialogueContainer"
+            );
+            endingDialogueContainer.remove();
+            startCredits();
+          }, 8000);
         }
         clearInterval(characterTimer);
       }
@@ -4121,28 +4125,24 @@ function playDialogue(index, delay) {
 
 function playEndingScene2() {
   let endingSceneContainer = document.querySelector(".endingSceneContainer");
-  endingSceneContainer. innerHTML = ""
-
+  endingSceneContainer.innerHTML = "";
 
   let endingSceneBackground = document.createElement("img");
   endingSceneBackground.src = "../image/dungeonTiles3dImage.png";
   endingSceneBackground.className = "endingSceneBackground";
   endingSceneContainer.append(endingSceneBackground);
 
-  let closeUpBossImage = document.createElement("img")
+  let closeUpBossImage = document.createElement("img");
   closeUpBossImage.src = "../image/samuraiDoge.png";
   closeUpBossImage.className = "endingCloseUpSamuraiDoge";
   endingSceneContainer.append(closeUpBossImage);
-
-
 
   playDialogue(endingDialogueIndex, 1000);
 }
 
 function playEndingScene3() {
   let endingSceneContainer = document.querySelector(".endingSceneContainer");
-  endingSceneContainer. innerHTML = ""
-
+  endingSceneContainer.innerHTML = "";
 
   let endingSceneBackground = document.createElement("img");
   endingSceneBackground.src = "../image/dungeonTiles3dImage.png";
@@ -4154,46 +4154,54 @@ function playEndingScene3() {
   closeUpSwordCat.className = "endingCloseUpSwordCat";
   endingSceneContainer.append(closeUpSwordCat);
 
-
   playDialogue(endingDialogueIndex, 1000);
 }
 
-function playEndingScene4 () {
+function playEndingScene4() {
   let endingDialogueText = document.querySelector(".endingDialogueText");
   endingDialogueText.innerHTML = "";
   let endingSceneContainer = document.querySelector(".endingSceneContainer");
-  endingSceneContainer. innerHTML = ""
+  endingSceneContainer.innerHTML = "";
 
-  
   let endingSceneBackground = document.createElement("img");
   endingSceneBackground.src = "../image/dungeonTiles3dImage.png";
   endingSceneBackground.className = "endingSceneBackground";
   endingSceneContainer.append(endingSceneBackground);
 
-    let samuraiDogeContainer = document.createElement("div")
-  samuraiDogeContainer.className = "samuraiDogeContainer"
+  let endingContainerOverlay = document.createElement("div");
+  endingContainerOverlay.className = "endingContainerOverlay";
+
+  let endingContainerOverlay2 = document.createElement("div");
+  endingContainerOverlay2.className = "endingContainerOverlay2";
+
+  endingSceneContainer.append(endingContainerOverlay);
+  endingSceneContainer.append(endingContainerOverlay2);
+
+  let samuraiDogeContainer = document.createElement("div");
+  samuraiDogeContainer.className = "samuraiDogeContainer";
   let samuraiDoge = document.createElement("img");
   samuraiDoge.src = "../image/samuraiDoge.png";
   samuraiDoge.className = "endingScene4SamuraiDoge";
-  samuraiDogeContainer.append(samuraiDoge)
+  samuraiDogeContainer.append(samuraiDoge);
   endingSceneContainer.append(samuraiDogeContainer);
 
-  let swordCatContainer = document.createElement("div")
-  swordCatContainer.className = "swordCatContainer"
+  let swordCatContainer = document.createElement("div");
+  swordCatContainer.className = "swordCatContainer";
   let swordCatBack = document.createElement("img");
   swordCatBack.src = "../image/swordCatBack.png";
   swordCatBack.className = "endingScene4SwordCatBack";
-  swordCatContainer.append(swordCatBack)
+  swordCatContainer.append(swordCatBack);
   endingSceneContainer.append(swordCatContainer);
 
+  setTimeout(() => {
+    endingContainerOverlay.classList.add("overlayFadeInAndOut");
+  }, 3000);
 
- setTimeout(() => {  
-   setTimeout(() => {
-     swordCatBack.src = "../image/swordCat.png";   
+  setTimeout(() => {
+    setTimeout(() => {
+      swordCatBack.src = "../image/swordCat.png";
     }, 2500);
-    playDialogue(endingDialogueIndex, 3000)   
+    playDialogue(endingDialogueIndex, 3000);
   }, 5000);
-
 }
 // TODO finish ending
-
