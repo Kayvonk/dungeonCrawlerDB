@@ -133,7 +133,7 @@ const attributions = [
     link: "https://www.pngaaa.com/detail/3495",
   },
   {
-    text: "Boulder art by TdeLeeuw on DeviantART",
+    text: "Boulder art by TdeLeeuw on DeviantArt",
     link: "https://www.deviantart.com/tdeleeuw/art/Boulder-pixel-art-427731885",
   },
   {
@@ -141,7 +141,7 @@ const attributions = [
     link: "https://www.pngall.com/super-saiyan-aura-png/download/137668",
   },
   {
-    text: "Cave tile art by Kyrio on deviant art",
+    text: "Cave tile art by Kyrio on DeviantArt",
     link: "https://www.deviantart.com/kyrio/art/Pixel-Cave-Interior-Tile-131032682",
   },
   { text: "Thanks for playing!" },
