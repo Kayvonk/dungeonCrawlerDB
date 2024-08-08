@@ -72,13 +72,13 @@ Smoke image from pngaaa.com
 Log image from pngaaa.com
 [link](https://www.pngaaa.com/detail/3495)
 
-Boulder art by TdeLeeuw on DeviantART
+Boulder art by TdeLeeuw on DeviantArt
 [link](https://www.deviantart.com/tdeleeuw/art/Boulder-pixel-art-427731885)
 
 Super Saiyan Aura art by Rojal
 [link](https://www.pngall.com/super-saiyan-aura-png/download/137668)
 
-Cave tile art by Kyrio on deviant art
+Cave tile art by Kyrio on DeviantArt
 [link](https://www.deviantart.com/kyrio/art/Pixel-Cave-Interior-Tile-131032682)
   
 
