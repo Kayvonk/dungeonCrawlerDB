@@ -1031,6 +1031,7 @@ function endRound() {
   playSoundEffect("teleport");
   mainEl.innerHTML = "";
   enemyPositions = [];
+  possibleEnemyPositions = [];
   bossEnemyPositions = [
     {
       position: "r3-c6",
@@ -1059,6 +1060,7 @@ function endRound() {
   round++;
   createTiles();
   placePlayer1();
+
   for (let i = 0; i < round + 1; i++) {
     let newEnemyPosition =
       possibleEnemyPositions[
@@ -1081,6 +1083,7 @@ function endRound() {
 function createTiles() {
   let playerRow = playerPosition.split("-")[0].substring(1);
   let playerColumn = playerPosition.split("-")[1].substring(1);
+
   if (playerRow === "1") {
     playerEnterDirection = "top";
   } else if (playerRow === "6") {
@@ -1199,19 +1202,19 @@ function createTiles() {
     let column = tilePosition.split("-")[1].substring(1);
     // adjust here to change enemy spawn locations
     if (playerEnterDirection === "top") {
-      if (row > 2) {
+      if (parseInt(row) > 2) {
         possibleEnemyPositions.push(tilePosition);
       }
     } else if (playerEnterDirection === "bottom") {
-      if (row < 5) {
+      if (parseInt(row) < 5) {
         possibleEnemyPositions.push(tilePosition);
       }
     } else if (playerEnterDirection === "left") {
-      if (column > 2) {
+      if (parseInt(column) > 2) {
         possibleEnemyPositions.push(tilePosition);
       }
     } else if (playerEnterDirection === "right") {
-      if (column < 11) {
+      if (parseInt(column) < 11) {
         possibleEnemyPositions.push(tilePosition);
       }
     }
