@@ -873,7 +873,7 @@ function displayRestartMenu() {
   } else {
     let restartBtn = document.createElement("button");
     restartBtn.setAttribute("id", "restart");
-    restartBtn.textContent = "restart";
+    restartBtn.textContent = "Restart";
     scoreDiv.append(restartBtn);
     restartBtn.addEventListener("click", restartGame);
   }
